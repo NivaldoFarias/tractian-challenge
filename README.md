@@ -1,28 +1,26 @@
-<!-- This is a Template Repository, use as needed! -->
-
 <!-- Project Summary -->
 
 <br />
 
 <div align="center">
-  <a href="https://github.com/NivaldoFarias/typescript-project-template">
+  <a href="https://github.com/NivaldoFarias/tractian-challenge/tree/main/server">
     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="Logo" width="90">
   </a>
 
-  <h3 align="center">TypeScript Project Template</h3>
+  <h3 align="center">Tractian Challenge POC</h3>
   <div align="center">
-    Back End Development Project Template
+    Full Stack Development Project 
     <br />
-    <a href="https://github.com/NivaldoFarias/typescript-project-template/tree/main/server"><strong>Browse Back End code»</strong></a>
+    <a href="https://github.com/NivaldoFarias/tractian-challenge/tree/main/server"><strong>Browse Back End code»</strong></a>
+    -
+    <a href="https://github.com/NivaldoFarias/tractian-challenge/tree/main/client"><strong>Browse Front End code»</strong></a>
   </div>
 </div>
 
 <div align="center">
   <h3>Built With</h3>
-
-  <img src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" height="30px"/>
   <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" height="30px"/>
-  <img src="https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white" height="30px"/>
+  <img src="https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white" height="30px"/>  
   <img src="https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white" height="30px"/>  
   <img src="https://img.shields.io/badge/Express.js-404D59?style=for-the-badge&logo=express.js&logoColor=white" height="30px"/>
   <img src="https://img.shields.io/badge/JWT-323330?style=for-the-badge&logo=json-web-tokens&logoColor=pink" height="30px"/>
@@ -33,10 +31,7 @@
 <br />
 
 <div align="center">
-  <a href="https://github.com/NivaldoFarias/typescript-project-template/releases/tag/v2.0.0" alt="Current template version badge">
-    <img src="https://img.shields.io/github/package-json/v/NivaldoFarias/typescript-project-template?style=flat-square" />
-  </a>
-  <a href="https://github.com/NivaldoFarias/typescript-project-template/releases/tag/v2.0.0" alt="Current template version badge">
+  <a href="https://github.com/NivaldoFarias/tractian-challenge/tree/main/server/releases/tag/v2.0.0" alt="Current template version badge">
     <img src="https://img.shields.io/badge/license-MIT-%23A8D1FF?style=flat-square" />
   </a>
 </div>
@@ -59,12 +54,12 @@
 
 ## Installation and Usage
 
-###### Pre-requisites: Node.js `^16.14.0`, PostgreSQL `^12.11`
+###### Pre-requisites: Node.js `^16.14.0`, TypeScript `^4.7.4`
 
-There are two available options for you to use this template for your next Back End project: either use Github's built-in `Use this template` feature (green button left of the _'About'_ section), or download the zip file and extract it in the root of a new project folder by running these commands:
+Download the zip file and extract it in the root of a new project folder by running these commands:
 
 ```bash
-wget https://github.com/NivaldoFarias/typescript-project-template/archive/main.zip
+wget https://github.com/NivaldoFarias/tractian-challenge/archive/main.zip
 ```
 
 Then run the following command to install the project's dependencies:
@@ -78,8 +73,6 @@ That's it! You can now start developing your TypeScript Project by running the c
 ```bash
 npm run dev
 ```
-
-###### _ps.: Make sure to update the package.json file with your own credentials!_
 
 <!-- Error Handling and Logging -->
 
@@ -153,8 +146,6 @@ An `AppLog` Object is used to handle logs in the application. It takes two param
   ...
 ```
 
-###### _ps.2: Have fun with these structures! They are in no way restricted to the project's scope_
-
 <!-- Middlewares -->
 
 ## Middlewares
@@ -201,7 +192,7 @@ adminRouter.post(endpoint,
 
 # API Reference
 
-In this section, you will find the example API's endpoints and their respective descriptions, along with the request and response examples, as well as the [Prisma](https://www.prisma.io/) models for each entity, that can be used as guide for data formatting. All data is sent and received as JSON.
+In this section, you will find the example API's endpoints and their respective descriptions, along with the request and response examples, as well as the [MongoDB](https://www.mongodb.com/) **BSON** types for each entity, that can be used as guide for data formatting. All data is sent and received as JSON.
 
 <!-- Models -->
 
@@ -209,11 +200,11 @@ In this section, you will find the example API's endpoints and their respective 
 
 ### User model _`users`_
 
-- `id`: A unique identifier for each user. `serial4`
-- `username`: The user's username. `text`
-- `email`: The user's email. An email may only be registered once. `text`
-- `password`: The user's password. `text`
-- `created_at`: The date and time when the user was created. `timestamp`
+- `id`: A unique identifier for each user. `ObjectId`
+- `full_name`: The user's full name. `String`
+- `username`: The user's username. `String`
+- `password`: The user's password. `String`
+- `created_at`: The date and time when the user was created. `Date`
 
 ## Routes
 
@@ -234,9 +225,10 @@ In this section, you will find the example API's endpoints and their respective 
 
 ```json
 {
-  "username": "johndoe",
-  "email": "john_doe@gmail.com",
-  "password": "123456789"
+  "full_name": "John Doe Junior the Third",
+  "username": "JohnDoe",
+  "password": "123456789",
+  "company": "ACME Inc."
 }
 ```
 
@@ -244,18 +236,21 @@ In this section, you will find the example API's endpoints and their respective 
 
 ```json
 {
-  "Content-Type": "application/json"
+  "Content-Type": "application/json",
+  "x-api-key": "extremely-secure-hash-key"
 }
 ```
 
 ### &nbsp; ☰ &nbsp; Responses
 
-| Status Code |       Description        |          Properties           |
-| :---------: | :----------------------: | :---------------------------: |
-|   **201**   |         Created          |          `data: {}`           |
-|   **409**   | Email already registered | `error: { message, details }` |
-|   **422**   |      Invalid Input       | `error: { message, details }` |
-|   **500**   |  Internal Server Error   | `error: { message, details }` |
+| Status Code |         Description         |          Properties          |
+| :---------: | :-------------------------: | :--------------------------: |
+|   **201**   |           Created           |         `data: null`         |
+|   **400**   |        Invalid Input        | `error: { message, detail }` |
+|   **403**   |     Forbidden x-api-key     | `error: { message, detail }` |
+|   **409**   | Username Already Registered | `error: { message, detail }` |
+|   **422**   |   Invalid Request Syntax    | `error: { message, detail }` |
+|   **500**   |    Internal Server Error    | `error: { message, detail }` |
 
 ### &nbsp; ‣ &nbsp; Sign in
 
@@ -267,7 +262,7 @@ In this section, you will find the example API's endpoints and their respective 
 
 ```json
 {
-  "email": "john_doe@gmail.com",
+  "username": "JohnDoe",
   "password": "123456789"
 }
 ```
@@ -282,14 +277,37 @@ In this section, you will find the example API's endpoints and their respective 
 
 ### &nbsp; ☰ &nbsp; Responses
 
-| Status Code |      Description      |          Properties           |
-| :---------: | :-------------------: | :---------------------------: |
-|   **200**   |          OK           |       `data: { token }`       |
-|   **403**   |   Invalid password    | `error: { message, details }` |
-|   **404**   |    User not found     | `error: { message, details }` |
-|   **422**   |     Invalid Input     | `error: { message, details }` |
-|   **500**   | Internal Server Error | `error: { message, details }` |
+| Status Code |       Description       |          Properties          |
+| :---------: | :---------------------: | :--------------------------: |
+|   **200**   |           OK            |      `data: { token }`       |
+|   **400**   |      Invalid Input      | `error: { message, detail }` |
+|   **404**   |     User not Found      | `error: { message, detail }` |
+|   **409**   | User has Active Session | `error: { message, detail }` |
+|   **422**   | Invalid Request Syntax  | `error: { message, detail }` |
+|   **500**   |  Internal Server Error  | `error: { message, detail }` |
+
+### &nbsp; ‣ &nbsp; Sign out
+
+###### &nbsp; &nbsp; POST _`/auth/sign-out`_
+
+### &nbsp; ☰ &nbsp; Request
+
+###### Headers
+
+```json
+{
+  "Content-Type": "application/json",
+  "token": "server-generated-token"
+}
+```
+
+### &nbsp; ☰ &nbsp; Responses
+
+| Status Code |      Description       |          Properties          |
+| :---------: | :--------------------: | :--------------------------: |
+|   **200**   |           OK           |         `data: null`         |
+|   **404**   |   Session not Found    | `error: { message, detail }` |
+|   **422**   | Invalid Request Syntax | `error: { message, detail }` |
+|   **500**   | Internal Server Error  | `error: { message, detail }` |
 
 #
-
-###### Template created by [Nivaldo Farias](https://github.com/NivaldoFarias/typescript-project-template).
