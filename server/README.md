@@ -13,7 +13,7 @@
   <div align="center">
     Back End Development Project Template
     <br />
-    <a href="https://github.com/NivaldoFarias/typescript-project-template/tree/main/server"><strong>Browse Back End code»</strong></a>
+    <a href="https://github.com/NivaldoFarias/typescript-project-template/tree/main/src"><strong>Browse TypeScript code»</strong></a>
   </div>
 </div>
 
