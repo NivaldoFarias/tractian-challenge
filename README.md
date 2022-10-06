@@ -422,7 +422,7 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Seach by id
+### &nbsp; ‣ &nbsp; Search by id
 
 ###### &nbsp; &nbsp; GET _`/users/:id`_
 
@@ -585,7 +585,7 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Seach by id
+### &nbsp; ‣ &nbsp; Search by id
 
 ###### &nbsp; &nbsp; GET _`/companies/:id`_
 
@@ -756,7 +756,7 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Seach by id
+### &nbsp; ‣ &nbsp; Search by id
 
 ###### &nbsp; &nbsp; GET _`/units/:id`_
 
@@ -934,7 +934,7 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Seach by id
+### &nbsp; ‣ &nbsp; Search by id
 
 ###### &nbsp; &nbsp; GET _`/assets/:id`_
 
