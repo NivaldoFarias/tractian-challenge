@@ -259,35 +259,35 @@ In this section, you will find the example API's endpoints and their respective 
 
 ### [Users](#users) _`/users`_
 
-- [Create](#---create)
+- [Create](#---create-an-user)
 - [Search All Users](#---search-all-users)
-- [Search by Id](#---search-by-id)
-- [Update](#---update)
-- [Delete](#---delete)
+- [Search by Id](#---search-user-by-id)
+- [Update](#---update-an-user)
+- [Delete](#---delete-an-user)
 
 ### [Companies](#companies) _`/companies`_
 
-- [Create](#---create)
+- [Create](#---create-a-company)
 - [Search All Companies](#---search-all-companies)
-- [Search by Id](#---search-by-id)
-- [Update](#---update)
-- [Delete](#---delete)
+- [Search by Id](#---search-companies-by-id)
+- [Update](#---update-a-company)
+- [Delete](#---delete-a-company)
 
 ### [Units](#units) _`/units`_
 
-- [Create](#---create)
+- [Create](#---create-an-unit)
 - [Search All Units](#---search-all-units)
-- [Search by Id](#---search-by-id)
-- [Update](#---update)
-- [Delete](#---delete)
+- [Search by Id](#---search-unit-by-id)
+- [Update](#---update-an-unit)
+- [Delete](#---delete-an-unit)
 
 ### [Assets](#assets) _`/assets`_
 
-- [Create](#---create)
+- [Create](#---create-an-asset)
 - [Search All Assets](#---search-all-assets)
-- [Search by Id](#---search-by-id)
-- [Update](#---update)
-- [Delete](#---delete)
+- [Search by Id](#---search-asset-by-id)
+- [Update](#---update-an-asset)
+- [Delete](#---delete-an-asset)
 
 ## Authentication
 
@@ -351,7 +351,7 @@ In this section, you will find the example API's endpoints and their respective 
 
 ## Users
 
-### &nbsp; ‣ &nbsp; Create
+### &nbsp; ‣ &nbsp; Create an User
 
 ###### &nbsp; &nbsp; POST _`/users/create`_
 
@@ -422,7 +422,7 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Search by id
+### &nbsp; ‣ &nbsp; Search User by id
 
 ###### &nbsp; &nbsp; GET _`/users/:id`_
 
@@ -449,7 +449,7 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Update
+### &nbsp; ‣ &nbsp; Update an User
 
 ###### &nbsp; &nbsp; PUT _`/users/:id/update`_
 
@@ -487,7 +487,7 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Delete
+### &nbsp; ‣ &nbsp; Delete an User
 
 ###### &nbsp; &nbsp; DELETE _`/users/:id/delete`_
 
@@ -516,7 +516,7 @@ In this section, you will find the example API's endpoints and their respective 
 
 ## Companies
 
-### &nbsp; ‣ &nbsp; Create
+### &nbsp; ‣ &nbsp; Create a Company
 
 ###### &nbsp; &nbsp; POST _`/companies/create`_
 
@@ -585,7 +585,7 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Search by id
+### &nbsp; ‣ &nbsp; Search Company by id
 
 ###### &nbsp; &nbsp; GET _`/companies/:id`_
 
@@ -612,7 +612,7 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Update
+### &nbsp; ‣ &nbsp; Update a Company
 
 ###### &nbsp; &nbsp; PUT _`/companies/:id/update`_
 
@@ -648,7 +648,7 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Delete
+### &nbsp; ‣ &nbsp; Delete a Company
 
 ###### &nbsp; &nbsp; DELETE _`/companies/:id/delete`_
 
@@ -678,7 +678,7 @@ In this section, you will find the example API's endpoints and their respective 
 
 ## Units
 
-### &nbsp; ‣ &nbsp; Create
+### &nbsp; ‣ &nbsp; Create an Unit
 
 ###### &nbsp; &nbsp; POST _`/units/create`_
 
@@ -756,7 +756,7 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Search by id
+### &nbsp; ‣ &nbsp; Search Unit by id
 
 ###### &nbsp; &nbsp; GET _`/units/:id`_
 
@@ -783,7 +783,7 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Update
+### &nbsp; ‣ &nbsp; Update an Unit
 
 ###### &nbsp; &nbsp; PUT _`/units/:id/update`_
 
@@ -827,7 +827,7 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Delete
+### &nbsp; ‣ &nbsp; Delete an Unit
 
 ###### &nbsp; &nbsp; DELETE _`/units/:id/delete`_
 
@@ -856,7 +856,7 @@ In this section, you will find the example API's endpoints and their respective 
 
 ## Assets
 
-### &nbsp; ‣ &nbsp; Create
+### &nbsp; ‣ &nbsp; Create an Asset
 
 ###### &nbsp; &nbsp; POST _`/assets/create`_
 
@@ -934,7 +934,7 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Search by id
+### &nbsp; ‣ &nbsp; Search Asset by id
 
 ###### &nbsp; &nbsp; GET _`/assets/:id`_
 
@@ -961,7 +961,7 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Update
+### &nbsp; ‣ &nbsp; Update an Asset
 
 ###### &nbsp; &nbsp; PUT _`/assets/:id/update`_
 
@@ -1002,7 +1002,7 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Delete
+### &nbsp; ‣ &nbsp; Delete an Asset
 
 ###### &nbsp; &nbsp; DELETE _`/assets/:id/delete`_
 

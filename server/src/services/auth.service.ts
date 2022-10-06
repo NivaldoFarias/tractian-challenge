@@ -4,13 +4,6 @@ import bcrypt from 'bcrypt';
 import { env } from '../utils/constants.util';
 import AppLog from '../events/AppLog';
 
-function hashPassword(password: string) {
-  const encrypted = bcrypt.hashSync(password, env.SALT_ROUNDS);
-
-  AppLog('Service', 'Password encrypted');
-  return encrypted;
-}
-
 function decryptPassword(password: string, encrypted: string) {
   const isValid = bcrypt.compareSync(password, encrypted);
 
@@ -33,4 +26,4 @@ function generateToken(id: number) {
   return token;
 }
 
-export { hashPassword, generateToken, decryptPassword };
+export { generateToken, decryptPassword };
