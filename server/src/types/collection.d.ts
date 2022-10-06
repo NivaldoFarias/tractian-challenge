@@ -1,7 +1,9 @@
 export type UserType = {
   name: string;
+  full_name: string;
   password: string;
-  createdAt: Date;
+  last_update: Date;
+  created_at: Date;
 };
 
 export type AssetType = {
@@ -11,8 +13,9 @@ export type AssetType = {
   owner: string;
   image: string;
   status: 'RUNNING' | 'ALERTING' | 'STOPPED';
-  health: string;
-  createdAt: Date;
+  health: number;
+  last_update: Date;
+  created_at: Date;
 };
 
 export type UnitType = {
@@ -22,12 +25,13 @@ export type UnitType = {
     number: string;
     city: string;
     state: string;
-    postalCode: string;
+    postal_code: string;
   };
   assets: AssetType[];
-  opensAt: Date;
-  closesAt: Date;
-  lastUpdate: Date;
+  opens_at: string;
+  closes_at: string;
+  last_update: Date;
+  created_at: Date;
 };
 
 export type CompanyType = {
@@ -35,5 +39,6 @@ export type CompanyType = {
   units: UnitType[];
   users: UserType[];
   'x-api-key': string;
-  createdAt: Date;
+  last_update: Date;
+  created_at: Date;
 };

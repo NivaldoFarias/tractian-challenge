@@ -49,6 +49,10 @@
   - [Models](#models)
   - [Routes](#routes)
   - [Authentication](#authentication)
+  - [Users](#users)
+  - [Companies](#companies)
+  - [Units](#units)
+  - [Assets](#assets)
 
 <!-- Installation and Usage -->
 
@@ -192,36 +196,168 @@ adminRouter.post(endpoint,
 
 # API Reference
 
-In this section, you will find the example API's endpoints and their respective descriptions, along with the request and response examples, as well as the [MongoDB](https://www.mongodb.com/) **BSON** types for each entity, that can be used as guide for data formatting. All data is sent and received as JSON.
+In this section, you will find the example API's endpoints and their respective descriptions, along with the request and response examples, as well as the [MongoDB](https://www.mongodb.com/) **_BSON_** types for each entity, that can be used as guide for data formatting. All data is sent and received as **_JSON_**.
 
 <!-- Models -->
 
 ## Models
 
-### User model _`users`_
+### User model _`User`_
 
 - `id`: A unique identifier for each user. `ObjectId`
-- `full_name`: The user's full name. `String`
-- `username`: The user's username. `String`
-- `password`: The user's password. `String`
+- `full_name`: The user's full name. `String` `required` `max(100)`
+- `username`: The user's username. `String` `required` `max(25)`
+- `password`: The user's password. `String` `required` `max(50)`
+- `last_update`: The date and time when the user was last updated. `Date`
 - `created_at`: The date and time when the user was created. `Date`
+
+### Company model _`Company`_
+
+- `id`: A unique identifier for each company. `ObjectId`
+- `name`: The companys's name. `String` `required` `max(100)`
+- `units`: An array containing the company's units. `Unit[]`
+- `users`: An array containing the company's users. `User[]`
+- `x-api-key`: The company's API key. `String` `required`
+- `last_update`: The date and time when the company was last updated. `Date`
+- `created_at`: The date and time when the company was created. `Date`
+
+### Unit model _`Unit`_
+
+- `id`: A unique identifier for each unit. `ObjectId`
+- `name`: The units's name. `String` `required` `max(50)`
+- `location`: The units's location. `Object` `required`
+  - `street`: The unit's street. `String` `required` `max(100)`
+  - `number`: The unit's number. `String` `required` `max(10)`
+  - `city`: The unit's city. `String` `required` `max(50)`
+  - `state`: The unit's state. `String` `required` `max(50)`
+  - `postal_code`: The unit's postal code. `String` `required` `max(20)`
+- `assets`: An array containing the unit's assets. `Asset[]`
+- `opens_at`: The date and time when the unit opens. `String` `required` `length(5)`
+- `closes_at`: The date and time when the unit closes. `String` `required` `length(5)`
+- `last_update`: The date and time when the unit was last updated. `Date`
+- `created_at`: The date and time when the unit was created. `Date`
+
+### Asset model _`Asset`_
+
+- `id`: A unique identifier for each asset. `ObjectId`
+- `name`: The assets's name. `String` `required` `max(50)`
+- `description`: The assets's description. `String`
+- `model`: The assets's model. `String` `required` `max(100)`
+- `owner`: The assets owner's user. `User` `required`
+- `image`: The assets's image URL. `String`
+- `status`: The assets's status. `String` `required` `enum('RUNNING', 'ALERTING', 'STOPPED')`
+- `healthscore`: The assets's healthscore. `Number` `required` `min(0)` `max(100)`
+- `last_update`: The date and time when the asset was last updated. `Date`
+- `created_at`: The date and time when the asset was created. `Date`
 
 ## Routes
 
 ### [Authentication](#authentication) _`/auth`_
 
-- [Register](#---register)
 - [Sign In](#---sign-in)
+- [Sign Out](#---sign-out)
+
+### [Users](#users) _`/users`_
+
+- [Create](#---create)
+- [Search All Users](#---search-all-users)
+- [Search by Id](#---search-by-id)
+- [Update](#---update)
+- [Delete](#---delete)
+
+### [Companies](#companies) _`/companies`_
+
+- [Create](#---create)
+- [Search All Companies](#---search-all-companies)
+- [Search by Id](#---search-by-id)
+- [Update](#---update)
+- [Delete](#---delete)
+
+### [Units](#units) _`/units`_
+
+- [Create](#---create)
+- [Search All Units](#---search-all-units)
+- [Search by Id](#---search-by-id)
+- [Update](#---update)
+- [Delete](#---delete)
+
+### [Assets](#assets) _`/assets`_
+
+- [Create](#---create)
+- [Search All Assets](#---search-all-assets)
+- [Search by Id](#---search-by-id)
+- [Update](#---update)
+- [Delete](#---delete)
 
 ## Authentication
 
-### &nbsp; ‣ &nbsp; Register
+### &nbsp; ‣ &nbsp; Sign in
 
-###### &nbsp; &nbsp; POST _`/auth/register`_
+###### &nbsp; &nbsp; POST _`/auth/sign-in`_
 
-### &nbsp; ☰ &nbsp; Request
+#### &nbsp; ☰ &nbsp; Request
 
-###### Body
+##### Body
+
+```json
+{
+  "username": "JohnDoe",
+  "password": "123456789"
+}
+```
+
+##### Headers
+
+```json
+{
+  "Content-Type": "application/json"
+}
+```
+
+#### &nbsp; ☰ &nbsp; Responses
+
+| Status Code |       Description       |          Properties          |
+| :---------: | :---------------------: | :--------------------------: |
+|   **200**   |           OK            |      `data: { token }`       |
+|   **400**   |     Invalid Syntax      | `error: { message, detail }` |
+|   **404**   |     User not Found      | `error: { message, detail }` |
+|   **409**   | User has Active Session | `error: { message, detail }` |
+|   **422**   |  Invalid Request Input  | `error: { message, detail }` |
+|   **500**   |  Internal Server Error  | `error: { message, detail }` |
+
+### &nbsp; ‣ &nbsp; Sign out
+
+###### &nbsp; &nbsp; POST _`/auth/sign-out`_
+
+#### &nbsp; ☰ &nbsp; Request
+
+##### Headers
+
+```json
+{
+  "Content-Type": "application/json",
+  "token": "server-generated-token"
+}
+```
+
+#### &nbsp; ☰ &nbsp; Responses
+
+| Status Code |      Description      |          Properties          |
+| :---------: | :-------------------: | :--------------------------: |
+|   **200**   |          OK           |         `data: null`         |
+|   **404**   |   Session not Found   | `error: { message, detail }` |
+|   **422**   | Invalid Request Input | `error: { message, detail }` |
+|   **500**   | Internal Server Error | `error: { message, detail }` |
+
+## Users
+
+### &nbsp; ‣ &nbsp; Create
+
+###### &nbsp; &nbsp; POST _`/users/create`_
+
+#### &nbsp; ☰ &nbsp; Request
+
+##### Body
 
 ```json
 {
@@ -232,7 +368,7 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-###### Headers
+##### Headers
 
 ```json
 {
@@ -241,73 +377,656 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-### &nbsp; ☰ &nbsp; Responses
+#### &nbsp; ☰ &nbsp; Responses
 
 | Status Code |         Description         |          Properties          |
 | :---------: | :-------------------------: | :--------------------------: |
 |   **201**   |           Created           |         `data: null`         |
-|   **400**   |        Invalid Input        | `error: { message, detail }` |
+|   **400**   |       Invalid Syntax        | `error: { message, detail }` |
 |   **403**   |     Forbidden x-api-key     | `error: { message, detail }` |
 |   **409**   | Username Already Registered | `error: { message, detail }` |
-|   **422**   |   Invalid Request Syntax    | `error: { message, detail }` |
+|   **422**   |    Invalid Request Input    | `error: { message, detail }` |
 |   **500**   |    Internal Server Error    | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Sign in
+### &nbsp; ‣ &nbsp; Search all Users
 
-###### &nbsp; &nbsp; POST _`/auth/sign-in`_
+###### &nbsp; &nbsp; GET _`/users/all`_
 
-### &nbsp; ☰ &nbsp; Request
+#### &nbsp; ☰ &nbsp; Request
 
-###### Body
-
-```json
-{
-  "username": "JohnDoe",
-  "password": "123456789"
-}
-```
-
-###### Headers
-
-```json
-{
-  "Content-Type": "application/json"
-}
-```
-
-### &nbsp; ☰ &nbsp; Responses
-
-| Status Code |       Description       |          Properties          |
-| :---------: | :---------------------: | :--------------------------: |
-|   **200**   |           OK            |      `data: { token }`       |
-|   **400**   |      Invalid Input      | `error: { message, detail }` |
-|   **404**   |     User not Found      | `error: { message, detail }` |
-|   **409**   | User has Active Session | `error: { message, detail }` |
-|   **422**   | Invalid Request Syntax  | `error: { message, detail }` |
-|   **500**   |  Internal Server Error  | `error: { message, detail }` |
-
-### &nbsp; ‣ &nbsp; Sign out
-
-###### &nbsp; &nbsp; POST _`/auth/sign-out`_
-
-### &nbsp; ☰ &nbsp; Request
-
-###### Headers
+##### Headers
 
 ```json
 {
   "Content-Type": "application/json",
-  "token": "server-generated-token"
+  "Authorization": "Bearer <token>"
 }
 ```
 
-### &nbsp; ☰ &nbsp; Responses
+##### Query Parameters
 
-| Status Code |      Description       |          Properties          |
-| :---------: | :--------------------: | :--------------------------: |
-|   **200**   |           OK           |         `data: null`         |
-|   **404**   |   Session not Found    | `error: { message, detail }` |
-|   **422**   | Invalid Request Syntax | `error: { message, detail }` |
-|   **500**   | Internal Server Error  | `error: { message, detail }` |
+|   Name   |   Type   |               Description                | `Default` |
+| :------: | :------: | :--------------------------------------: | :-------: |
+| per_page | `Number` | The number of results per page (max 100) |    10     |
+|   page   | `Number` |   Page number of the results to fetch    |     1     |
+
+#### &nbsp; ☰ &nbsp; Responses
+
+| Status Code |      Description      |          Properties          |
+| :---------: | :-------------------: | :--------------------------: |
+|   **200**   |          OK           |  `data: { User[] \| null}`   |
+|   **400**   |    Invalid Syntax     | `error: { message, detail }` |
+|   **401**   |     Missing Token     | `error: { message, detail }` |
+|   **403**   |    Forbidden Token    | `error: { message, detail }` |
+|   **404**   |   Session not Found   | `error: { message, detail }` |
+|   **422**   | Invalid Request Input | `error: { message, detail }` |
+|   **500**   | Internal Server Error | `error: { message, detail }` |
+
+### &nbsp; ‣ &nbsp; Seach by id
+
+###### &nbsp; &nbsp; GET _`/users/:id`_
+
+#### &nbsp; ☰ &nbsp; Request
+
+##### Headers
+
+```json
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer <token>"
+}
+```
+
+#### &nbsp; ☰ &nbsp; Responses
+
+| Status Code |      Description      |          Properties          |
+| :---------: | :-------------------: | :--------------------------: |
+|   **200**   |          OK           |         `data: User`         |
+|   **400**   |    Invalid Syntax     | `error: { message, detail }` |
+|   **401**   |     Missing Token     | `error: { message, detail }` |
+|   **403**   |    Forbidden Token    | `error: { message, detail }` |
+|   **404**   |    User not Found     | `error: { message, detail }` |
+|   **422**   | Invalid Request Input | `error: { message, detail }` |
+|   **500**   | Internal Server Error | `error: { message, detail }` |
+
+### &nbsp; ‣ &nbsp; Update
+
+###### &nbsp; &nbsp; PUT _`/users/:id/update`_
+
+#### &nbsp; ☰ &nbsp; Request
+
+##### Body
+
+```json
+{
+  "full_name": "John Doe Junior the Third (update)",
+  "username": "JohnDoe",
+  "password": "123456789",
+  "company": "ACME Inc."
+}
+```
+
+##### Headers
+
+```json
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer <token>"
+}
+```
+
+#### &nbsp; ☰ &nbsp; Responses
+
+| Status Code |      Description      |          Properties          |
+| :---------: | :-------------------: | :--------------------------: |
+|   **200**   |          OK           |         `data: null`         |
+|   **400**   |    Invalid Syntax     | `error: { message, detail }` |
+|   **401**   |     Missing Token     | `error: { message, detail }` |
+|   **403**   |    Forbidden Token    | `error: { message, detail }` |
+|   **404**   |    User not Found     | `error: { message, detail }` |
+|   **422**   | Invalid Request Input | `error: { message, detail }` |
+|   **500**   | Internal Server Error | `error: { message, detail }` |
+
+### &nbsp; ‣ &nbsp; Delete
+
+###### &nbsp; &nbsp; DELETE _`/users/:id/delete`_
+
+#### &nbsp; ☰ &nbsp; Request
+
+##### Headers
+
+```json
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer <token>"
+}
+```
+
+#### &nbsp; ☰ &nbsp; Responses
+
+| Status Code |      Description      |          Properties          |
+| :---------: | :-------------------: | :--------------------------: |
+|   **200**   |          OK           |         `data: null`         |
+|   **400**   |    Invalid Syntax     | `error: { message, detail }` |
+|   **401**   |     Missing Token     | `error: { message, detail }` |
+|   **403**   |    Forbidden Token    | `error: { message, detail }` |
+|   **404**   |    User not Found     | `error: { message, detail }` |
+|   **422**   | Invalid Request Input | `error: { message, detail }` |
+|   **500**   | Internal Server Error | `error: { message, detail }` |
+
+## Companies
+
+### &nbsp; ‣ &nbsp; Create
+
+###### &nbsp; &nbsp; POST _`/companies/create`_
+
+#### &nbsp; ☰ &nbsp; Request
+
+##### Body
+
+```json
+{
+  "name": "Acme Inc."
+}
+```
+
+##### Headers
+
+```json
+{
+  "Content-Type": "application/json",
+  "x-api-key": "extremely-secure-hash-key"
+}
+```
+
+#### &nbsp; ☰ &nbsp; Responses
+
+| Status Code |        Description         |          Properties          |
+| :---------: | :------------------------: | :--------------------------: |
+|   **201**   |          Created           |         `data: null`         |
+|   **400**   |       Invalid Syntax       | `error: { message, detail }` |
+|   **401**   |     Missing x-api-key      | `error: { message, detail }` |
+|   **403**   |    Forbidden x-api-key     | `error: { message, detail }` |
+|   **409**   | Company Already Registered | `error: { message, detail }` |
+|   **422**   |   Invalid Request Input    | `error: { message, detail }` |
+|   **500**   |   Internal Server Error    | `error: { message, detail }` |
+
+### &nbsp; ‣ &nbsp; Search all Companies
+
+###### &nbsp; &nbsp; GET _`/companies/all`_
+
+#### &nbsp; ☰ &nbsp; Request
+
+##### Headers
+
+```json
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer <token>"
+}
+```
+
+##### Query Parameters
+
+|   Name   |   Type   |               Description                | `Default` |
+| :------: | :------: | :--------------------------------------: | :-------: |
+| per_page | `Number` | The number of results per page (max 100) |     5     |
+|   page   | `Number` |   Page number of the results to fetch    |     1     |
+
+#### &nbsp; ☰ &nbsp; Responses
+
+| Status Code |      Description      |          Properties          |
+| :---------: | :-------------------: | :--------------------------: |
+|   **200**   |          OK           | `data: { Company[] \| null}` |
+|   **400**   |    Invalid Syntax     | `error: { message, detail }` |
+|   **401**   |     Missing Token     | `error: { message, detail }` |
+|   **403**   |    Forbidden Token    | `error: { message, detail }` |
+|   **404**   |   Session not Found   | `error: { message, detail }` |
+|   **422**   | Invalid Request Input | `error: { message, detail }` |
+|   **500**   | Internal Server Error | `error: { message, detail }` |
+
+### &nbsp; ‣ &nbsp; Seach by id
+
+###### &nbsp; &nbsp; GET _`/companies/:id`_
+
+#### &nbsp; ☰ &nbsp; Request
+
+##### Headers
+
+```json
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer <token>"
+}
+```
+
+#### &nbsp; ☰ &nbsp; Responses
+
+| Status Code |      Description      |          Properties          |
+| :---------: | :-------------------: | :--------------------------: |
+|   **200**   |          OK           |       `data: Company`        |
+|   **400**   |    Invalid Syntax     | `error: { message, detail }` |
+|   **401**   |     Missing Token     | `error: { message, detail }` |
+|   **403**   |    Forbidden Token    | `error: { message, detail }` |
+|   **404**   |   Company not Found   | `error: { message, detail }` |
+|   **422**   | Invalid Request Input | `error: { message, detail }` |
+|   **500**   | Internal Server Error | `error: { message, detail }` |
+
+### &nbsp; ‣ &nbsp; Update
+
+###### &nbsp; &nbsp; PUT _`/companies/:id/update`_
+
+#### &nbsp; ☰ &nbsp; Request
+
+##### Body
+
+```json
+{
+  "name": "Acme Inc. (update)"
+}
+```
+
+##### Headers
+
+```json
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer <token>",
+  "x-api-key": "extremely-secure-hash-key"
+}
+```
+
+#### &nbsp; ☰ &nbsp; Responses
+
+| Status Code |      Description      |          Properties          |
+| :---------: | :-------------------: | :--------------------------: |
+|   **200**   |          OK           |         `data: null`         |
+|   **400**   |    Invalid Syntax     | `error: { message, detail }` |
+|   **401**   |     Missing Token     | `error: { message, detail }` |
+|   **403**   |    Forbidden Token    | `error: { message, detail }` |
+|   **404**   |   Company not Found   | `error: { message, detail }` |
+|   **422**   | Invalid Request Input | `error: { message, detail }` |
+|   **500**   | Internal Server Error | `error: { message, detail }` |
+
+### &nbsp; ‣ &nbsp; Delete
+
+###### &nbsp; &nbsp; DELETE _`/companies/:id/delete`_
+
+#### &nbsp; ☰ &nbsp; Request
+
+##### Headers
+
+```json
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer <token>",
+  "x-api-key": "extremely-secure-hash-key"
+}
+```
+
+#### &nbsp; ☰ &nbsp; Responses
+
+| Status Code |      Description      |          Properties          |
+| :---------: | :-------------------: | :--------------------------: |
+|   **200**   |          OK           |         `data: null`         |
+|   **400**   |    Invalid Syntax     | `error: { message, detail }` |
+|   **401**   |     Missing Token     | `error: { message, detail }` |
+|   **403**   |    Forbidden Token    | `error: { message, detail }` |
+|   **404**   |   Company not Found   | `error: { message, detail }` |
+|   **422**   | Invalid Request Input | `error: { message, detail }` |
+|   **500**   | Internal Server Error | `error: { message, detail }` |
+
+## Units
+
+### &nbsp; ‣ &nbsp; Create
+
+###### &nbsp; &nbsp; POST _`/units/create`_
+
+#### &nbsp; ☰ &nbsp; Request
+
+##### Body
+
+```json
+{
+  "name": "Acme Inc. - Unit 1",
+  "location": {
+    "address": "Main Street",
+    "number": "123",
+    "city": "New York",
+    "state": "NY",
+    "postal_code": "12345"
+  },
+  "opens_at": "08:00",
+  "closes_at": "18:00"
+}
+```
+
+##### Headers
+
+```json
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer <token>"
+}
+```
+
+#### &nbsp; ☰ &nbsp; Responses
+
+| Status Code |       Description       |          Properties          |
+| :---------: | :---------------------: | :--------------------------: |
+|   **201**   |         Created         |         `data: null`         |
+|   **400**   |     Invalid Syntax      | `error: { message, detail }` |
+|   **401**   |      Missing Token      | `error: { message, detail }` |
+|   **403**   |     Forbidden Token     | `error: { message, detail }` |
+|   **409**   | Unit Already Registered | `error: { message, detail }` |
+|   **422**   |  Invalid Request Input  | `error: { message, detail }` |
+|   **500**   |  Internal Server Error  | `error: { message, detail }` |
+
+### &nbsp; ‣ &nbsp; Search all Units
+
+###### &nbsp; &nbsp; GET _`/units/all`_
+
+#### &nbsp; ☰ &nbsp; Request
+
+##### Headers
+
+```json
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer <token>"
+}
+```
+
+##### Query Parameters
+
+|   Name   |   Type   |               Description                | `Default` |
+| :------: | :------: | :--------------------------------------: | :-------: |
+| per_page | `Number` | The number of results per page (max 100) |     5     |
+|   page   | `Number` |   Page number of the results to fetch    |     1     |
+
+#### &nbsp; ☰ &nbsp; Responses
+
+| Status Code |      Description      |          Properties          |
+| :---------: | :-------------------: | :--------------------------: |
+|   **200**   |          OK           |  `data: { Unit[] \| null}`   |
+|   **400**   |    Invalid Syntax     | `error: { message, detail }` |
+|   **401**   |     Missing Token     | `error: { message, detail }` |
+|   **403**   |    Forbidden Token    | `error: { message, detail }` |
+|   **404**   |   Session not Found   | `error: { message, detail }` |
+|   **422**   | Invalid Request Input | `error: { message, detail }` |
+|   **500**   | Internal Server Error | `error: { message, detail }` |
+
+### &nbsp; ‣ &nbsp; Seach by id
+
+###### &nbsp; &nbsp; GET _`/units/:id`_
+
+#### &nbsp; ☰ &nbsp; Request
+
+##### Headers
+
+```json
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer <token>"
+}
+```
+
+#### &nbsp; ☰ &nbsp; Responses
+
+| Status Code |      Description      |          Properties          |
+| :---------: | :-------------------: | :--------------------------: |
+|   **200**   |          OK           |         `data: Unit`         |
+|   **400**   |    Invalid Syntax     | `error: { message, detail }` |
+|   **401**   |     Missing Token     | `error: { message, detail }` |
+|   **403**   |    Forbidden Token    | `error: { message, detail }` |
+|   **404**   |    Unit not Found     | `error: { message, detail }` |
+|   **422**   | Invalid Request Input | `error: { message, detail }` |
+|   **500**   | Internal Server Error | `error: { message, detail }` |
+
+### &nbsp; ‣ &nbsp; Update
+
+###### &nbsp; &nbsp; PUT _`/units/:id/update`_
+
+#### &nbsp; ☰ &nbsp; Request
+
+##### Body
+
+```json
+{
+  "name": "Acme Inc. - Unit 1 (update)",
+  "location": {
+    "address": "Main Street",
+    "number": "123",
+    "city": "New York",
+    "state": "NY",
+    "postal_code": "12345"
+  },
+  "opens_at": "08:00",
+  "closes_at": "18:00"
+}
+```
+
+##### Headers
+
+```json
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer <token>"
+}
+```
+
+#### &nbsp; ☰ &nbsp; Responses
+
+| Status Code |      Description      |          Properties          |
+| :---------: | :-------------------: | :--------------------------: |
+|   **200**   |          OK           |         `data: null`         |
+|   **400**   |    Invalid Syntax     | `error: { message, detail }` |
+|   **401**   |     Missing Token     | `error: { message, detail }` |
+|   **403**   |    Forbidden Token    | `error: { message, detail }` |
+|   **404**   |    Unit not Found     | `error: { message, detail }` |
+|   **422**   | Invalid Request Input | `error: { message, detail }` |
+|   **500**   | Internal Server Error | `error: { message, detail }` |
+
+### &nbsp; ‣ &nbsp; Delete
+
+###### &nbsp; &nbsp; DELETE _`/units/:id/delete`_
+
+#### &nbsp; ☰ &nbsp; Request
+
+##### Headers
+
+```json
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer <token>"
+}
+```
+
+#### &nbsp; ☰ &nbsp; Responses
+
+| Status Code |      Description      |          Properties          |
+| :---------: | :-------------------: | :--------------------------: |
+|   **200**   |          OK           |         `data: null`         |
+|   **400**   |    Invalid Syntax     | `error: { message, detail }` |
+|   **401**   |     Missing Token     | `error: { message, detail }` |
+|   **403**   |    Forbidden Token    | `error: { message, detail }` |
+|   **404**   |    Unit not Found     | `error: { message, detail }` |
+|   **422**   | Invalid Request Input | `error: { message, detail }` |
+|   **500**   | Internal Server Error | `error: { message, detail }` |
+
+## Assets
+
+### &nbsp; ‣ &nbsp; Create
+
+###### &nbsp; &nbsp; POST _`/assets/create`_
+
+#### &nbsp; ☰ &nbsp; Request
+
+##### Body
+
+```json
+{
+  "name": "Assembly Machine",
+  "description": "This is a machine for assembly",
+  "model": "AM-123",
+  "owner": "John Doe",
+  "image": "https://www.example.com/image.jpg",
+  "status": "STOPPED",
+  "health": 94
+}
+```
+
+##### Headers
+
+```json
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer <token>"
+}
+```
+
+#### &nbsp; ☰ &nbsp; Responses
+
+| Status Code |       Description        |          Properties          |
+| :---------: | :----------------------: | :--------------------------: |
+|   **201**   |         Created          |         `data: null`         |
+|   **400**   |      Invalid Syntax      | `error: { message, detail }` |
+|   **401**   |      Missing Token       | `error: { message, detail }` |
+|   **403**   |     Forbidden Token      | `error: { message, detail }` |
+|   **409**   | Asset Already Registered | `error: { message, detail }` |
+|   **422**   |  Invalid Request Input   | `error: { message, detail }` |
+|   **500**   |  Internal Server Error   | `error: { message, detail }` |
+
+### &nbsp; ‣ &nbsp; Search all Assets
+
+###### &nbsp; &nbsp; GET _`/assets/all`_
+
+#### &nbsp; ☰ &nbsp; Request
+
+##### Headers
+
+```json
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer <token>"
+}
+```
+
+##### Query Parameters
+
+|   Name   |   Type   |               Description                | `Default` |
+| :------: | :------: | :--------------------------------------: | :-------: |
+| per_page | `Number` | The number of results per page (max 100) |    10     |
+|   page   | `Number` |   Page number of the results to fetch    |     1     |
+|  owner   | `String` |    Username of the owner of the asset    |     -     |
+|  status  | `String` |           Status of the asset            |     -     |
+|  model   | `String` |            Model of the asset            |     -     |
+
+#### &nbsp; ☰ &nbsp; Responses
+
+| Status Code |      Description      |          Properties          |
+| :---------: | :-------------------: | :--------------------------: |
+|   **200**   |          OK           |  `data: { Asset[] \| null}`  |
+|   **400**   |    Invalid Syntax     | `error: { message, detail }` |
+|   **401**   |     Missing Token     | `error: { message, detail }` |
+|   **403**   |    Forbidden Token    | `error: { message, detail }` |
+|   **404**   |   Session not Found   | `error: { message, detail }` |
+|   **422**   | Invalid Request Input | `error: { message, detail }` |
+|   **500**   | Internal Server Error | `error: { message, detail }` |
+
+### &nbsp; ‣ &nbsp; Seach by id
+
+###### &nbsp; &nbsp; GET _`/assets/:id`_
+
+#### &nbsp; ☰ &nbsp; Request
+
+##### Headers
+
+```json
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer <token>"
+}
+```
+
+#### &nbsp; ☰ &nbsp; Responses
+
+| Status Code |      Description      |          Properties          |
+| :---------: | :-------------------: | :--------------------------: |
+|   **200**   |          OK           |        `data: Asset`         |
+|   **400**   |    Invalid Syntax     | `error: { message, detail }` |
+|   **401**   |     Missing Token     | `error: { message, detail }` |
+|   **403**   |    Forbidden Token    | `error: { message, detail }` |
+|   **404**   |    Asset not Found    | `error: { message, detail }` |
+|   **422**   | Invalid Request Input | `error: { message, detail }` |
+|   **500**   | Internal Server Error | `error: { message, detail }` |
+
+### &nbsp; ‣ &nbsp; Update
+
+###### &nbsp; &nbsp; PUT _`/assets/:id/update`_
+
+#### &nbsp; ☰ &nbsp; Request
+
+##### Body
+
+```json
+{
+  "name": "Assembly Machine (update)",
+  "description": "This is a machine for assembly",
+  "model": "AM-123",
+  "owner": "John Doe",
+  "image": "https://www.example.com/image.jpg",
+  "status": "STOPPED",
+  "health": 94
+}
+```
+
+##### Headers
+
+```json
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer <token>"
+}
+```
+
+#### &nbsp; ☰ &nbsp; Responses
+
+| Status Code |      Description      |          Properties          |
+| :---------: | :-------------------: | :--------------------------: |
+|   **200**   |          OK           |         `data: null`         |
+|   **400**   |    Invalid Syntax     | `error: { message, detail }` |
+|   **401**   |     Missing Token     | `error: { message, detail }` |
+|   **403**   |    Forbidden Token    | `error: { message, detail }` |
+|   **404**   |    Asset not Found    | `error: { message, detail }` |
+|   **422**   | Invalid Request Input | `error: { message, detail }` |
+|   **500**   | Internal Server Error | `error: { message, detail }` |
+
+### &nbsp; ‣ &nbsp; Delete
+
+###### &nbsp; &nbsp; DELETE _`/assets/:id/delete`_
+
+#### &nbsp; ☰ &nbsp; Request
+
+##### Headers
+
+```json
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer <token>"
+}
+```
+
+#### &nbsp; ☰ &nbsp; Responses
+
+| Status Code |      Description      |          Properties          |
+| :---------: | :-------------------: | :--------------------------: |
+|   **200**   |          OK           |         `data: null`         |
+|   **400**   |    Invalid Syntax     | `error: { message, detail }` |
+|   **401**   |     Missing Token     | `error: { message, detail }` |
+|   **403**   |    Forbidden Token    | `error: { message, detail }` |
+|   **404**   |    Asset not Found    | `error: { message, detail }` |
+|   **422**   | Invalid Request Input | `error: { message, detail }` |
+|   **500**   | Internal Server Error | `error: { message, detail }` |
 
 #

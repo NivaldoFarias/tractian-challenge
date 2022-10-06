@@ -10,23 +10,26 @@ import { regex } from '../utils/constants.util';
 
 export const usersSchema = new Schema<UserType>({
   name: { type: String, required: true, match: regex.USERNAME },
+  full_name: { type: String, required: true, maxLength: 100 },
   password: { type: String, required: true, maxLength: 50 },
-  createdAt: { type: Date, default: Date.now },
+  last_update: { type: Date, default: Date.now },
+  created_at: { type: Date, default: Date.now },
 });
 
 export const assetsSchema = new Schema<AssetType>({
   name: { type: String, required: true, maxLength: 50 },
-  description: { type: String, required: true },
+  description: { type: String, required: false },
   model: { type: String, required: true, maxLength: 100 },
   owner: { type: String, required: true, maxLength: 50 },
-  image: { type: String, required: true },
+  image: { type: String, required: false },
   status: {
     type: String,
     enum: ['RUNNING', 'ALERTING', 'STOPPED'],
     required: true,
   },
-  health: { type: String, required: true, match: regex.HEALTH },
-  createdAt: { type: Date, default: Date.now },
+  health: { type: Number, required: true, min: 0, max: 100 },
+  last_update: { type: Date, default: Date.now },
+  created_at: { type: Date, default: Date.now },
 });
 
 export const unitsSchema = new Schema<UnitType>({
@@ -37,14 +40,15 @@ export const unitsSchema = new Schema<UnitType>({
       number: { type: String, required: true, maxLength: 10 },
       city: { type: String, required: true, maxLength: 50 },
       state: { type: String, required: true, maxLength: 50 },
-      postalCode: { type: String, required: true, maxLength: 20 },
+      postal_code: { type: String, required: true, maxLength: 20 },
     },
     required: true,
   },
   assets: [assetsSchema],
-  opensAt: { type: Date, required: true },
-  closesAt: { type: Date, required: true },
-  lastUpdate: { type: Date, default: Date.now },
+  opens_at: { type: String, required: true, match: regex.TIME },
+  closes_at: { type: String, required: true, match: regex.TIME },
+  last_update: { type: Date, default: Date.now },
+  created_at: { type: Date, default: Date.now },
 });
 
 export const companiesSchema = new Schema<CompanyType>({
@@ -52,5 +56,6 @@ export const companiesSchema = new Schema<CompanyType>({
   units: [unitsSchema],
   users: [usersSchema],
   'x-api-key': { type: String, required: true },
-  createdAt: { type: Date, default: Date.now },
+  last_update: { type: Date, default: Date.now },
+  created_at: { type: Date, default: Date.now },
 });
