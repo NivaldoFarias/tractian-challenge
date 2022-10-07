@@ -16,13 +16,6 @@ export async function create(req: Request, res: Response) {
       'Missing x-api-key',
       'Ensure to provide the x-api-key header',
     );
-  } else if (!name) {
-    throw new AppError(
-      'Invalid Request Input',
-      422,
-      'Invalid Request Input',
-      'Ensure to provide the "name" field',
-    );
   }
 
   await repository.create({ name, apiKey });

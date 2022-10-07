@@ -1,24 +1,34 @@
+import { MongooseError, Error as ExtendedError } from 'mongoose';
 import { Request, Response, NextFunction } from 'express';
 
-import AppLog from './AppLog';
 import AppError from './../config/error';
+import AppLog from './AppLog';
+import HandleMongoError from '../mongo/errors';
 
-function ExceptionHandler(
-  error: any,
+export default function ExceptionHandler(
+  error: MongooseError | AppError | Error,
   _req: Request,
   res: Response,
   _next: NextFunction,
 ) {
-  const { log, statusCode, message, detail } = error;
+  console.log(error);
+  if (error instanceof ExtendedError) {
+    const { statusCode, message, detail } = HandleMongoError(error);
 
-  AppLog('Error', log ?? message);
-  return error instanceof AppError
-    ? res.status(statusCode).send({ message, detail })
-    : res.status(500).send({
-        message: `Internal server error`,
-        detail: error,
-      });
+    AppLog('Error', message);
+    return res.status(statusCode).send({ message, detail });
+  } else if (error instanceof AppError) {
+    const { log, statusCode, message, detail } = error;
+
+    AppLog('Error', log ?? message);
+    return res.status(statusCode).send({ message, detail });
+  }
+
+  AppLog('Error', 'Internal server error');
+  return res.status(500).send({
+    message: `Internal server error`,
+    detail: error,
+  });
 }
 
 export { AppError };
-export default ExceptionHandler;

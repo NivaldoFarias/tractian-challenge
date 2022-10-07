@@ -1,5 +1,5 @@
 import type { CreateData } from '../types/Company';
-import { Company } from '../mongo/model';
+import { Company } from '../mongo/models';
 import AppLog from '../events/AppLog';
 
 export async function create(data: CreateData) {
