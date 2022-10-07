@@ -6,9 +6,7 @@ import './setup';
 const connectionString = process.env?.DATABASE_URL ?? '';
 const options = {};
 
-connect();
-
-async function connect() {
+export default async function connectToDatabase() {
   try {
     await mongoose.connect(connectionString, options);
   } catch (error) {

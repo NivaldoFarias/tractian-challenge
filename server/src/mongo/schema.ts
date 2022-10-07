@@ -53,9 +53,9 @@ export const unitsSchema = new Schema<UnitType>({
 
 export const companiesSchema = new Schema<CompanyType>({
   name: { type: String, required: true, maxLength: 100 },
-  units: [unitsSchema],
-  users: [usersSchema],
-  'x-api-key': { type: String, required: true },
+  units: { type: [unitsSchema], default: [] },
+  users: { type: [usersSchema], default: [] },
+  api_key: { type: String, required: true },
   last_update: { type: Date, default: Date.now },
   created_at: { type: Date, default: Date.now },
 });

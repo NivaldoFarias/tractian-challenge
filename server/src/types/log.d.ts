@@ -1,8 +1,8 @@
-interface Logs {
+export interface Logs {
   [key: string]: string;
 }
 
-type LogTypes =
+export type LogTypes =
   | 'Middleware'
   | 'Controller'
   | 'Repository'
@@ -10,5 +10,3 @@ type LogTypes =
   | 'Service'
   | 'Util'
   | 'Error';
-
-export { Logs, LogTypes };

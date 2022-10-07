@@ -38,7 +38,7 @@ export type CompanyType = {
   name: string;
   units: UnitType[];
   users: UserType[];
-  'x-api-key': string;
+  api_key: string;
   last_update: Date;
   created_at: Date;
 };

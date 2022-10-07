@@ -17,7 +17,6 @@ export const regex = {
 export const time = {
   CURRENT_MONTH: Number(new Date().getMonth().toString()) + 1,
   CURRENT_YEAR: Number(new Date().getFullYear().toString().slice(2)),
-  CURRRENT_DATE: Number(
-    new Date().toISOString().slice(0, 19).replace('T', ' '),
-  ),
+  CURRENT_DATE: Number(new Date().toISOString().slice(0, 19).replace('T', ' ')),
+  CURRENT_TIME: new Date().toISOString(),
 };
