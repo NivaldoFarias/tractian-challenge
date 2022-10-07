@@ -206,7 +206,7 @@ In this section, you will find the example API's endpoints and their respective 
 
 - `id`: A unique identifier for each user. `ObjectId`
 - `full_name`: The user's full name. `String` `required` `max(100)`
-- `username`: The user's username. `String` `required` `max(25)`
+- `username`: The user's username. `String` `required` `unique` `max(25)`
 - `password`: The user's password. `String` `required` `max(50)`
 - `last_update`: The date and time when the user was last updated. `Date`
 - `created_at`: The date and time when the user was created. `Date`
@@ -214,7 +214,7 @@ In this section, you will find the example API's endpoints and their respective 
 ### Company model _`Company`_
 
 - `id`: A unique identifier for each company. `ObjectId`
-- `name`: The companys's name. `String` `required` `max(100)`
+- `name`: The companys's name. `String` `required` `unique` `max(100)`
 - `units`: An array containing the company's units. `Unit[]`
 - `users`: An array containing the company's users. `User[]`
 - `x-api-key`: The company's API key. `String` `required`
@@ -224,7 +224,7 @@ In this section, you will find the example API's endpoints and their respective 
 ### Unit model _`Unit`_
 
 - `id`: A unique identifier for each unit. `ObjectId`
-- `name`: The units's name. `String` `required` `max(50)`
+- `name`: The units's name. `String` `required` `unique` `max(50)`
 - `location`: The units's location. `Object` `required`
   - `street`: The unit's street. `String` `required` `max(100)`
   - `number`: The unit's number. `String` `required` `max(10)`

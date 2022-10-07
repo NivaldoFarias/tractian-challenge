@@ -9,7 +9,7 @@ import type {
 import { regex } from '../utils/constants.util';
 
 export const usersSchema = new Schema<UserType>({
-  name: { type: String, required: true, match: regex.USERNAME },
+  name: { type: String, required: true, unique: true, match: regex.USERNAME },
   full_name: { type: String, required: true, maxLength: 100 },
   password: { type: String, required: true, maxLength: 50 },
   last_update: { type: Date, default: Date.now },
@@ -33,7 +33,7 @@ export const assetsSchema = new Schema<AssetType>({
 });
 
 export const unitsSchema = new Schema<UnitType>({
-  name: { type: String, required: true, maxLength: 50 },
+  name: { type: String, required: true, unique: true, maxLength: 50 },
   location: {
     type: {
       street: { type: String, required: true, maxLength: 100 },
@@ -52,7 +52,7 @@ export const unitsSchema = new Schema<UnitType>({
 });
 
 export const companiesSchema = new Schema<CompanyType>({
-  name: { type: String, required: true, maxLength: 100 },
+  name: { type: String, required: true, unique: true, maxLength: 100 },
   units: { type: [unitsSchema], default: [] },
   users: { type: [usersSchema], default: [] },
   api_key: { type: String, required: true },

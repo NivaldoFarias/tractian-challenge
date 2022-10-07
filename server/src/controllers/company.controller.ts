@@ -21,7 +21,7 @@ export async function create(req: Request, res: Response) {
       'Invalid Request Input',
       422,
       'Invalid Request Input',
-      'Ensure to provide the name field',
+      'Ensure to provide the "name" field',
     );
   }
 
