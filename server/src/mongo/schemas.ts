@@ -16,7 +16,7 @@ export const usersSchema = new Schema<UserType>({
     match: regex.USERNAME,
   },
   full_name: { type: String, required: true, maxLength: 100 },
-  password: { type: String, required: true, maxLength: 50 },
+  password: { type: String, required: true },
   last_update: { type: Date, required: false, default: Date.now },
   created_at: { type: Date, required: false, default: Date.now },
 });
