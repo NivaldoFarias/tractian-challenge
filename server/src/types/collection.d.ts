@@ -1,7 +1,7 @@
 import { Model, Schema } from 'mongoose';
 
 export type UserType = {
-  name: string;
+  username: string;
   full_name: string;
   password: string;
   last_update: Date;

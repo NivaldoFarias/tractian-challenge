@@ -9,7 +9,12 @@ import type {
 import { regex } from '../utils/constants.util';
 
 export const usersSchema = new Schema<UserType>({
-  name: { type: String, required: true, unique: true, match: regex.USERNAME },
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    match: regex.USERNAME,
+  },
   full_name: { type: String, required: true, maxLength: 100 },
   password: { type: String, required: true, maxLength: 50 },
   last_update: { type: Date, required: false, default: Date.now },

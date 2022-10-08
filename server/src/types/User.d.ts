@@ -4,3 +4,8 @@ export type CreateUser = {
   password: string;
   company: string;
 };
+
+export interface FindOne {
+  company: string;
+  apiKey: string;
+}

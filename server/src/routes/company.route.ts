@@ -1,5 +1,6 @@
-import * as controller from './../controllers/company.controller';
 import { Router } from 'express';
+
+import * as controller from './../controllers/company.controller';
 import useMiddleware from '../utils/middleware.util';
 
 const companiesRouter = Router();
