@@ -55,10 +55,21 @@ export const unitsSchema = new Schema<UnitType>({
 });
 
 export const companiesSchema = new Schema<CompanyType>({
-  name: { type: String, required: true, unique: true, maxLength: 100 },
+  name: {
+    type: String,
+    required: true,
+    unique: true,
+    minLength: 3,
+    maxLength: 100,
+  },
   units: { type: [unitsSchema], required: false, default: [] },
   users: { type: [usersSchema], required: false, default: [] },
-  api_key: { type: String, required: true, unique: true },
+  'x-api-key': {
+    type: String,
+    required: false,
+    unique: true,
+    match: regex.API_KEY,
+  },
   last_update: { type: Date, required: false, default: Date.now },
   created_at: { type: Date, required: false, default: Date.now },
 });

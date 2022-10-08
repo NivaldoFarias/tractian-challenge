@@ -1,18 +1,34 @@
-import { Schema } from 'joi';
+import { MongooseError } from 'mongoose';
 
-import AppError from '../config/error';
+import type { APIModelsKeys } from '../types/collection';
+import HandleValidationError from '../mongo/errors';
 import AppLog from '../events/AppLog';
+import { User, Asset, Unit, Company } from '../mongo/models';
 
-function validateSchema(schema: Schema, body: any) {
-  const { error } = schema.validate(body, { abortEarly: false });
+async function validateSchema(model: APIModelsKeys, body: any) {
+  let document = undefined;
 
-  if (error) {
-    throw new AppError(
-      'Invalid Input',
-      422,
-      'Invalid Input',
-      error.details.map((detail) => detail.message.replaceAll(`"`, `'`)),
-    );
+  switch (model) {
+    case 'User':
+      document = new User(body);
+      break;
+    case 'Asset':
+      document = new Asset(body);
+      break;
+    case 'Unit':
+      document = new Unit(body);
+      break;
+    case 'Company':
+      document = new Company(body);
+      break;
+    default:
+      throw new Error('Invalid model');
+  }
+
+  try {
+    await document.validate();
+  } catch (error) {
+    HandleValidationError(error as MongooseError);
   }
 
   return AppLog('Middleware', `Schema validated`);

@@ -1,3 +1,5 @@
+import { Model, Schema } from 'mongoose';
+
 export type UserType = {
   name: string;
   full_name: string;
@@ -38,7 +40,75 @@ export type CompanyType = {
   name: string;
   units: UnitType[];
   users: UserType[];
-  api_key: string;
+  'x-api-key': string;
   last_update: Date;
   created_at: Date;
 };
+
+export type APIModelsKeys = 'User' | 'Asset' | 'Unit' | 'Company';
+
+export type APIModels =
+  | Model<
+      CompanyType,
+      {},
+      {},
+      {},
+      Schema<
+        CompanyType,
+        Model<CompanyType, any, any, any, any>,
+        {},
+        {},
+        {},
+        {},
+        'type',
+        CompanyType
+      >
+    >
+  | Model<
+      UnitType,
+      {},
+      {},
+      {},
+      Schema<
+        UnitType,
+        Model<UnitType, any, any, any, any>,
+        {},
+        {},
+        {},
+        {},
+        'type',
+        UnitType
+      >
+    >
+  | Model<
+      UserType,
+      {},
+      {},
+      {},
+      Schema<
+        UserType,
+        Model<UserType, any, any, any, any>,
+        {},
+        {},
+        {},
+        {},
+        'type',
+        UserType
+      >
+    >
+  | Model<
+      AssetType,
+      {},
+      {},
+      {},
+      Schema<
+        AssetType,
+        Model<AssetType, any, any, any, any>,
+        {},
+        {},
+        {},
+        {},
+        'type',
+        AssetType
+      >
+    >;

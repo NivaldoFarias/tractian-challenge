@@ -1,22 +1,12 @@
-import type { CreateBody } from '../types/Company';
+import type { CreateRequestBody } from '../types/Company';
 import type { Request, Response } from 'express';
 
 import * as repository from './../repositories/company.repository';
 import AppLog from '../events/AppLog';
-import AppError from '../config/error';
 
-export async function create(req: Request, res: Response) {
-  const apiKey = req.header('x-api-key');
-  const { name }: CreateBody = req.body;
-
-  if (!apiKey) {
-    throw new AppError(
-      'Missing x-api-key',
-      401,
-      'Missing x-api-key',
-      'Ensure to provide the x-api-key header',
-    );
-  }
+export async function create(_req: Request, res: Response) {
+  const apiKey = res.locals.header;
+  const { name }: CreateRequestBody = res.locals.body;
 
   await repository.create({ name, apiKey });
 

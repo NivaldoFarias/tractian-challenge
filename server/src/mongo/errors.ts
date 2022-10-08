@@ -1,35 +1,32 @@
 import { MongooseError, Error as ExtendedError } from 'mongoose';
+import AppError from '../config/error';
 
-export default function HandleExtendedError(error: MongooseError) {
+export default function HandleValidationError(error: MongooseError) {
   if (error instanceof ExtendedError.ValidationError) {
     const errors = error.errors;
 
     if (errors instanceof ExtendedError.CastError) {
-      return invalidRequestInput(errors);
+      throw new AppError({
+        statusCode: 422,
+        message: `Invalid Request Input`,
+        detail: `Value ${errors.value} is not a valid ${errors.path} type`,
+      });
     }
 
-    return determineError(errors);
+    determineError(errors);
   } else if (error instanceof ExtendedError.CastError) {
-    return invalidRequestInput(error);
+    throw new AppError({
+      statusCode: 422,
+      message: `Invalid Request Input`,
+      detail: `Value ${error.value} is not a valid ${error.path} type`,
+    });
   }
 
-  return defaultResponse(error);
-}
-
-function defaultResponse(error: MongooseError) {
-  return {
+  throw new AppError({
     statusCode: 500,
     message: 'Internal server error',
     detail: error,
-  };
-}
-
-function invalidRequestInput(error: ExtendedError.CastError) {
-  return {
-    statusCode: 422,
-    message: `Invalid Request Input`,
-    detail: `Value ${error.value} is not a valid ${error.path} type`,
-  };
+  });
 }
 
 function determineError(errors: {
@@ -39,7 +36,7 @@ function determineError(errors: {
   let isSyntaxError = false;
 
   for (const variables of Object.values(errors)) {
-    const { kind, path, value } = variables;
+    const { kind, path } = variables;
     let properties = undefined;
 
     if (variables instanceof ExtendedError.ValidatorError) {
@@ -52,17 +49,18 @@ function determineError(errors: {
         detail.push(`${path} is required`);
         break;
       case 'unique':
-        return {
+        throw new AppError({
           statusCode: 409,
           message: `${path} already registered`,
           detail: `Ensure to provide a unique ${path}`,
-        };
+        });
       case 'minlength':
         if (isSyntaxError) break;
 
         if (properties) {
           detail.push(
-            `${path} must be at least ${properties.reason} characters`,
+            // @ts-ignore
+            `Field '${path}' must be at least ${properties.minlength} characters in length`,
           );
           break;
         }
@@ -75,7 +73,8 @@ function determineError(errors: {
 
         if (properties) {
           detail.push(
-            `${path} must be at most ${properties.reason} characters`,
+            // @ts-ignore
+            `Field '${path}' cannot exceed ${properties.maxlength} characters in length`,
           );
           break;
         }
@@ -86,17 +85,23 @@ function determineError(errors: {
         if (isSyntaxError) break;
 
         if (properties) {
-          detail.push(`${path} must be one of ${properties.reason}`);
+          detail.push(
+            // @ts-ignore
+            `${path} must be one of \`${properties.enumValues.join('`, `')}\``,
+          );
           break;
         }
 
         detail.push(`Provided ${path} value is not valid`);
         break;
-      case 'match':
+      case 'regexp':
         if (isSyntaxError) break;
 
         if (properties) {
-          detail.push(`${path} must match ${properties.reason}`);
+          detail.push(
+            // @ts-ignore
+            `Field \`${path}\` must match the provided regex \`${properties.regexp}\``,
+          );
           break;
         }
 
@@ -106,7 +111,8 @@ function determineError(errors: {
         if (isSyntaxError) break;
 
         if (properties) {
-          detail.push(`${path} must be at least ${properties.reason}`);
+          // @ts-ignore
+          detail.push(`${path} must be at least ${properties.min}`);
         }
 
         detail.push(`Provided ${path} value is below minimum`);
@@ -115,7 +121,8 @@ function determineError(errors: {
         if (isSyntaxError) break;
 
         if (properties) {
-          detail.push(`${path} must be at most ${properties.reason}`);
+          // @ts-ignore
+          detail.push(`${path} must be at most ${properties.max}`);
         }
 
         detail.push(`Provided ${path} value is above maximum`);
@@ -125,15 +132,17 @@ function determineError(errors: {
     }
   }
 
-  return isSyntaxError
-    ? {
-        statusCode: 400,
-        message: 'Invalid Syntax',
-        detail,
-      }
-    : {
-        statusCode: 422,
-        message: 'Invalid Request Input',
-        detail,
-      };
+  throw new AppError(
+    isSyntaxError
+      ? {
+          statusCode: 400,
+          message: 'Invalid Syntax',
+          detail,
+        }
+      : {
+          statusCode: 422,
+          message: 'Invalid Request Input',
+          detail,
+        },
+  );
 }

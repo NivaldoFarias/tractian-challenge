@@ -1,4 +1,4 @@
-export type CreateBody = {
+export type CreateRequestBody = {
   name: string;
 };
 

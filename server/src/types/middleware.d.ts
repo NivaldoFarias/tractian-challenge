@@ -1,7 +1,7 @@
-import { Schema } from 'joi';
+import { APIModels, APIModelsKeys } from './collection';
 
 interface UseMiddleware {
-  schema?: Schema;
+  model?: APIModelsKeys;
   header?: string;
   token?: boolean;
 }

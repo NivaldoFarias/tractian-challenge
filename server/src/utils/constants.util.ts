@@ -8,10 +8,12 @@ export const env = {
 };
 
 export const regex = {
-  PASSWORD: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/,
-  USERNAME: /^(?=.{3,25}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/,
+  PASSWORD: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]{8,}$/,
+  USERNAME: /^(?=.{3,25}$)(?![_.])(?!.*[_.]{2})[a-zA-Z\d._]+(?<![_.])$/,
   TIME: /^(0\d|1\d|2[0-3]):[0-5]\d$/,
   HEALTH: /^(0\d{2}|100)$/,
+  COMPANY_NAME: /^[a-zA-Z\d]{3,100}$/,
+  API_KEY: /^[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/,
 };
 
 export const time = {

@@ -1,18 +1,23 @@
 export default class AppError {
-  log: string;
-  statusCode: number;
-  message: string;
-  detail: string | {} | string[];
+  properties: {
+    log?: string;
+    statusCode: number;
+    message: string;
+    detail: string | {} | string[];
+  };
 
   constructor(
-    log: string,
-    statusCode: number,
-    message: string,
-    detail: string | {} | string[],
+    properties: {
+      statusCode: number;
+      message: string;
+      detail: string | {} | string[];
+    } = {
+      statusCode: 500,
+      message: 'Internal server error',
+      detail: {},
+    },
   ) {
-    this.log = log;
-    this.statusCode = statusCode;
-    this.message = message;
-    this.detail = detail;
+    this.properties = properties;
+    this.properties.log = properties.message || 'Internal Server Error';
   }
 }

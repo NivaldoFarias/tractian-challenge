@@ -1,10 +1,18 @@
 import * as controller from './../controllers/company.controller';
 import { Router } from 'express';
+import useMiddleware from '../utils/middleware.util';
 
 const companiesRouter = Router();
-//const endpoint = '/companies';
+const endpoint = '/companies';
 
 const createEndpoint = '/create';
-companiesRouter.post(createEndpoint, controller.create);
+companiesRouter.post(
+  createEndpoint,
+  useMiddleware(
+    { model: 'Company', header: 'x-api-key' },
+    endpoint + createEndpoint,
+  ),
+  controller.create,
+);
 
 export default companiesRouter;

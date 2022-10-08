@@ -4,7 +4,9 @@ import AppLog from '../events/AppLog';
 
 export async function create(data: CreateData) {
   const { name, apiKey } = data;
-  await new Company({ name, api_key: apiKey }).save();
+  await new Company({ name, 'x-api-key': apiKey }).save({
+    validateBeforeSave: false,
+  });
 
   return AppLog('Repository', 'Company instance inserted');
 }

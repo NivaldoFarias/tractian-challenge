@@ -3,12 +3,11 @@ import AppLog from '../events/AppLog';
 
 function processHeader(header: string | undefined) {
   if (!header) {
-    throw new AppError(
-      'Missing headers',
-      400,
-      'Missing headers',
-      'Ensure to provide the necessary headers',
-    );
+    throw new AppError({
+      statusCode: 400,
+      message: 'Missing headers',
+      detail: `Ensure to provide the necessary headers`,
+    });
   }
 
   return AppLog('Middleware', `Header processed`);
