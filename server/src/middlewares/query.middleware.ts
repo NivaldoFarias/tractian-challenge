@@ -53,7 +53,7 @@ function __validateParameter(key: string, value: string | undefined) {
           detail: `The parameter 'sort_by' must be one of: ${allowedFields.join(", ")}`,
         });
       }
-
+      break;
     default:
       throw new AppError({
         statusCode: 400,
