@@ -21,3 +21,22 @@ export async function searchAll(_req: Request, res: Response) {
   AppLog({ type: "Controller", text: "Companies searched" });
   return res.status(200).send(companies);
 }
+
+export async function searchById(_req: Request, res: Response) {
+  const id = res.locals.param;
+  const company = await repository.searchById(id);
+
+  AppLog({ type: "Controller", text: "Company searched" });
+  return res.status(200).send(company);
+}
+
+export async function update(_req: Request, res: Response) {
+  const apiKey = res.locals.header;
+  const id = res.locals.param;
+  const { name }: CreateRequestBody = res.locals.body;
+
+  await repository.updateOne({ id, name, apiKey });
+
+  AppLog({ type: "Controller", text: "Company updated" });
+  return res.sendStatus(200);
+}

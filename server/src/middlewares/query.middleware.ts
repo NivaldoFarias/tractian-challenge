@@ -4,7 +4,10 @@ import { conditionals } from "../utils/constants.util";
 import AppError from "../config/error";
 import AppLog from "../events/AppLog";
 
-export default function parseQueries(queries: QueriesGeneric, parameters: string[]) {
+export default function parseQueries(
+  queries: QueriesGeneric,
+  parameters: string[],
+) {
   const output: QueriesGeneric = {};
 
   for (const [key, value] of Object.entries(queries)) {
@@ -50,7 +53,9 @@ function __validateParameter(key: string, value: string | undefined) {
         throw new AppError({
           statusCode: 400,
           message: "Invalid query parameter",
-          detail: `The parameter 'sort_by' must be one of: ${allowedFields.join(", ")}`,
+          detail: `The parameter 'sort_by' must be one of: ${allowedFields.join(
+            ", ",
+          )}`,
         });
       }
       break;

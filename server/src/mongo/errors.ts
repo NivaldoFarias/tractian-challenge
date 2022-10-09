@@ -31,7 +31,9 @@ export default function HandleValidationError(error: ExtendedError) {
   });
 }
 
-function determineError(errors: { [x: string]: ExtendedError.ValidatorError | ExtendedError.CastError }) {
+function determineError(errors: {
+  [x: string]: ExtendedError.ValidatorError | ExtendedError.CastError;
+}) {
   const detail = [];
   let isSyntaxError = false;
 

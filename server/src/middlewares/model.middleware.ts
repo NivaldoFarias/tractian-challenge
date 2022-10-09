@@ -5,7 +5,10 @@ import { User, Asset, Unit, Company, Session } from "../mongo/models";
 import HandleValidationError from "../mongo/errors";
 import AppLog from "../events/AppLog";
 
-export default async function validateModel(model: APIModelsKeys, body: Record<string, unknown>) {
+export default async function validateModel(
+  model: APIModelsKeys,
+  body: Record<string, unknown>,
+) {
   let document = undefined;
 
   switch (model) {

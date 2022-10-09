@@ -10,7 +10,13 @@ import requireToken from "./../middlewares/token.middleware";
 import validateModel from "../middlewares/model.middleware";
 import parseQueries from "../middlewares/query.middleware";
 
-function useMiddleware({ middlewares, endpoint }: { middlewares?: UseMiddleware; endpoint: string }) {
+function useMiddleware({
+  middlewares,
+  endpoint,
+}: {
+  middlewares?: UseMiddleware;
+  endpoint: string;
+}) {
   return async (req: Request, res: Response, next: NextFunction) => {
     AppLog({ type: "Server", text: `Routing ...${endpoint}` });
 
@@ -46,6 +52,20 @@ function useMiddleware({ middlewares, endpoint }: { middlewares?: UseMiddleware;
       res.locals.query = parsedQueries;
     }
 
+    if (middlewares?.param) {
+      const param = req.params[middlewares.param];
+      const notObjectId = typeof param !== "string" || param.length !== 24;
+      if (notObjectId) {
+        throw new AppError({
+          statusCode: 400,
+          message: "Invalid Syntax",
+          detail: "Ensure to provide the a valid ObjectId",
+        });
+      }
+
+      res.locals.param = param;
+    }
+
     return next();
   };
 
@@ -54,7 +74,10 @@ function useMiddleware({ middlewares, endpoint }: { middlewares?: UseMiddleware;
   }
 }
 
-export function entityExists(entity: APIModelsKeys | null, model: APIModelsKeys) {
+export function entityExists(
+  entity: APIModelsKeys | null,
+  model: APIModelsKeys,
+) {
   if (!entity) {
     throw new AppError({
       statusCode: 404,

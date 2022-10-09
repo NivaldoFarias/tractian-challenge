@@ -43,7 +43,13 @@ export type CompanyType = {
   created_at: Date;
 };
 
-export type CompanyFields = "name" | "units" | "users" | "x-api-key" | "last_update" | "created_at";
+export type CompanyFields =
+  | "name"
+  | "units"
+  | "users"
+  | "x-api-key"
+  | "last_update"
+  | "created_at";
 
 export type SessionType = {
   username: string;

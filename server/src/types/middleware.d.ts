@@ -5,6 +5,7 @@ interface UseMiddleware {
   header?: string;
   token?: boolean;
   queries?: string[];
+  param?: string;
 }
 
 export default UseMiddleware;

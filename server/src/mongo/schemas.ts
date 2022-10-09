@@ -1,6 +1,12 @@
 import { Schema } from "mongoose";
 
-import type { UnitType, UserType, AssetType, SessionType, CompanyType } from "../types/collection";
+import type {
+  UnitType,
+  UserType,
+  AssetType,
+  SessionType,
+  CompanyType,
+} from "../types/collection";
 import { regex } from "../utils/constants.util";
 
 export const usersSchema = new Schema<UserType>({

@@ -29,4 +29,5 @@ export const conditionals = {
   COMPANY_QUERY_SORT: ["asc", "desc", "ascending", "descending", 1, -1],
   COMPANY_QUERY_SORT_BY: ["name", "created_at", "last_update"],
   COMPANY_QUERY_LIMIT: [100, 1],
+  COMPANY_PARAM: "id",
 };
