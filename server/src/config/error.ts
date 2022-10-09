@@ -8,6 +8,7 @@ export default class AppError {
 
   constructor(
     properties: {
+      log?: string;
       statusCode: number;
       message: string;
       detail: string | {} | string[];
@@ -18,6 +19,6 @@ export default class AppError {
     },
   ) {
     this.properties = properties;
-    this.properties.log = properties.message || 'Internal Server Error';
+    this.properties.log = properties.log ?? properties.message;
   }
 }

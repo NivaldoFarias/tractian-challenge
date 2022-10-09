@@ -1,32 +1,37 @@
-import { Request, Response, NextFunction } from 'express';
-
-import { APIModelsKeys } from '../types/collection';
-import UseMiddleware from '../types/middleware';
+import type { Request, Response, NextFunction } from 'express';
+import type { APIModelsKeys } from '../types/collection';
+import type UseMiddleware from '../types/middleware';
 
 import AppError from '../config/error';
 import AppLog from '../events/AppLog';
 
-import validateModel from '../middlewares/model.middleware';
 import processHeader from './../middlewares/header.middleware';
 import requireToken from './../middlewares/token.middleware';
+import validateModel from '../middlewares/model.middleware';
 
-function useMiddleware(middlewares: UseMiddleware, endpoint: string) {
+function useMiddleware({
+  middlewares,
+  endpoint,
+}: {
+  middlewares?: UseMiddleware;
+  endpoint: string;
+}) {
   return async (req: Request, res: Response, next: NextFunction) => {
-    AppLog({ type: 'Server', text: `Routing ${endpoint}` });
+    AppLog({ type: 'Server', text: `Routing ...${endpoint}` });
 
-    if (middlewares.model) {
+    if (middlewares?.model) {
       await validateModel(middlewares.model, req.body);
       res.locals.body = req.body;
     }
 
-    if (middlewares.header) {
+    if (middlewares?.header) {
       processHeader(req.header(middlewares.header));
       res.locals.header = req.header(middlewares.header);
     }
 
-    if (middlewares.token) {
+    if (middlewares?.token) {
       const token = req.header('Authorization');
-      if (!token) {
+      if (typeof token !== 'string' || token.length === 0) {
         throw new AppError({
           statusCode: 401,
           message: 'Missing token',
@@ -34,12 +39,17 @@ function useMiddleware(middlewares: UseMiddleware, endpoint: string) {
         });
       }
 
-      processHeader(token);
-      res.locals.subject = await requireToken(token ?? '');
+      const parsedToken = __parseToken(token);
+      res.locals.token = parsedToken;
+      res.locals.user_id = await requireToken(parsedToken);
     }
 
     return next();
   };
+
+  function __parseToken(header: string) {
+    return header.replace('Bearer ', '').trim() ?? null;
+  }
 }
 
 /* export function validateParameters(id: number) {

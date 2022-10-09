@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 
-import * as repository from './../repositories/user.repository';
+import * as companyRepository from './../repositories/company.repository';
 import AppError from '../config/error';
 
 export async function apiKeyMatchesCompany(
@@ -11,7 +11,10 @@ export async function apiKeyMatchesCompany(
   const apiKey = res.locals.header;
   const { company } = res.locals.body;
 
-  const result = await repository.findOne({ company, apiKey });
+  const result = await companyRepository.findByNameAndApiKey({
+    company,
+    apiKey,
+  });
 
   if (!result) {
     throw new AppError({

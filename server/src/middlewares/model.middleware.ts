@@ -34,5 +34,5 @@ export default async function validateModel(model: APIModelsKeys, body: any) {
     HandleValidationError(error as MongooseError);
   }
 
-  return AppLog('Middleware', `Model validated`);
+  return AppLog({ type: 'Middleware', text: `Model validated` });
 }

@@ -11,9 +11,23 @@ const endpoint = '/auth';
 const signInEndpoint = '/sign-in';
 authRouter.use(
   signInEndpoint,
-  useMiddleware({ model: 'Session' }, endpoint + signInEndpoint),
+  useMiddleware({
+    middlewares: { model: 'Session' },
+    endpoint: endpoint + signInEndpoint,
+  }),
   middleware.signInValidations,
   controller.signIn,
+);
+
+const signOutEndpoint = '/sign-out';
+authRouter.use(
+  signOutEndpoint,
+  useMiddleware({
+    middlewares: { token: true },
+    endpoint: endpoint + signOutEndpoint,
+  }),
+  middleware.signOutValidations,
+  controller.signOut,
 );
 
 export default authRouter;

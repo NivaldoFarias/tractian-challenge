@@ -1,7 +1,12 @@
+import type {
+  FindUserResponse,
+  SignInBody,
+  FindSessionResponse,
+} from '../types/User';
 import type { Request, Response, NextFunction } from 'express';
-import type { FindUserResponse, SignInBody } from '../types/User';
 
-import * as repository from '../repositories/user.repository';
+import * as repository from '../repositories/session.repository';
+import * as user from '../repositories/user.repository';
 import * as service from '../services/session.service';
 
 import AppError from '../config/error';
@@ -12,16 +17,33 @@ export async function signInValidations(
   res: Response,
   next: NextFunction,
 ) {
-  const body: SignInBody = res.locals.body;
-  const { username, password } = body;
+  const { username, password }: SignInBody = res.locals.body;
 
-  const result = await repository.findByField({
+  const result = await user.findByField({
     field: 'username',
     value: username,
   });
 
   validateUser(result);
   validPassword(password, result?.password);
+
+  res.locals.data = result;
+  return next();
+}
+
+export async function signOutValidations(
+  _req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  const token: string = res.locals.token;
+
+  const result = await repository.findByField({
+    field: 'token',
+    value: token,
+  });
+
+  validateSession(result);
 
   res.locals.data = result;
   return next();
@@ -52,4 +74,23 @@ function validPassword(providedPassword: string, password: string = '') {
     });
   }
   return AppLog({ type: 'Middleware', text: 'Valid password' });
+}
+
+function validateSession(session: FindSessionResponse | null) {
+  if (!session) {
+    throw new AppError({
+      statusCode: 404,
+      message: 'Session not found',
+      detail:
+        'Ensure to provide a token that corresponds to an existing session',
+    });
+  } else if (session.active === false) {
+    throw new AppError({
+      statusCode: 403,
+      message: 'Session expired',
+      detail: 'Ensure to provide a token that corresponds to an active session',
+    });
+  }
+
+  return AppLog({ type: 'Middleware', text: 'Session exists' });
 }

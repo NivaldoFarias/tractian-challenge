@@ -3,6 +3,7 @@ import './../config/setup';
 export const env = {
   SALT_ROUNDS: Number(process.env.SALT_ROUNDS) || 10,
   JWT_SECRET: process.env.JWT_SECRET || 'secret',
+  JWT_SUBJECT: process.env.JWT_SUBJECT || 'user_id',
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || '1d',
   JWT_ALGORITHM: process.env.JWT_ALGORITHM || 'HS256',
 };

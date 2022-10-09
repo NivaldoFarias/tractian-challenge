@@ -61,8 +61,8 @@ export const unitsSchema = new Schema<UnitType>({
 });
 
 export const sessionsSchema = new Schema<SessionType>({
-  username: { type: String, required: true },
-  token: { type: String, required: true },
+  username: { type: String, required: true, index: true, unique: true },
+  token: { type: String, required: false, unique: true, default: null },
   active: { type: Boolean, required: true, default: true },
 });
 

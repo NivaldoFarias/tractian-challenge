@@ -9,10 +9,10 @@ const endpoint = '/companies';
 const createEndpoint = '/create';
 companiesRouter.post(
   createEndpoint,
-  useMiddleware(
-    { model: 'Company', header: 'x-api-key' },
-    endpoint + createEndpoint,
-  ),
+  useMiddleware({
+    middlewares: { model: 'Company', header: 'x-api-key' },
+    endpoint: endpoint + createEndpoint,
+  }),
   controller.create,
 );
 

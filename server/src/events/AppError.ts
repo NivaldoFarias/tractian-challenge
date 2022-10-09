@@ -16,6 +16,15 @@ export default function ExceptionHandler(
         error as MongoServerError;
 
       if (code === 11000) {
+        if (error.stack?.includes('sessions')) {
+          return res.status(409).json({
+            statusCode: 409,
+            message: 'Session already exists',
+            detail:
+              'Ensure to end the current session before creating a new one',
+          });
+        }
+
         const key = Object.keys(keyPattern)[0];
         const capitalized =
           key.charAt(0).toUpperCase() + key.slice(1).toLowerCase();

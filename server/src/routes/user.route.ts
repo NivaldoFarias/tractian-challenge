@@ -10,10 +10,10 @@ const endpoint = '/users';
 const createEndpoint = '/create';
 usersRouter.post(
   createEndpoint,
-  useMiddleware(
-    { model: 'User', header: 'x-api-key' },
-    endpoint + createEndpoint,
-  ),
+  useMiddleware({
+    middlewares: { model: 'User', header: 'x-api-key' },
+    endpoint: endpoint + createEndpoint,
+  }),
   middleware.apiKeyMatchesCompany,
   controller.create,
 );

@@ -1,6 +1,5 @@
-import mongoose from 'mongoose';
-
 import * as schema from './schemas';
+import mongoose from 'mongoose';
 
 export const User = mongoose.model('User', schema.usersSchema);
 export const Unit = mongoose.model('Unit', schema.unitsSchema);

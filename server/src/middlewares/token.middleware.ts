@@ -5,27 +5,25 @@ import { env } from '../utils/constants.util';
 import AppError from '../config/error';
 import AppLog from '../events/AppLog';
 
-async function requireToken(authorization: string) {
-  const token = __parseToken(authorization);
-  let subject = null;
+async function requireToken(token: string) {
+  let id: string | undefined = undefined;
 
   try {
-    const { sub } = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
-    subject = sub;
+    const payload: JwtPayload = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
+    const { sub } = payload;
+
+    id = payload[sub ?? env.JWT_SUBJECT];
   } catch (error: any) {
     throw new AppError({
+      log: error,
       statusCode: 403,
-      message: `Invalid token`,
-      detail: error,
+      message: `Forbidden`,
+      detail: 'The token provided is invalid',
     });
   }
 
   AppLog({ type: 'Middleware', text: 'Valid token' });
-  return subject;
-}
-
-function __parseToken(header: string) {
-  return header.replace('Bearer ', '').trim() ?? null;
+  return id;
 }
 
 export default requireToken;
