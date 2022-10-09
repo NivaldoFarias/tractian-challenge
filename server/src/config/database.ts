@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-import AppLog from './../events/AppLog';
-import './setup';
+import AppLog from "./../events/AppLog";
+import "./setup";
 
-const connectionString = process.env?.DATABASE_URL ?? '';
+const connectionString = process.env?.DATABASE_URL ?? "";
 const options = {};
 
 export default async function connectToDatabase() {
@@ -11,9 +11,9 @@ export default async function connectToDatabase() {
     await mongoose.connect(connectionString, options);
   } catch (error) {
     AppLog({
-      type: 'Error',
+      type: "Error",
       text: `Interal error whilte connecting to database | ${error}`,
     });
   }
-  AppLog({ type: 'Server', text: 'Connected to database' });
+  AppLog({ type: "Server", text: "Connected to database" });
 }

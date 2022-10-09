@@ -1,9 +1,9 @@
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import jwt, { JwtPayload } from "jsonwebtoken";
 
-import { env } from '../utils/constants.util';
+import { env } from "../utils/constants.util";
 
-import AppError from '../config/error';
-import AppLog from '../events/AppLog';
+import AppError from "../config/error";
+import AppLog from "../events/AppLog";
 
 async function requireToken(token: string) {
   let id: string | undefined = undefined;
@@ -13,16 +13,15 @@ async function requireToken(token: string) {
     const { sub } = payload;
 
     id = payload[sub ?? env.JWT_SUBJECT];
-  } catch (error: any) {
+  } catch (error) {
     throw new AppError({
-      log: error,
       statusCode: 403,
       message: `Forbidden`,
-      detail: 'The token provided is invalid',
+      detail: "The token provided is invalid",
     });
   }
 
-  AppLog({ type: 'Middleware', text: 'Valid token' });
+  AppLog({ type: "Middleware", text: "Valid token" });
   return id;
 }
 

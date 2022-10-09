@@ -1,26 +1,26 @@
-import { Router } from 'express';
+import { Router } from "express";
 
-import * as controller from '../controllers/session.controller';
-import * as middleware from '../middlewares/session.middleware';
+import * as controller from "../controllers/session.controller";
+import * as middleware from "../middlewares/session.middleware";
 
-import useMiddleware from '../utils/middleware.util';
+import useMiddleware from "../utils/middleware.util";
 
-const authRouter = Router();
-const endpoint = '/auth';
+const sessionRouter = Router();
+const endpoint = "/auth";
 
-const signInEndpoint = '/sign-in';
-authRouter.use(
+const signInEndpoint = "/sign-in";
+sessionRouter.use(
   signInEndpoint,
   useMiddleware({
-    middlewares: { model: 'Session' },
+    middlewares: { model: "Session" },
     endpoint: endpoint + signInEndpoint,
   }),
   middleware.signInValidations,
   controller.signIn,
 );
 
-const signOutEndpoint = '/sign-out';
-authRouter.use(
+const signOutEndpoint = "/sign-out";
+sessionRouter.use(
   signOutEndpoint,
   useMiddleware({
     middlewares: { token: true },
@@ -30,4 +30,4 @@ authRouter.use(
   controller.signOut,
 );
 
-export default authRouter;
+export default sessionRouter;

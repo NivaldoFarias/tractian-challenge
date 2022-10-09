@@ -1,20 +1,37 @@
-import type { CreateData, FindByNameAndApiKey } from '../types/Company';
+import type { CreateData, FindByNameAndApiKey, QueryParameters } from "../types/Company";
+import type { SortOrder } from "mongoose";
 
-import { Company } from '../mongo/models';
-import AppLog from '../events/AppLog';
+import { Company } from "../mongo/models";
+import AppLog from "../events/AppLog";
 
 export async function create(data: CreateData) {
   const { name, apiKey } = data;
-  await new Company({ name, 'x-api-key': apiKey }).save({
+  await new Company({ name, "x-api-key": apiKey }).save({
     validateBeforeSave: false,
   });
 
-  return AppLog({ type: 'Repository', text: 'Company instance inserted' });
+  return AppLog({ type: "Repository", text: "Company instance inserted" });
 }
 
 export async function findByNameAndApiKey(data: FindByNameAndApiKey) {
   const { company, apiKey } = data;
 
-  AppLog({ type: 'Repository', text: 'Search Company by API key' });
+  AppLog({ type: "Repository", text: "Search Company by API key" });
   return await Company.findOne({ company, api_key: apiKey }).exec();
+}
+
+export async function searchAll(queries: QueryParameters) {
+  const { limit, sort_by, sort } = queries;
+
+  const parsed = {
+    limit: Number(limit) || 50,
+    sort_by: sort_by ?? "created_at",
+    sort: (sort?.toString() ?? "desc") as SortOrder,
+  };
+
+  AppLog({ type: "Repository", text: "Search all Companies" });
+  return await Company.find()
+    .limit(parsed.limit)
+    .sort({ [parsed.sort_by]: parsed.sort })
+    .exec();
 }

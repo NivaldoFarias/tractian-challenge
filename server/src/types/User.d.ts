@@ -1,6 +1,6 @@
-import type { Document, Types } from 'mongoose';
-import type { UserType } from './collection';
-import { SessionType } from './collection';
+import type { Document, Types } from "mongoose";
+import type { UserType } from "./collection";
+import { SessionType } from "./collection";
 
 export type CreateUser = {
   full_name: string;
@@ -20,14 +20,14 @@ export type SignInBody = {
 };
 
 export type FindUserResponse =
-  | (Document<unknown, any, UserType> &
+  | (Document<unknown, unknown, UserType> &
       UserType & {
         _id: Types.ObjectId;
       })
   | null;
 
 export type FindSessionResponse =
-  | (Document<unknown, any, SessionType> &
+  | (Document<unknown, unknown, SessionType> &
       SessionType & {
         _id: Types.ObjectId;
       })

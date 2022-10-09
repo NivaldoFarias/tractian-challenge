@@ -1,13 +1,7 @@
-import { Schema } from 'mongoose';
+import { Schema } from "mongoose";
 
-import type {
-  UnitType,
-  UserType,
-  AssetType,
-  SessionType,
-  CompanyType,
-} from '../types/collection';
-import { regex } from '../utils/constants.util';
+import type { UnitType, UserType, AssetType, SessionType, CompanyType } from "../types/collection";
+import { regex } from "../utils/constants.util";
 
 export const usersSchema = new Schema<UserType>({
   username: {
@@ -31,8 +25,8 @@ export const assetsSchema = new Schema<AssetType>({
   status: {
     type: String,
     enum: {
-      values: ['RUNNING', 'ALERTING', 'STOPPED'],
-      message: '{VALUE} is not supported',
+      values: ["RUNNING", "ALERTING", "STOPPED"],
+      message: "{VALUE} is not supported",
     },
     required: true,
   },
@@ -76,7 +70,7 @@ export const companiesSchema = new Schema<CompanyType>({
   },
   units: { type: [unitsSchema], required: false, default: [] },
   users: { type: [usersSchema], required: false, default: [] },
-  'x-api-key': {
+  "x-api-key": {
     type: String,
     required: false,
     unique: true,

@@ -1,31 +1,31 @@
-import type { APIModelsKeys } from '../types/collection';
-import type { MongooseError } from 'mongoose';
+import type { APIModelsKeys } from "../types/collection";
+import type { MongooseError } from "mongoose";
 
-import { User, Asset, Unit, Company, Session } from '../mongo/models';
-import HandleValidationError from '../mongo/errors';
-import AppLog from '../events/AppLog';
+import { User, Asset, Unit, Company, Session } from "../mongo/models";
+import HandleValidationError from "../mongo/errors";
+import AppLog from "../events/AppLog";
 
-export default async function validateModel(model: APIModelsKeys, body: any) {
+export default async function validateModel(model: APIModelsKeys, body: Record<string, unknown>) {
   let document = undefined;
 
   switch (model) {
-    case 'User':
+    case "User":
       document = new User(body);
       break;
-    case 'Asset':
+    case "Asset":
       document = new Asset(body);
       break;
-    case 'Unit':
+    case "Unit":
       document = new Unit(body);
       break;
-    case 'Company':
+    case "Company":
       document = new Company(body);
       break;
-    case 'Session':
+    case "Session":
       document = new Session(body);
       break;
     default:
-      throw new Error('Invalid model');
+      throw new Error("Invalid model");
   }
 
   try {
@@ -34,5 +34,5 @@ export default async function validateModel(model: APIModelsKeys, body: any) {
     HandleValidationError(error as MongooseError);
   }
 
-  return AppLog({ type: 'Middleware', text: `Model validated` });
+  return AppLog({ type: "Middleware", text: `Model validated` });
 }

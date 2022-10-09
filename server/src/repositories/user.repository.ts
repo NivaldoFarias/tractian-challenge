@@ -1,6 +1,6 @@
-import { CreateUser } from '../types/User';
-import { User } from '../mongo/models';
-import AppLog from '../events/AppLog';
+import { CreateUser } from "../types/User";
+import { User } from "../mongo/models";
+import AppLog from "../events/AppLog";
 
 export async function create(data: CreateUser) {
   const { full_name, username, password, company } = data;
@@ -13,15 +13,9 @@ export async function create(data: CreateUser) {
   }).save({
     validateBeforeSave: false,
   });
-  return AppLog({ type: 'Repository', text: 'User instance inserted' });
+  return AppLog({ type: "Repository", text: "User instance inserted" });
 }
 
-export async function findByField({
-  field,
-  value,
-}: {
-  field: string;
-  value: string;
-}) {
+export async function findByField({ field, value }: { field: string; value: string }) {
   return await User.findOne({ [field]: value }).exec();
 }

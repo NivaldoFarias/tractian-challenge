@@ -3,7 +3,7 @@ export default class AppError {
     log?: string;
     statusCode: number;
     message: string;
-    detail: string | {} | string[];
+    detail: string | Record<string, unknown> | string[];
   };
 
   constructor(
@@ -11,10 +11,10 @@ export default class AppError {
       log?: string;
       statusCode: number;
       message: string;
-      detail: string | {} | string[];
+      detail: string | Record<string, unknown> | string[];
     } = {
       statusCode: 500,
-      message: 'Internal server error',
+      message: "Internal server error",
       detail: {},
     },
   ) {

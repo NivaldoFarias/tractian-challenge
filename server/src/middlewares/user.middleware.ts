@@ -1,13 +1,9 @@
-import type { Request, Response, NextFunction } from 'express';
+import type { Request, Response, NextFunction } from "express";
 
-import * as companyRepository from './../repositories/company.repository';
-import AppError from '../config/error';
+import * as companyRepository from "./../repositories/company.repository";
+import AppError from "../config/error";
 
-export async function apiKeyMatchesCompany(
-  _req: Request,
-  res: Response,
-  next: NextFunction,
-) {
+export async function apiKeyMatchesCompany(_req: Request, res: Response, next: NextFunction) {
   const apiKey = res.locals.header;
   const { company } = res.locals.body;
 
@@ -19,8 +15,8 @@ export async function apiKeyMatchesCompany(
   if (!result) {
     throw new AppError({
       statusCode: 401,
-      message: 'Unauthorized',
-      detail: 'Ensure to provide a valid API key',
+      message: "Unauthorized",
+      detail: "Ensure to provide a valid API key",
     });
   }
 

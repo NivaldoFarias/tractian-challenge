@@ -9,7 +9,7 @@ export default class MongoServerError extends Error {
     public keyValue: Record<string, unknown>,
   ) {
     super(message);
-    this.name = 'MongoServerError';
+    this.name = "MongoServerError";
     this.code = code;
     this.index = index;
     this.keyPattern = keyPattern;

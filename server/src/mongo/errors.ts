@@ -1,7 +1,9 @@
-import { MongooseError, Error as ExtendedError } from 'mongoose';
-import AppError from '../config/error';
+import { Error as ExtendedError } from "mongoose";
+import AppError from "../config/error";
 
-export default function HandleValidationError(error: MongooseError) {
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+
+export default function HandleValidationError(error: ExtendedError) {
   if (error instanceof ExtendedError.ValidationError) {
     const errors = error.errors;
 
@@ -24,14 +26,12 @@ export default function HandleValidationError(error: MongooseError) {
 
   throw new AppError({
     statusCode: 500,
-    message: 'Internal server error',
-    detail: error,
+    message: "Internal server error",
+    detail: "An unexpected error occurred while validating the model",
   });
 }
 
-function determineError(errors: {
-  [x: string]: ExtendedError.ValidatorError | ExtendedError.CastError;
-}) {
+function determineError(errors: { [x: string]: ExtendedError.ValidatorError | ExtendedError.CastError }) {
   const detail = [];
   let isSyntaxError = false;
 
@@ -44,17 +44,17 @@ function determineError(errors: {
     }
 
     switch (kind) {
-      case 'required':
+      case "required":
         if (!isSyntaxError) isSyntaxError = true;
         detail.push(`${path} is required`);
         break;
-      case 'unique':
+      case "unique":
         throw new AppError({
           statusCode: 409,
           message: `${path} already registered`,
           detail: `Ensure to provide a unique ${path}`,
         });
-      case 'minlength':
+      case "minlength":
         if (isSyntaxError) break;
 
         if (properties) {
@@ -68,7 +68,7 @@ function determineError(errors: {
         detail.push(`Provided ${path} value is below minimum length`);
 
         break;
-      case 'maxlength':
+      case "maxlength":
         if (isSyntaxError) break;
 
         if (properties) {
@@ -81,20 +81,20 @@ function determineError(errors: {
 
         detail.push(`Provided ${path} value is above minimum length`);
         break;
-      case 'enum':
+      case "enum":
         if (isSyntaxError) break;
 
         if (properties) {
           detail.push(
             // @ts-ignore
-            `${path} must be one of \`${properties.enumValues.join('`, `')}\``,
+            `${path} must be one of \`${properties.enumValues.join("`, `")}\``,
           );
           break;
         }
 
         detail.push(`Provided ${path} value is not valid`);
         break;
-      case 'regexp':
+      case "regexp":
         if (isSyntaxError) break;
 
         if (properties) {
@@ -107,7 +107,7 @@ function determineError(errors: {
 
         detail.push(`Provided ${path} value is not valid`);
         break;
-      case 'min':
+      case "min":
         if (isSyntaxError) break;
 
         if (properties) {
@@ -117,7 +117,7 @@ function determineError(errors: {
 
         detail.push(`Provided ${path} value is below minimum`);
         break;
-      case 'max':
+      case "max":
         if (isSyntaxError) break;
 
         if (properties) {
@@ -136,12 +136,12 @@ function determineError(errors: {
     isSyntaxError
       ? {
           statusCode: 400,
-          message: 'Invalid Syntax',
+          message: "Invalid Syntax",
           detail,
         }
       : {
           statusCode: 422,
-          message: 'Invalid Request Input',
+          message: "Invalid Request Input",
           detail,
         },
   );
