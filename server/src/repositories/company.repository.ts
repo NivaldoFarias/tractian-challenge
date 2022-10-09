@@ -8,5 +8,5 @@ export async function create(data: CreateData) {
     validateBeforeSave: false,
   });
 
-  return AppLog('Repository', 'Company instance inserted');
+  return AppLog({ type: 'Repository', text: 'Company instance inserted' });
 }

@@ -10,7 +10,7 @@ function processHeader(header: string | undefined) {
     });
   }
 
-  return AppLog('Middleware', `Header processed`);
+  return AppLog({ type: 'Middleware', text: `Header processed` });
 }
 
 export default processHeader;

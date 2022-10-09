@@ -1,8 +1,7 @@
+import type { AppLogType, ChalkColors, Logs } from '../types/log';
 import chalk from 'chalk';
 
-import { Logs, LogTypes } from '../types/log';
-
-const types: Logs = {
+const typesHash: Logs = {
   Middleware: 'magenta',
   Controller: 'green',
   Repository: 'blue',
@@ -11,12 +10,11 @@ const types: Logs = {
   Util: 'cyan',
   Error: 'red',
 };
-const AppLog = (type: LogTypes, text: string) => {
-  console.log(
-    chalk.bold[
-      types[type] as 'green' | 'magenta' | 'blue' | 'yellow' | 'cyan' | 'red'
-    ](`[${type}] ${text}`),
-  );
-};
 
-export default AppLog;
+export default function AppLog({ type, text }: AppLogType) {
+  return console.log(
+    chalk.bold[typesHash[type] as ChalkColors](
+      `[${type.toUpperCase()}] ${text}`,
+    ),
+  );
+}

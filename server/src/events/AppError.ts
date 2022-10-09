@@ -28,7 +28,7 @@ export default function ExceptionHandler(
       }
     }
 
-    AppLog('Error', 'Internal server error');
+    AppLog({ type: 'Error', text: 'Internal server error' });
     return res.status(500).send({
       message: `Internal server error`,
       detail: error,
@@ -38,7 +38,7 @@ export default function ExceptionHandler(
     properties: { log, statusCode, message, detail },
   } = error;
 
-  AppLog('Error', log ?? message);
+  AppLog({ type: 'Error', text: log ?? message });
   return res.status(statusCode).send({ message, detail });
 }
 

@@ -10,6 +10,6 @@ export async function create(_req: Request, res: Response) {
 
   await repository.create({ name, apiKey });
 
-  AppLog('Controller', 'Company created');
+  AppLog({ type: 'Controller', text: 'Company created' });
   return res.sendStatus(201);
 }

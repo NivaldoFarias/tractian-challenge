@@ -4,6 +4,7 @@ import type {
   UnitType,
   UserType,
   AssetType,
+  SessionType,
   CompanyType,
 } from '../types/collection';
 import { regex } from '../utils/constants.util';
@@ -57,6 +58,12 @@ export const unitsSchema = new Schema<UnitType>({
   closes_at: { type: String, required: true, match: regex.TIME },
   last_update: { type: Date, required: false, default: Date.now },
   created_at: { type: Date, required: false, default: Date.now },
+});
+
+export const sessionsSchema = new Schema<SessionType>({
+  username: { type: String, required: true },
+  token: { type: String, required: true },
+  active: { type: Boolean, required: true, default: true },
 });
 
 export const companiesSchema = new Schema<CompanyType>({

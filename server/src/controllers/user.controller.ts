@@ -18,6 +18,6 @@ export async function create(_req: Request, res: Response) {
     company,
   });
 
-  AppLog('Controller', 'User created');
+  AppLog({ type: 'Controller', text: 'User created' });
   return res.sendStatus(201);
 }

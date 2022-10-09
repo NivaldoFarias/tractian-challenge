@@ -10,7 +10,10 @@ export default async function connectToDatabase() {
   try {
     await mongoose.connect(connectionString, options);
   } catch (error) {
-    AppLog('Error', `Interal error whilte connecting to database | ${error}`);
+    AppLog({
+      type: 'Error',
+      text: `Interal error whilte connecting to database | ${error}`,
+    });
   }
-  AppLog('Server', 'Connected to database');
+  AppLog({ type: 'Server', text: 'Connected to database' });
 }

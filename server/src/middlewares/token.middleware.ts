@@ -6,21 +6,25 @@ import AppError from '../config/error';
 import AppLog from '../events/AppLog';
 
 async function requireToken(authorization: string) {
-  const token = parseToken(authorization);
+  const token = __parseToken(authorization);
   let subject = null;
 
   try {
     const { sub } = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
     subject = sub;
   } catch (error: any) {
-    throw new AppError(`Invalid token`, 403, `Invalid token`, error);
+    throw new AppError({
+      statusCode: 403,
+      message: `Invalid token`,
+      detail: error,
+    });
   }
 
-  AppLog('Middleware', 'Valid token');
+  AppLog({ type: 'Middleware', text: 'Valid token' });
   return subject;
 }
 
-function parseToken(header: string) {
+function __parseToken(header: string) {
   return header.replace('Bearer ', '').trim() ?? null;
 }
 

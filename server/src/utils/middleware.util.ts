@@ -1,21 +1,21 @@
 import { Request, Response, NextFunction } from 'express';
 
+import { APIModelsKeys } from '../types/collection';
 import UseMiddleware from '../types/middleware';
 
-import AppLog from '../events/AppLog';
 import AppError from '../config/error';
+import AppLog from '../events/AppLog';
 
-import validateSchema from './../middlewares/schema.middleware';
+import validateModel from '../middlewares/model.middleware';
 import processHeader from './../middlewares/header.middleware';
 import requireToken from './../middlewares/token.middleware';
-import { APIModelsKeys } from '../types/collection';
 
 function useMiddleware(middlewares: UseMiddleware, endpoint: string) {
   return async (req: Request, res: Response, next: NextFunction) => {
-    AppLog('Server', `Routing ...${endpoint}`);
+    AppLog({ type: 'Server', text: `Routing ${endpoint}` });
 
     if (middlewares.model) {
-      await validateSchema(middlewares.model, req.body);
+      await validateModel(middlewares.model, req.body);
       res.locals.body = req.body;
     }
 
@@ -67,7 +67,7 @@ export function entityExists(
     });
   }
 
-  AppLog('Middleware', `${model} found`);
+  AppLog({ type: 'Middleware', text: `${model} found` });
 }
 
 export function belongsToUser(entity: any, owner_id: number, model: string) {
@@ -79,7 +79,7 @@ export function belongsToUser(entity: any, owner_id: number, model: string) {
     });
   }
 
-  AppLog('Middleware', `${model} belongs to user`);
+  AppLog({ type: 'Middleware', text: `${model} belongs to user` });
 }
 
 export default useMiddleware;

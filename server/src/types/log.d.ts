@@ -2,6 +2,14 @@ export interface Logs {
   [key: string]: string;
 }
 
+export type ChalkColors =
+  | 'green'
+  | 'magenta'
+  | 'blue'
+  | 'yellow'
+  | 'cyan'
+  | 'red';
+
 export type LogTypes =
   | 'Middleware'
   | 'Controller'
@@ -10,6 +18,11 @@ export type LogTypes =
   | 'Service'
   | 'Util'
   | 'Error';
+
+export type AppLogType = {
+  type: LogTypes;
+  text: string;
+};
 
 export default class AppError {
   log: string;

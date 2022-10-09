@@ -1,19 +1,20 @@
-import jwt, { Algorithm, SignOptions } from 'jsonwebtoken';
+import type { Algorithm, SignOptions } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 import { env } from '../utils/constants.util';
 import AppLog from '../events/AppLog';
 
-function decryptPassword(password: string, encrypted: string) {
+export function decryptPassword(password: string, encrypted: string) {
   const isValid = bcrypt.compareSync(password, encrypted);
 
-  AppLog('Service', 'Password decrypted');
+  AppLog({ type: 'Service', text: 'Password decrypted' });
   return isValid;
 }
 
-function generateToken(id: number) {
-  const data = {};
-  const subject = id.toString();
+export function generateToken(id: number) {
+  const data = { user_id: id.toString() };
+  const subject = 'user_id';
   const secretKey = env.JWT_SECRET;
   const expiresIn = env.JWT_EXPIRES_IN;
 
@@ -22,8 +23,6 @@ function generateToken(id: number) {
 
   const token = jwt.sign(data, secretKey, config);
 
-  AppLog('Service', 'Token generated');
+  AppLog({ type: 'Service', text: 'Token generated' });
   return token;
 }
-
-export { generateToken, decryptPassword };

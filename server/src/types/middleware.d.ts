@@ -1,4 +1,4 @@
-import { APIModels, APIModelsKeys } from './collection';
+import { APIModelsKeys } from './collection';
 
 interface UseMiddleware {
   model?: APIModelsKeys;

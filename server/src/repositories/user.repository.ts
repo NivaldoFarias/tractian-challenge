@@ -5,7 +5,7 @@ import AppLog from '../events/AppLog';
 export async function findOne(data: FindOne) {
   const { company, apiKey } = data;
 
-  AppLog('Repository', 'Query Company by API key');
+  AppLog({ type: 'Repository', text: 'Query Company by API key' });
   return await Company.findOne({ company, api_key: apiKey }).exec();
 }
 
@@ -20,5 +20,15 @@ export async function create(data: CreateUser) {
   }).save({
     validateBeforeSave: false,
   });
-  return AppLog('Repository', 'User instance inserted');
+  return AppLog({ type: 'Repository', text: 'User instance inserted' });
+}
+
+export async function findByField({
+  field,
+  value,
+}: {
+  field: string;
+  value: string;
+}) {
+  return await User.findOne({ [field]: value }).exec();
 }

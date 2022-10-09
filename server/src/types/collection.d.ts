@@ -45,70 +45,10 @@ export type CompanyType = {
   created_at: Date;
 };
 
-export type APIModelsKeys = 'User' | 'Asset' | 'Unit' | 'Company';
+export type SessionType = {
+  username: string;
+  token: string;
+  active: boolean;
+};
 
-export type APIModels =
-  | Model<
-      CompanyType,
-      {},
-      {},
-      {},
-      Schema<
-        CompanyType,
-        Model<CompanyType, any, any, any, any>,
-        {},
-        {},
-        {},
-        {},
-        'type',
-        CompanyType
-      >
-    >
-  | Model<
-      UnitType,
-      {},
-      {},
-      {},
-      Schema<
-        UnitType,
-        Model<UnitType, any, any, any, any>,
-        {},
-        {},
-        {},
-        {},
-        'type',
-        UnitType
-      >
-    >
-  | Model<
-      UserType,
-      {},
-      {},
-      {},
-      Schema<
-        UserType,
-        Model<UserType, any, any, any, any>,
-        {},
-        {},
-        {},
-        {},
-        'type',
-        UserType
-      >
-    >
-  | Model<
-      AssetType,
-      {},
-      {},
-      {},
-      Schema<
-        AssetType,
-        Model<AssetType, any, any, any, any>,
-        {},
-        {},
-        {},
-        {},
-        'type',
-        AssetType
-      >
-    >;
+export type APIModelsKeys = 'User' | 'Asset' | 'Unit' | 'Company' | 'Session';
