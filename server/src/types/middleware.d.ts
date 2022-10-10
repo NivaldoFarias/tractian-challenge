@@ -8,7 +8,7 @@ export interface UseMiddleware {
   model?: APIModelsKeys;
   header?: string;
   token?: boolean;
-  queries?: string[];
+  query?: APIModelsKeys;
   param?: APIModelsKeys;
 }
 

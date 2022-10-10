@@ -1,7 +1,7 @@
-import AppError from "../config/error";
-import AppLog from "../events/AppLog";
+import AppError from "../../config/error";
+import AppLog from "../../events/AppLog";
 
-function processHeader(header: string | undefined) {
+export function processHeader(header: string | undefined) {
   if (!header) {
     throw new AppError({
       statusCode: 400,
@@ -12,5 +12,3 @@ function processHeader(header: string | undefined) {
 
   return AppLog({ type: "Middleware", text: `Header processed` });
 }
-
-export default processHeader;

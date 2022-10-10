@@ -1,12 +1,6 @@
 import type { NonNullCompanyDocument } from "../types/collections";
 import type { Request, Response, NextFunction } from "express";
-
-import AppError from "../config/error";
-
-interface ProvidedResult {
-  apiKey: string;
-  name: string;
-}
+import { Forbidden, ForbiddenToken } from "./helpers/errors.middleware";
 
 export function updateOrDeleteOneValidations(
   _req: Request,
@@ -23,39 +17,14 @@ export function updateOrDeleteOneValidations(
   return next();
 }
 
-export async function apiKeyMatchesCompanyName(
-  _req: Request,
-  res: Response,
-  next: NextFunction,
-) {
-  const provided = {
-    apiKey: res.locals.header,
-    name: res.locals.body.name,
-  };
-  const result = {
-    apiKey: res.locals.result["x-api-key"],
-    name: res.locals.result.name,
-    id: res.locals.result._id,
-  };
-
-  __determineError(provided, result);
-
-  return next();
-
-  function __determineError(provided: ProvidedResult, result: ProvidedResult) {
-    if (provided.name !== result.name) companyNameMismatch();
-    if (provided.apiKey !== result.apiKey) Forbidden();
-  }
-}
-
-function apiKeyBelongsToCompany(
+export function apiKeyBelongsToCompany(
   apiKey: string | undefined,
   company: NonNullCompanyDocument,
 ) {
   if (company["x-api-key"] !== apiKey) Forbidden();
 }
 
-function companyContainsUser(
+export function companyContainsUser(
   user_id: string | undefined,
   company: NonNullCompanyDocument,
 ) {
@@ -64,28 +33,4 @@ function companyContainsUser(
   );
 
   if (!validUser) ForbiddenToken();
-}
-
-function Forbidden() {
-  throw new AppError({
-    statusCode: 403,
-    message: "Forbidden",
-    detail: "The provided API key does not match the company",
-  });
-}
-
-function ForbiddenToken() {
-  throw new AppError({
-    statusCode: 403,
-    message: "Forbidden",
-    detail: "Ensure to provide the registered API key for the user's company",
-  });
-}
-
-function companyNameMismatch() {
-  throw new AppError({
-    statusCode: 400,
-    message: "Company name mismatch",
-    detail: "The provided company name does not match the company",
-  });
 }

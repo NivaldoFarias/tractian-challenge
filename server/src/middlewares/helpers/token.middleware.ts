@@ -1,11 +1,11 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
 
-import { env } from "../utils/constants.util";
+import { env } from "../../utils/constants.util";
 
-import AppError from "../config/error";
-import AppLog from "../events/AppLog";
+import AppError from "../../config/error";
+import AppLog from "../../events/AppLog";
 
-async function requireToken(token: string) {
+export async function requireToken(token: string) {
   let id: string | undefined = undefined;
 
   try {
@@ -24,5 +24,3 @@ async function requireToken(token: string) {
   AppLog({ type: "Middleware", text: "Valid token" });
   return id;
 }
-
-export default requireToken;

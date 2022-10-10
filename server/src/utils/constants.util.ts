@@ -1,5 +1,7 @@
 import "./../config/setup";
 
+type Query = Record<string, string[] | number[] | (string | number)[]>;
+
 export const env = {
   SALT_ROUNDS: Number(process.env.SALT_ROUNDS) || 10,
   JWT_SECRET: process.env.JWT_SECRET || "secret",
@@ -24,10 +26,12 @@ export const time = {
   CURRENT_TIME: new Date().toISOString(),
 };
 
-export const conditionals = {
-  COMPANY_QUERIES: ["limit", "sort", "sort_by"],
-  COMPANY_QUERY_SORT: ["asc", "desc", "ascending", "descending", 1, -1],
-  COMPANY_QUERY_SORT_BY: ["name", "created_at", "last_update"],
-  COMPANY_QUERY_LIMIT: [100, 1],
-  COMPANY_PARAM: "id",
+export const query: Query = {
+  LIMIT: [100, 1],
+  KEYS: ["limit", "sort", "sort_by"],
+  SORT: ["asc", "desc", "ascending", "descending", 1, -1],
+  USER: ["username", "created_at", "last_update"],
+  COMPANY: ["name", "created_at", "last_update"],
+  ASSET: ["name", "created_at", "last_update"],
+  UNIT: ["name", "created_at", "last_update"],
 };

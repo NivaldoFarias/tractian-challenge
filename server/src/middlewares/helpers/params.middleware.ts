@@ -1,13 +1,10 @@
-import type { APIModelsKeys } from "../types/collections";
+import type { APIModelsKeys } from "../../types/collections";
 
-import * as queries from "./../utils/queries.util";
-import AppError from "../config/error";
-import AppLog from "../events/AppLog";
+import * as queries from "./../../utils/queries.util";
+import AppError from "../../config/error";
+import AppLog from "../../events/AppLog";
 
-export default async function validateParameters(
-  id: string,
-  model: APIModelsKeys,
-) {
+export async function validateParameters(id: string, model: APIModelsKeys) {
   const notObjectId = typeof id !== "string" || id.length !== 24;
   if (notObjectId) {
     throw new AppError({

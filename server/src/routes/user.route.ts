@@ -14,8 +14,18 @@ usersRouter.post(
     middlewares: { model: "User", header: "x-api-key" },
     endpoint: endpoint + createEndpoint,
   }),
-  middleware.apiKeyMatchesCompany,
+  middleware.createOneValidations,
   controller.create,
 );
+
+/* const searchAllEndpoint = "/search";
+usersRouter.get(
+  searchAllEndpoint,
+  useMiddleware({
+    middlewares: { token: true, query: "User" },
+    endpoint: endpoint + searchAllEndpoint,
+  }),
+  controller.searchAll,
+); */
 
 export default usersRouter;

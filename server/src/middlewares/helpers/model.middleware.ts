@@ -1,11 +1,11 @@
-import type { APIModelsKeys } from "../types/collections";
+import type { APIModelsKeys } from "../../types/collections";
 import type { MongooseError } from "mongoose";
 
-import { User, Asset, Unit, Company, Session } from "../mongo/models";
-import HandleValidationError from "../mongo/errors";
-import AppLog from "../events/AppLog";
+import { User, Asset, Unit, Company, Session } from "../../mongo/models";
+import HandleValidationError from "../../mongo/errors";
+import AppLog from "../../events/AppLog";
 
-export default async function validateModel(
+export async function validateModel(
   model: APIModelsKeys,
   body: Record<string, unknown>,
 ) {

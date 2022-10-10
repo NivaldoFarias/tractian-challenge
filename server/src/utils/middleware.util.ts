@@ -9,11 +9,13 @@ import type {
 import AppError from "../config/error";
 import AppLog from "../events/AppLog";
 
-import validateParameters from "../middlewares/params.middleware";
-import processHeader from "./../middlewares/header.middleware";
-import requireToken from "./../middlewares/token.middleware";
-import validateModel from "../middlewares/model.middleware";
-import parseQueries from "../middlewares/query.middleware";
+import {
+  validateParameters,
+  validateModel,
+  processHeader,
+  requireToken,
+  parseQueries,
+} from "../middlewares/helpers";
 
 export default function useMiddleware({
   middlewares,
@@ -61,9 +63,9 @@ export default function useMiddleware({
       }
     }
 
-    if (middlewares?.queries?.length) {
+    if (middlewares?.query) {
       const queries: QueriesGeneric = req.query as QueriesGeneric;
-      const parsedQueries = parseQueries(queries, middlewares.queries);
+      const parsedQueries = parseQueries(queries, middlewares.query);
 
       res.locals.query = parsedQueries;
     }

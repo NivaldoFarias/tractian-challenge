@@ -3,7 +3,6 @@ import { Router } from "express";
 import * as controller from "./../controllers/company.controller";
 import { updateOrDeleteOneValidations } from "../middlewares/company.middleware";
 
-import { conditionals } from "../utils/constants.util";
 import useMiddleware from "../utils/middleware.util";
 
 const companiesRouter = Router();
@@ -23,7 +22,7 @@ const searchAllEndpoint = "/search";
 companiesRouter.get(
   searchAllEndpoint,
   useMiddleware({
-    middlewares: { token: true, queries: conditionals.COMPANY_QUERIES },
+    middlewares: { token: true, query: "Company" },
     endpoint: endpoint + searchAllEndpoint,
   }),
   controller.searchAll,

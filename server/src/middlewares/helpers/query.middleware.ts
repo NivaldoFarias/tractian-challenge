@@ -1,18 +1,24 @@
-import type { QueriesGeneric } from "../types/collections";
+import type { QueriesGeneric, APIModelsKeys } from "../../types/collections";
 
-import { conditionals } from "../utils/constants.util";
-import AppError from "../config/error";
-import AppLog from "../events/AppLog";
+import { query } from "../../utils/constants.util";
+import AppError from "../../config/error";
+import AppLog from "../../events/AppLog";
 
-export default function parseQueries(
-  queries: QueriesGeneric,
-  parameters: string[],
-) {
+interface ValidateParameters {
+  key: string;
+  value: string | undefined;
+  model: APIModelsKeys;
+}
+
+export function parseQueries(queries: QueriesGeneric, model: APIModelsKeys) {
   const output: QueriesGeneric = {};
 
   for (const [key, value] of Object.entries(queries)) {
-    if (!parameters.includes(key)) continue;
-    __validateParameter(key, value);
+    const KEYS = query.KEYS as string[];
+    const invalidKey = typeof key !== "string" || !KEYS.includes(key);
+    if (invalidKey) continue;
+
+    __validateParameter({ key, value, model });
     output[key] = value;
   }
 
@@ -20,10 +26,10 @@ export default function parseQueries(
   return output;
 }
 
-function __validateParameter(key: string, value: string | undefined) {
+function __validateParameter({ key, value, model }: ValidateParameters) {
   switch (key) {
     case "limit":
-      const [maxLimit, minLimit] = conditionals.COMPANY_QUERY_LIMIT;
+      const [maxLimit, minLimit] = query.LIMIT;
       const limit = Number(value);
 
       if (isNaN(limit) || limit > maxLimit || limit < minLimit) {
@@ -35,7 +41,7 @@ function __validateParameter(key: string, value: string | undefined) {
       }
       break;
     case "sort":
-      const allowedSorts = conditionals.COMPANY_QUERY_SORT;
+      const allowedSorts = query.SORT as (string | number)[];
 
       if (!allowedSorts.includes(value ?? "") || value === undefined) {
         throw new AppError({
@@ -46,7 +52,8 @@ function __validateParameter(key: string, value: string | undefined) {
       }
       break;
     case "sort_by":
-      const allowedFields = conditionals.COMPANY_QUERY_SORT_BY;
+      const MODEL = model.toUpperCase();
+      const allowedFields = query[MODEL] as string[];
       const normalizedField = value?.toLowerCase() ?? "";
 
       if (!allowedFields.includes(normalizedField)) {
