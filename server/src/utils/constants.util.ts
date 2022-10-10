@@ -17,6 +17,16 @@ export const regex = {
   HEALTH: /^(0\d{2}|100)$/,
   COMPANY_NAME: /^[a-zA-Z\d]{3,100}$/,
   API_KEY: /^[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/,
+  URL: new RegExp(
+    "^(https?:\\/\\/)?" + // protocol
+      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+      "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+      "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+      "(\\#[-a-z\\d_]*)?$",
+    "i",
+  ),
+  IMAGE_EXTENSION: /\.(gif|jpe?g|tiff?|png|webp|bmp)$/i,
 };
 
 export const time = {

@@ -1,4 +1,5 @@
 import { Schema } from "mongoose";
+import urlExists from "url-exist";
 
 import type {
   UnitType,
@@ -27,7 +28,18 @@ export const assetsSchema = new Schema<AssetType>({
   description: { type: String, required: false },
   model: { type: String, required: true, maxLength: 100 },
   owner: { type: String, required: true, maxLength: 50 },
-  image: { type: String, required: false },
+  image: {
+    type: String,
+    required: false,
+    match: regex.URL,
+    validate: {
+      validator: async (value: string) => {
+        const exists = await urlExists(value);
+        return exists && regex.IMAGE_EXTENSION.test(value);
+      },
+      message: (props) => `${props} is not a valid URL`,
+    },
+  },
   status: {
     type: String,
     enum: {
