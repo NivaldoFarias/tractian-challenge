@@ -1,5 +1,5 @@
 import type { Document, Types } from "mongoose";
-import { CompanyType, MongoDocument, UserType } from "./collection";
+import { CompanyType, MongoDocument, UserType } from "./Collections";
 
 export type CreateRequestBody = {
   name: string;

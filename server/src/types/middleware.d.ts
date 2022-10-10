@@ -2,7 +2,7 @@ import type {
   APIModelsKeys,
   MongoDocument,
   APIModelsTypes,
-} from "./collection";
+} from "./Collections";
 
 export interface UseMiddleware {
   model?: APIModelsKeys;

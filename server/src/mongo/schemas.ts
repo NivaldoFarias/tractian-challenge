@@ -6,7 +6,7 @@ import type {
   AssetType,
   SessionType,
   CompanyType,
-} from "../types/collection";
+} from "../types/Collections";
 import { regex } from "../utils/constants.util";
 
 export const usersSchema = new Schema<UserType>({

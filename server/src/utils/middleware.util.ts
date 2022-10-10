@@ -1,4 +1,4 @@
-import type { APIModelsKeys, QueriesGeneric } from "../types/collection";
+import type { APIModelsKeys, QueriesGeneric } from "../types/Collections";
 import type { Request, Response, NextFunction } from "express";
 import type {
   UseMiddleware,

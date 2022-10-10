@@ -1,12 +1,26 @@
+import type { NonNullCompanyDocument } from "../types/Collections";
 import type { Request, Response, NextFunction } from "express";
-import type { CompanyDocument } from "../types/Company";
 
-import * as queries from "./../utils/queries.util";
 import AppError from "../config/error";
 
 interface ProvidedResult {
   apiKey: string;
   name: string;
+}
+
+export function updateOrDeleteOneValidations(
+  _req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  const apiKey = res.locals.header;
+  const company = res.locals.result;
+  const user_id = res.locals.user_id;
+
+  apiKeyBelongsToCompany(apiKey, company);
+  companyContainsUser(user_id, company);
+
+  return next();
 }
 
 export async function apiKeyMatchesCompanyName(
@@ -34,17 +48,22 @@ export async function apiKeyMatchesCompanyName(
   }
 }
 
-export async function apiKeyBelongsToCompany(
-  _req: Request,
-  res: Response,
-  next: NextFunction,
+function apiKeyBelongsToCompany(
+  apiKey: string | undefined,
+  company: NonNullCompanyDocument,
 ) {
-  const apiKey = res.locals.header;
-  const result = res.locals.result;
+  if (company["x-api-key"] !== apiKey) Forbidden();
+}
 
-  if (result["x-api-key"] !== apiKey) Forbidden();
+function companyContainsUser(
+  user_id: string | undefined,
+  company: NonNullCompanyDocument,
+) {
+  const validUser = company.users.some(
+    (user) => user?._id?.toString() === user_id,
+  );
 
-  return next();
+  if (!validUser) ForbiddenToken();
 }
 
 function Forbidden() {
@@ -52,6 +71,14 @@ function Forbidden() {
     statusCode: 403,
     message: "Forbidden",
     detail: "The provided API key does not match the company",
+  });
+}
+
+function ForbiddenToken() {
+  throw new AppError({
+    statusCode: 403,
+    message: "Forbidden",
+    detail: "Ensure to provide the registered API key for the user's company",
   });
 }
 

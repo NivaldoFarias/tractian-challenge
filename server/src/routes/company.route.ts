@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import * as controller from "./../controllers/company.controller";
-import * as middleware from "../middlewares/company.middleware";
+import { updateOrDeleteOneValidations } from "../middlewares/company.middleware";
 
 import { conditionals } from "../utils/constants.util";
 import useMiddleware from "../utils/middleware.util";
@@ -51,7 +51,7 @@ companiesRouter.put(
     },
     endpoint: endpoint + updateEndpoint,
   }),
-  middleware.apiKeyBelongsToCompany,
+  updateOrDeleteOneValidations,
   controller.update,
 );
 
@@ -66,7 +66,7 @@ companiesRouter.delete(
     },
     endpoint: endpoint + deleteEndpoint,
   }),
-  middleware.apiKeyBelongsToCompany,
+  updateOrDeleteOneValidations,
   controller.deleteOne,
 );
 

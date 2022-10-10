@@ -1,4 +1,4 @@
-import type { APIModelsKeys } from "../types/collection";
+import type { APIModelsKeys } from "../types/Collections";
 import type { MongooseError } from "mongoose";
 
 import { User, Asset, Unit, Company, Session } from "../mongo/models";
