@@ -1,10 +1,10 @@
 import { Router } from "express";
 
 import * as controller from "./../controllers/company.controller";
+import * as middleware from "../middlewares/company.middleware";
 
 import { conditionals } from "../utils/constants.util";
 import useMiddleware from "../utils/middleware.util";
-import { apiKeyMatchesCompanyName } from "../middlewares/company.middleware";
 
 const companiesRouter = Router();
 const endpoint = "/companies";
@@ -33,7 +33,7 @@ const searchByIdEndpoint = "/search/:id";
 companiesRouter.get(
   searchByIdEndpoint,
   useMiddleware({
-    middlewares: { token: true, param: conditionals.COMPANY_PARAM },
+    middlewares: { token: true, param: "Company" },
     endpoint: endpoint + searchByIdEndpoint,
   }),
   controller.searchById,
@@ -47,12 +47,27 @@ companiesRouter.put(
       token: true,
       model: "Company",
       header: "x-api-key",
-      param: conditionals.COMPANY_PARAM,
+      param: "Company",
     },
     endpoint: endpoint + updateEndpoint,
   }),
-  apiKeyMatchesCompanyName,
+  middleware.apiKeyBelongsToCompany,
   controller.update,
+);
+
+const deleteEndpoint = "/delete/:id";
+companiesRouter.delete(
+  deleteEndpoint,
+  useMiddleware({
+    middlewares: {
+      token: true,
+      header: "x-api-key",
+      param: "Company",
+    },
+    endpoint: endpoint + deleteEndpoint,
+  }),
+  middleware.apiKeyBelongsToCompany,
+  controller.deleteOne,
 );
 
 export default companiesRouter;

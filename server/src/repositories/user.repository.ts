@@ -16,13 +16,3 @@ export async function create(data: Omit<CreateUser, "company">) {
   AppLog({ type: "Repository", text: "User instance inserted" });
   return result;
 }
-
-export async function findByField({
-  field,
-  value,
-}: {
-  field: string;
-  value: string;
-}) {
-  return await User.findOne({ [field]: value }).exec();
-}

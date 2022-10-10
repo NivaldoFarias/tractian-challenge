@@ -1,11 +1,27 @@
-import { APIModelsKeys } from "./collection";
+import type {
+  APIModelsKeys,
+  MongoDocument,
+  APIModelsTypes,
+} from "./collection";
 
-interface UseMiddleware {
+export interface UseMiddleware {
   model?: APIModelsKeys;
   header?: string;
   token?: boolean;
   queries?: string[];
-  param?: string;
+  param?: APIModelsKeys;
 }
 
-export default UseMiddleware;
+export type MiddlewareGlobals = {
+  token?: string;
+  id?: string;
+  model?: APIModelsKeys;
+  param?: APIModelsKeys;
+  body?: Record<string, unknown>;
+};
+
+export type MiddlewarePromises = [
+  string?,
+  MongoDocument<APIModelsTypes>?,
+  unknown?,
+];

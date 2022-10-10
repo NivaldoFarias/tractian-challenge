@@ -1,5 +1,4 @@
-import type { Document, Types } from "mongoose";
-import type { UserType } from "./collection";
+import type { MongoDocument, UserType } from "./collection";
 import { SessionType } from "./collection";
 
 export type CreateUser = {
@@ -19,16 +18,5 @@ export type SignInBody = {
   password: string;
 };
 
-export type FindUserResponse =
-  | (Document<unknown, unknown, UserType> &
-      UserType & {
-        _id: Types.ObjectId;
-      })
-  | null;
-
-export type FindSessionResponse =
-  | (Document<unknown, unknown, SessionType> &
-      SessionType & {
-        _id: Types.ObjectId;
-      })
-  | null;
+export type UserDocument = MongoDocument<UserType>;
+export type SessionDocument = MongoDocument<SessionType>;

@@ -80,6 +80,7 @@ export const companiesSchema = new Schema<CompanyType>({
     type: String,
     required: false,
     unique: true,
+    immutable: true,
     match: regex.API_KEY,
   },
   last_update: { type: Date, required: false, default: Date.now },

@@ -1,13 +1,9 @@
-import type {
-  FindUserResponse,
-  SignInBody,
-  FindSessionResponse,
-} from "../types/User";
+import type { UserDocument, SignInBody, SessionDocument } from "../types/User";
 import type { Request, Response, NextFunction } from "express";
 
 import * as repository from "../repositories/session.repository";
-import * as user from "../repositories/user.repository";
 import * as service from "../services/session.service";
+import * as queries from "../utils/queries.util";
 
 import AppError from "../config/error";
 import AppLog from "../events/AppLog";
@@ -19,10 +15,11 @@ export async function signInValidations(
 ) {
   const { username, password }: SignInBody = res.locals.body;
 
-  const result = await user.findByField({
+  const result = (await queries.findByField({
     field: "username",
     value: username,
-  });
+    model: "User",
+  })) as UserDocument;
 
   validateUser(result);
   validPassword(password, result?.password);
@@ -50,7 +47,7 @@ export async function signOutValidations(
 }
 
 // Validations
-function validateUser(user: FindUserResponse | null) {
+function validateUser(user: UserDocument | null) {
   if (!user) {
     throw new AppError({
       statusCode: 404,
@@ -76,7 +73,7 @@ function validPassword(providedPassword: string, password = "") {
   return AppLog({ type: "Middleware", text: "Valid password" });
 }
 
-function validateSession(session: FindSessionResponse | null) {
+function validateSession(session: SessionDocument | null) {
   if (!session) {
     throw new AppError({
       statusCode: 404,

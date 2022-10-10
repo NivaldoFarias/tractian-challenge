@@ -1,3 +1,5 @@
+import type { Document, Types } from "mongoose";
+
 export type UserType = {
   username: string;
   full_name: string;
@@ -59,6 +61,20 @@ export type SessionType = {
 
 export type APIModelsKeys = "User" | "Asset" | "Unit" | "Company" | "Session";
 
+export type APIModelsTypes =
+  | UserType
+  | AssetType
+  | UnitType
+  | CompanyType
+  | SessionType;
+
 export interface QueriesGeneric {
   [key: string]: string | undefined;
 }
+
+export type MongoDocument<T> =
+  | (Document<unknown, unknown, T> &
+      T & {
+        _id: Types.ObjectId;
+      })
+  | null;

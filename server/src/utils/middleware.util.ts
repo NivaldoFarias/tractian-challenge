@@ -1,16 +1,21 @@
-import type { Request, Response, NextFunction } from "express";
 import type { APIModelsKeys, QueriesGeneric } from "../types/collection";
-import type UseMiddleware from "../types/middleware";
+import type { Request, Response, NextFunction } from "express";
+import type {
+  UseMiddleware,
+  MiddlewarePromises,
+  MiddlewareGlobals,
+} from "../types/middleware";
 
 import AppError from "../config/error";
 import AppLog from "../events/AppLog";
 
+import validateParameters from "../middlewares/params.middleware";
 import processHeader from "./../middlewares/header.middleware";
 import requireToken from "./../middlewares/token.middleware";
 import validateModel from "../middlewares/model.middleware";
 import parseQueries from "../middlewares/query.middleware";
 
-function useMiddleware({
+export default function useMiddleware({
   middlewares,
   endpoint,
 }: {
@@ -20,14 +25,22 @@ function useMiddleware({
   return async (req: Request, res: Response, next: NextFunction) => {
     AppLog({ type: "Server", text: `Routing ...${endpoint}` });
 
+    const globals: MiddlewareGlobals = {
+      token: undefined,
+      id: undefined,
+      model: middlewares?.model,
+      param: middlewares?.param,
+      body: req.body,
+    };
+
     if (middlewares?.model) {
-      await validateModel(middlewares.model, req.body);
       res.locals.body = req.body;
     }
 
     if (middlewares?.header) {
-      processHeader(req.header(middlewares.header));
-      res.locals.header = req.header(middlewares.header);
+      const header = req.header(middlewares.header);
+      processHeader(header);
+      res.locals.header = header;
     }
 
     if (middlewares?.token) {
@@ -40,9 +53,12 @@ function useMiddleware({
         });
       }
 
-      const parsedToken = __parseToken(token);
-      res.locals.token = parsedToken;
-      res.locals.user_id = await requireToken(parsedToken);
+      globals.token = __parseToken(token);
+      res.locals.token = globals.token;
+
+      function __parseToken(header: string) {
+        return header.replace("Bearer ", "").trim() ?? null;
+      }
     }
 
     if (middlewares?.queries?.length) {
@@ -53,40 +69,39 @@ function useMiddleware({
     }
 
     if (middlewares?.param) {
-      const param = req.params[middlewares.param];
-      const notObjectId = typeof param !== "string" || param.length !== 24;
-      if (notObjectId) {
-        throw new AppError({
-          statusCode: 400,
-          message: "Invalid Syntax",
-          detail: "Ensure to provide the a valid ObjectId",
-        });
-      }
-
-      res.locals.param = param;
+      globals.id = req.params.id;
+      res.locals.param = globals.id;
     }
+
+    const tokenIsRequired = middlewares?.token && globals.token;
+    const parameterIsRequired =
+      middlewares?.param && globals.id && globals.param;
+    const mustValidateModel =
+      middlewares?.model && globals.body && globals.model;
+
+    const [user_id, result] = (await Promise.all([
+      tokenIsRequired ? requireToken(globals.token as string) : __resolve(),
+      parameterIsRequired
+        ? validateParameters(
+            globals.id as string,
+            globals.param as APIModelsKeys,
+          )
+        : __resolve(),
+      mustValidateModel
+        ? validateModel(
+            globals.model as APIModelsKeys,
+            globals.body as Record<string, unknown>,
+          )
+        : __resolve(),
+    ])) as MiddlewarePromises;
+
+    res.locals.user_id = user_id;
+    res.locals.result = result;
 
     return next();
   };
-
-  function __parseToken(header: string) {
-    return header.replace("Bearer ", "").trim() ?? null;
-  }
 }
 
-export function entityExists(
-  entity: APIModelsKeys | null,
-  model: APIModelsKeys,
-) {
-  if (!entity) {
-    throw new AppError({
-      statusCode: 404,
-      message: `${model} not found`,
-      detail: "Ensure to provide a valid ID",
-    });
-  }
-
-  AppLog({ type: "Middleware", text: `${model} found` });
+function __resolve(): Promise<unknown> {
+  return new Promise((resolve) => resolve(null));
 }
-
-export default useMiddleware;

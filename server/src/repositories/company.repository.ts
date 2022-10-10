@@ -1,6 +1,5 @@
 import type {
   CreateData,
-  FindByNameAndApiKey,
   PushUserType,
   QueryParameters,
   Update,
@@ -18,13 +17,6 @@ export async function create(data: CreateData) {
   });
 
   return AppLog({ type: "Repository", text: "Company instance inserted" });
-}
-
-export async function findByNameAndApiKey(data: FindByNameAndApiKey) {
-  const { company, apiKey } = data;
-
-  AppLog({ type: "Repository", text: "Search Company by API key" });
-  return await Company.findOne({ company, api_key: apiKey }).exec();
 }
 
 export async function searchAll(queries: QueryParameters) {
@@ -66,5 +58,11 @@ export async function updateOne(data: Update) {
     { _id: id },
     { name, last_update: time.CURRENT_TIME },
   ).exec();
+  return result;
+}
+
+export async function deleteOne(id: string) {
+  AppLog({ type: "Repository", text: "Delete Company by ObjectId" });
+  const result = await Company.findByIdAndDelete(id).exec();
   return result;
 }

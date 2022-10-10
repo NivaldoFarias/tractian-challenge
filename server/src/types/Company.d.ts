@@ -1,5 +1,5 @@
 import type { Document, Types } from "mongoose";
-import { UserType } from "./collection";
+import { CompanyType, MongoDocument, UserType } from "./collection";
 
 export type CreateRequestBody = {
   name: string;
@@ -13,12 +13,6 @@ export type CreateData = {
 export type Update = {
   id: string;
   name: string;
-  apiKey: string;
-};
-
-export type FindByNameAndApiKey = {
-  company: string;
-  apiKey: string;
 };
 
 export type QueryParameters = {
@@ -31,3 +25,5 @@ export type PushUserType = Document<unknown, unknown, UserType> &
   UserType & {
     _id: Types.ObjectId;
   };
+
+export type CompanyDocument = MongoDocument<CompanyType>;
