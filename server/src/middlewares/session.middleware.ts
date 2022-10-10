@@ -1,4 +1,4 @@
-import type { UserDocument, SignInBody, SessionDocument } from "../types/User";
+import type { UserDocument, SignInBody, SessionDocument } from "../types/user";
 import type { Request, Response, NextFunction } from "express";
 
 import * as repository from "../repositories/session.repository";

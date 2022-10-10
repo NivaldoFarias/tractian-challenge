@@ -3,7 +3,7 @@ import type {
   PushUserType,
   QueryParameters,
   Update,
-} from "../types/Company";
+} from "../types/company";
 import type { SortOrder } from "mongoose";
 
 import { Company } from "../mongo/models";

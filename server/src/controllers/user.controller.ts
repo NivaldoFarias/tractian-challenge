@@ -4,7 +4,7 @@ import * as companyRepository from "../repositories/company.repository";
 import * as repository from "../repositories/user.repository";
 import * as service from "../services/user.service";
 
-import { CreateUser } from "../types/User";
+import { CreateUser } from "../types/user";
 import AppLog from "../events/AppLog";
 
 export async function create(_req: Request, res: Response) {

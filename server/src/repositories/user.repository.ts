@@ -1,4 +1,4 @@
-import { CreateUser } from "../types/User";
+import { CreateUser } from "../types/user";
 import { User } from "../mongo/models";
 import AppLog from "../events/AppLog";
 

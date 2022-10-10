@@ -1,4 +1,4 @@
-import type { QueriesGeneric } from "../types/Collections";
+import type { QueriesGeneric } from "../types/collections";
 
 import { conditionals } from "../utils/constants.util";
 import AppError from "../config/error";

@@ -1,4 +1,4 @@
-import type { APIModelsKeys } from "../types/Collections";
+import type { APIModelsKeys } from "../types/collections";
 
 import * as queries from "./../utils/queries.util";
 import AppError from "../config/error";

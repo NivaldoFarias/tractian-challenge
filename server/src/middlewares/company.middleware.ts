@@ -1,4 +1,4 @@
-import type { NonNullCompanyDocument } from "../types/Collections";
+import type { NonNullCompanyDocument } from "../types/collections";
 import type { Request, Response, NextFunction } from "express";
 
 import AppError from "../config/error";

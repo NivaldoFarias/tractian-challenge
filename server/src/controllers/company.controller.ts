@@ -1,4 +1,4 @@
-import type { CreateRequestBody, QueryParameters } from "../types/Company";
+import type { CreateRequestBody, QueryParameters } from "../types/company";
 import type { Request, Response } from "express";
 
 import * as repository from "./../repositories/company.repository";

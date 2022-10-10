@@ -1,4 +1,4 @@
-import type { APIModelsKeys } from "../types/Collections";
+import type { APIModelsKeys } from "../types/collections";
 
 import * as Model from "./../mongo/models";
 import AppError from "../config/error";
