@@ -43,16 +43,11 @@ export const assetsSchema = new Schema<AssetType>({
 
 export const unitsSchema = new Schema<UnitType>({
   name: { type: String, required: true, unique: true, maxLength: 50 },
-  location: {
-    type: {
-      street: { type: String, required: true, maxLength: 100 },
-      number: { type: String, required: true, maxLength: 10 },
-      city: { type: String, required: true, maxLength: 50 },
-      state: { type: String, required: true, maxLength: 50 },
-      postal_code: { type: String, required: true, maxLength: 20 },
-    },
-    required: true,
-  },
+  street: { type: String, required: false, maxLength: 100 },
+  number: { type: String, required: false, maxLength: 10 },
+  city: { type: String, required: true, maxLength: 50 },
+  state: { type: String, required: true, maxLength: 50 },
+  postal_code: { type: String, required: false, maxLength: 20 },
   assets: { type: [assetsSchema], required: false },
   opens_at: { type: String, required: true, match: regex.TIME },
   closes_at: { type: String, required: true, match: regex.TIME },

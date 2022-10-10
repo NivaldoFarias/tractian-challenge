@@ -1,6 +1,8 @@
 import * as schema from "./schemas";
 import mongoose from "mongoose";
 
+mongoose.set("sanitizeFilter", true);
+
 export const User = mongoose.model("User", schema.usersSchema);
 export const Unit = mongoose.model("Unit", schema.unitsSchema);
 export const Asset = mongoose.model("Asset", schema.assetsSchema);

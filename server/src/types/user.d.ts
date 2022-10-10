@@ -20,3 +20,10 @@ export type SignInBody = {
   username: string;
   password: string;
 };
+
+interface UpdateOneData {
+  id: string;
+  body: Omit<UpdateOne, "company">;
+}
+
+export type FieldsToUpdate = Record<string, string>;

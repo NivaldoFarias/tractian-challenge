@@ -113,3 +113,26 @@ export async function searchAll({ queries, model }: SearchAll) {
       });
   }
 }
+
+export async function deleteOne({ id, model }: FindById) {
+  AppLog({ type: "Repository", text: `Delete ${model} by ObjectId` });
+
+  switch (model) {
+    case "User":
+      return await User.findByIdAndDelete(id).exec();
+    case "Unit":
+      return await Unit.findByIdAndDelete(id).exec();
+    case "Asset":
+      return await Asset.findByIdAndDelete(id).exec();
+    case "Session":
+      return await Session.findByIdAndDelete(id).exec();
+    case "Company":
+      return await Company.findByIdAndDelete(id).exec();
+    default:
+      throw new AppError({
+        statusCode: 500,
+        message: "Internal Server Error",
+        detail: "An unexpected error occurred while searching for the model",
+      });
+  }
+}

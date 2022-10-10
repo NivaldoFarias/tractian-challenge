@@ -29,6 +29,55 @@ export function companyNotFound() {
     statusCode: 404,
     message: "Company Not Found",
     detail:
+      "Ensure that the provided company name corresponds to an existing company",
+  });
+}
+
+export function companyNotFoundByApiKey() {
+  throw new AppError({
+    statusCode: 404,
+    message: "Company Not Found",
+    detail:
       "Ensure that the provided API key corresponds to an existing company",
+  });
+}
+
+export function companyNotFoundById() {
+  throw new AppError({
+    statusCode: 404,
+    message: "Company not found",
+    detail: "Ensure to provide a valid company id",
+  });
+}
+
+export function unitDoesNotBelongToCompany() {
+  throw new AppError({
+    statusCode: 403,
+    message: "Forbidden",
+    detail: "Ensure that the provided unit belongs to the company",
+  });
+}
+
+export function unitNotFound() {
+  throw new AppError({
+    statusCode: 404,
+    message: "Unit not found",
+    detail: "Ensure to provide a valid unit Id",
+  });
+}
+
+export function updateWithNoChanges() {
+  throw new AppError({
+    statusCode: 400,
+    message: "No changes detected",
+    detail: "Ensure to provide a different name",
+  });
+}
+
+export function userNotFound() {
+  throw new AppError({
+    statusCode: 404,
+    message: "User not found",
+    detail: "Ensure to provide a valid user Id",
   });
 }

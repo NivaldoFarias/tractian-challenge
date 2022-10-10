@@ -1,12 +1,8 @@
-import type { CreateUser, UpdateOne } from "../types/user";
+import type { CreateUser, FieldsToUpdate, UpdateOneData } from "../types/user";
 
 import { User } from "../mongo/models";
 import AppLog from "../events/AppLog";
 import { time } from "../utils/constants.util";
-
-type UpdateOneData = Required<Omit<UpdateOne, "company">> & {
-  id: string;
-};
 
 export async function create(data: Omit<CreateUser, "company">) {
   const { full_name, username, password } = data;
@@ -24,13 +20,24 @@ export async function create(data: Omit<CreateUser, "company">) {
 }
 
 export async function updateOne(data: UpdateOneData) {
-  const { id, full_name, username } = data;
+  const { id, body } = data;
+
+  const fieldsToUpdate: FieldsToUpdate = {};
+
+  __sanitizeObject();
 
   AppLog({ type: "Repository", text: "Update User instance" });
-  return await User.updateOne(
-    { _id: id },
-    { full_name, username, last_update: time.CURRENT_TIME },
-  );
+  return await User.findByIdAndUpdate(id, {
+    ...fieldsToUpdate,
+    last_update: time.CURRENT_TIME,
+  });
+
+  function __sanitizeObject() {
+    for (const [key, value] of Object.entries(body)) {
+      if (!value) continue;
+      fieldsToUpdate[key] = value;
+    }
+  }
 }
 
 export async function deleteOne(id: string) {

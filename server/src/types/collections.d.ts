@@ -1,4 +1,4 @@
-import type { Document, Types } from "mongoose";
+import type { Document, Types, UpdateWriteOpResult } from "mongoose";
 
 export type UserType = {
   _id?: Types.ObjectId;
@@ -25,13 +25,11 @@ export type AssetType = {
 export type UnitType = {
   _id?: Types.ObjectId;
   name: string;
-  location: {
-    street: string;
-    number: string;
-    city: string;
-    state: string;
-    postal_code: string;
-  };
+  street: string;
+  number: string;
+  city: string;
+  state: string;
+  postal_code: string;
   assets: AssetType[];
   opens_at: string;
   closes_at: string;
@@ -79,12 +77,11 @@ export type AssetDocument = MongoDocument<AssetType>;
 export type CompanyDocument = MongoDocument<CompanyType>;
 export type SessionDocument = MongoDocument<SessionType>;
 
-export type NonNullUserDocument = NonNullMongoDocument<UserType>;
-export type NonNullUnitDocument = NonNullMongoDocument<UnitType>;
-export type NonNullAssetDocument = NonNullMongoDocument<AssetType>;
-export type NonNullCompanyDocument = NonNullMongoDocument<CompanyType>;
-export type NonNullSessionDocument = NonNullMongoDocument<SessionType>;
-
+export type NonNullUserDocument = NonNullable<UserDocument>;
+export type NonNullUnitDocument = NonNullable<UnitDocument>;
+export type NonNullAssetDocument = NonNullable<AssetDocument>;
+export type NonNullCompanyDocument = NonNullable<CompanyDocument>;
+export type NonNullSessionDocument = NonNullable<SessionDocument>;
 export interface QueriesGeneric {
   [key: string]: unknown;
 }
@@ -107,3 +104,8 @@ export type MongoDocument<T> =
         _id: Types.ObjectId;
       })
   | null;
+
+export interface UpdateResponse {
+  message: string;
+  detail?: Partial<UpdateWriteOpResult>;
+}

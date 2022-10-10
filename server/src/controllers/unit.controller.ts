@@ -1,64 +1,59 @@
 import type {
   CompanyDocument,
   QueryParameters,
+  UnitDocument,
   UpdateResponse,
-  UserDocument,
 } from "../types/collections";
-import type { CreateUser, UpdateOne } from "../types/user";
+import type { CreateRequestBody, UpdateOne } from "../types/unit";
 import type { Request, Response } from "express";
 
 import * as companyRepository from "../repositories/company.repository";
 import * as error from "./../middlewares/helpers/errors.middleware";
-import * as repository from "../repositories/user.repository";
-import * as service from "../services/user.service";
+import * as repository from "./../repositories/unit.repository";
 import * as util from "./../utils/queries.util";
 
 import AppLog from "../events/AppLog";
 
 export async function create(_req: Request, res: Response) {
   const { _id }: NonNullable<CompanyDocument> = res.locals.company;
-  const body: CreateUser = res.locals.body;
+  const body: CreateRequestBody = res.locals.body;
 
   delete body.company;
-  body.password = service.hashPassword(body.password);
 
-  const pushUserData = await repository.create(body);
+  const pushUnitData = await repository.create(body);
   await companyRepository.pushIntoArray({
     id: _id.toString(),
-    data: pushUserData,
-    array: "users",
+    data: pushUnitData,
+    array: "units",
   });
 
-  AppLog({
-    type: "Controller",
-    text: "User created and inserted into Company",
-  });
+  AppLog({ type: "Controller", text: "Unit created" });
   return res.sendStatus(201);
 }
 
 export async function searchAll(_req: Request, res: Response) {
   const queries: QueryParameters = res.locals.query;
-  const users = await util.searchAll({ queries, model: "User" });
+  const units = await util.searchAll({ queries, model: "Unit" });
 
-  AppLog({ type: "Controller", text: "Companies searched" });
-  return res.status(200).send(users);
+  AppLog({ type: "Controller", text: "Units searched" });
+  return res.status(200).send(units);
 }
 
 export async function searchById(_req: Request, res: Response) {
   const id = res.locals.param;
-  const user = await util.findById({ id, model: "User" });
+  const unit = await util.findById({ id, model: "Unit" });
 
-  AppLog({ type: "Controller", text: "Sent User" });
-  return res.status(200).send(user);
+  AppLog({ type: "Controller", text: "Sent Unit" });
+  return res.status(200).send(unit);
 }
 
-export async function updateOne(_req: Request, res: Response) {
+export async function update(_req: Request, res: Response) {
   const id = res.locals.param;
   const result = res.locals.result;
   const body: UpdateOne = res.locals.body;
 
   const response: UpdateResponse = {
-    message: "User updated",
+    message: "Unit updated",
   };
 
   const update = await repository.updateOne({
@@ -66,15 +61,15 @@ export async function updateOne(_req: Request, res: Response) {
     body,
   });
 
-  if (!update) error.userNotFound();
+  if (!update) error.unitNotFound();
 
-  const unchangedUser = Object.values(
-    update as NonNullable<UserDocument>,
+  const unchangedUnit = Object.values(
+    update as NonNullable<UnitDocument>,
   ).every((field) => {
     return field === result[field];
   });
 
-  if (unchangedUser) response.message = "No changes detected";
+  if (unchangedUnit) response.message = "No changes detected";
   else {
     for (const [key, value] of Object.entries(body)) {
       if (!value || value === result[key]) continue;
@@ -89,15 +84,15 @@ export async function updateOne(_req: Request, res: Response) {
     }
   }
 
-  AppLog({ type: "Controller", text: "User updated" });
+  AppLog({ type: "Controller", text: "Unit updated" });
   return res.status(200).send(response);
 }
 
 export async function deleteOne(_req: Request, res: Response) {
   const id = res.locals.param;
 
-  await util.deleteOne({ id, model: "User" });
+  await util.deleteOne({ id, model: "Unit" });
 
-  AppLog({ type: "Controller", text: "User deleted" });
+  AppLog({ type: "Controller", text: "Unit deleted" });
   return res.sendStatus(200);
 }

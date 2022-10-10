@@ -9,6 +9,8 @@ import type {
 import AppError from "../config/error";
 import AppLog from "../events/AppLog";
 
+import * as repository from "./queries.util";
+
 import {
   validateParameters,
   validateModel,
@@ -30,6 +32,7 @@ export default function useMiddleware({
     const globals: MiddlewareGlobals = {
       token: undefined,
       id: undefined,
+      header: undefined,
       model: middlewares?.model,
       param: middlewares?.param,
       body: req.body,
@@ -40,9 +43,9 @@ export default function useMiddleware({
     }
 
     if (middlewares?.header) {
-      const header = req.header(middlewares.header);
-      processHeader(header);
-      res.locals.header = header;
+      globals.header = req.header(middlewares.header);
+      processHeader(globals.header);
+      res.locals.header = globals.header;
     }
 
     if (middlewares?.token) {
@@ -80,14 +83,22 @@ export default function useMiddleware({
       middlewares?.param && globals.id && globals.param;
     const mustValidateModel =
       middlewares?.model && globals.body && globals.model;
+    const searchCompanyByApiKey = middlewares?.header && globals.header;
 
-    const [user_id, result] = (await Promise.all([
+    const [user_id, result, company] = (await Promise.all([
       tokenIsRequired ? requireToken(globals.token as string) : __resolve(),
       parameterIsRequired
         ? validateParameters(
             globals.id as string,
             globals.param as APIModelsKeys,
           )
+        : __resolve(),
+      searchCompanyByApiKey
+        ? repository.findByField({
+            model: "Company",
+            field: "x-api-key",
+            value: globals.header as string,
+          })
         : __resolve(),
       mustValidateModel
         ? validateModel(
@@ -98,6 +109,7 @@ export default function useMiddleware({
     ])) as MiddlewarePromises;
 
     res.locals.user_id = user_id;
+    res.locals.company = company;
     res.locals.result = result;
 
     return next();

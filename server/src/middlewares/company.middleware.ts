@@ -8,7 +8,7 @@ export function updateOrDeleteOneValidations(
   next: NextFunction,
 ) {
   const apiKey = res.locals.header;
-  const company = res.locals.result;
+  const company = res.locals.company;
   const user_id = res.locals.user_id;
 
   apiKeyBelongsToCompany(apiKey, company);

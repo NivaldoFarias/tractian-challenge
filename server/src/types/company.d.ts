@@ -1,5 +1,5 @@
+import type { UnitDocument, UserDocument, UserType } from "./collections";
 import type { Document, Types } from "mongoose";
-import { UserType } from "./collections";
 
 export type CreateRequestBody = {
   name: string;
@@ -19,3 +19,9 @@ export type PushUserType = Document<unknown, unknown, UserType> &
   UserType & {
     _id: Types.ObjectId;
   };
+
+export interface PushIntoArray {
+  id: string;
+  data: NonNullable<UserDocument> | NonNullable<UnitDocument>;
+  array: "users" | "units";
+}

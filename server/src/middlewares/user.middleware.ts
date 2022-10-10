@@ -6,14 +6,22 @@ import * as companyMiddleware from "./company.middleware";
 import * as error from "./helpers/errors.middleware";
 import * as util from "./../utils/queries.util";
 
-export function createOneValidations(
+export async function createOneValidations(
   _req: Request,
   res: Response,
   next: NextFunction,
 ) {
+  const company = res.locals.company;
   const apiKey = res.locals.header;
-  const company = res.locals.result;
+  const companyName = res.locals.body?.company;
 
+  const validCompany = (await util.findByField({
+    field: "name",
+    value: companyName,
+    model: "Company",
+  })) as CompanyDocument;
+
+  companyExists(validCompany);
   companyMiddleware.apiKeyBelongsToCompany(apiKey, company);
 
   return next();
@@ -30,27 +38,29 @@ export async function updateOrDeleteOneValidations(
     company: req.body.company,
   };
   const user_id = res.locals.user_id;
-  const apiKey = res.locals.header;
+  const company = res.locals.company;
   const user = res.locals.result;
-
-  const company = (await util.findByField({
-    field: "x-api-key",
-    value: apiKey,
-    model: "Company",
-  })) as CompanyDocument;
 
   companyExists(company);
   providedTokenMatchesUser(user_id, user);
+  changeCompany(fieldsToUpdate, user_id, company);
+
+  res.locals.body = fieldsToUpdate;
+
+  return next();
+}
+
+function changeCompany(
+  fieldsToUpdate: UpdateOne,
+  user_id: string,
+  company: NonNullable<CompanyDocument>,
+) {
   if (fieldsToUpdate.company) {
     companyMiddleware.companyContainsUser(
       user_id,
       company as NonNullable<CompanyDocument>,
     );
   }
-
-  res.locals.body = fieldsToUpdate;
-
-  return next();
 }
 
 function providedTokenMatchesUser(
@@ -60,6 +70,6 @@ function providedTokenMatchesUser(
   if (user_id !== user._id.toString()) error.ForbiddenToken();
 }
 
-function companyExists(company: CompanyDocument) {
+export function companyExists(company: CompanyDocument) {
   if (!company) error.companyNotFound();
 }

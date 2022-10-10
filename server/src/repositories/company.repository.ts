@@ -1,4 +1,4 @@
-import type { CreateData, PushUserType, Update } from "../types/company";
+import type { CreateData, Update, PushIntoArray } from "../types/company";
 
 import { Company } from "../mongo/models";
 import AppLog from "../events/AppLog";
@@ -13,13 +13,17 @@ export async function create(data: CreateData) {
   return AppLog({ type: "Repository", text: "Company instance inserted" });
 }
 
-export async function pushUser(companyName: string, user: PushUserType) {
-  AppLog({ type: "Repository", text: "Push user into Company" });
+export async function pushIntoArray({ id, data, array }: PushIntoArray) {
+  const model = array === "users" ? "User" : "Unit";
+  AppLog({
+    type: "Repository",
+    text: `Push ${model} into Company`,
+  });
 
-  const result = await Company.updateOne(
-    { name: companyName },
-    { $push: { users: user }, last_update: time.CURRENT_TIME },
-  ).exec();
+  const result = await Company.findByIdAndUpdate(id, {
+    $push: { [array]: data },
+    last_update: time.CURRENT_TIME,
+  }).exec();
   return result;
 }
 
@@ -27,10 +31,10 @@ export async function updateOne(data: Update) {
   const { id, name } = data;
 
   AppLog({ type: "Repository", text: "Update Company name" });
-  const result = await Company.updateOne(
-    { _id: id },
-    { name, last_update: time.CURRENT_TIME },
-  ).exec();
+  const result = await Company.findByIdAndUpdate(id, {
+    name,
+    last_update: time.CURRENT_TIME,
+  }).exec();
   return result;
 }
 

@@ -2,6 +2,7 @@ import type {
   APIModelsKeys,
   MongoDocument,
   APIModelsTypes,
+  CompanyDocument,
 } from "./collections";
 
 export interface UseMiddleware {
@@ -17,11 +18,13 @@ export type MiddlewareGlobals = {
   id?: string;
   model?: APIModelsKeys;
   param?: APIModelsKeys;
+  header?: string;
   body?: Record<string, unknown>;
 };
 
 export type MiddlewarePromises = [
   string?,
   MongoDocument<APIModelsTypes>?,
+  CompanyDocument?,
   unknown?,
 ];
