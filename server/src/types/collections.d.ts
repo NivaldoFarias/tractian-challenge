@@ -1,7 +1,7 @@
 import type { Document, Types } from "mongoose";
 
 export type UserType = {
-  _id?: string;
+  _id?: Types.ObjectId;
   username: string;
   full_name: string;
   password: string;
@@ -10,7 +10,7 @@ export type UserType = {
 };
 
 export type AssetType = {
-  _id?: string;
+  _id?: Types.ObjectId;
   name: string;
   description: string;
   model: string;
@@ -23,7 +23,7 @@ export type AssetType = {
 };
 
 export type UnitType = {
-  _id?: string;
+  _id?: Types.ObjectId;
   name: string;
   location: {
     street: string;
@@ -40,7 +40,7 @@ export type UnitType = {
 };
 
 export type CompanyType = {
-  _id?: string;
+  _id?: Types.ObjectId;
   name: string;
   units: UnitType[];
   users: UserType[];
@@ -50,7 +50,7 @@ export type CompanyType = {
 };
 
 export type SessionType = {
-  _id?: string;
+  _id?: Types.ObjectId;
   username: string;
   token: string;
   active: boolean;
@@ -86,7 +86,13 @@ export type NonNullCompanyDocument = NonNullMongoDocument<CompanyType>;
 export type NonNullSessionDocument = NonNullMongoDocument<SessionType>;
 
 export interface QueriesGeneric {
-  [key: string]: string | undefined;
+  [key: string]: unknown;
+}
+
+export interface QueryParameters {
+  limit?: number;
+  sort_by?: "name" | "created_at" | "last_update";
+  sort?: string;
 }
 
 export type NonNullMongoDocument<T> =

@@ -1,8 +1,12 @@
+import type { CompanyDocument, UserDocument } from "../types/collections";
 import type { Request, Response, NextFunction } from "express";
+import type { UpdateOne } from "../types/user";
 
-import { apiKeyBelongsToCompany } from "./../middlewares/company.middleware";
+import * as companyMiddleware from "./company.middleware";
+import * as error from "./helpers/errors.middleware";
+import * as util from "./../utils/queries.util";
 
-export async function createOneValidations(
+export function createOneValidations(
   _req: Request,
   res: Response,
   next: NextFunction,
@@ -10,7 +14,52 @@ export async function createOneValidations(
   const apiKey = res.locals.header;
   const company = res.locals.result;
 
-  apiKeyBelongsToCompany(apiKey, company);
+  companyMiddleware.apiKeyBelongsToCompany(apiKey, company);
 
   return next();
+}
+
+export async function updateOrDeleteOneValidations(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  const fieldsToUpdate: UpdateOne = {
+    full_name: req.body.full_name,
+    username: req.body.username,
+    company: req.body.company,
+  };
+  const user_id = res.locals.user_id;
+  const apiKey = res.locals.header;
+  const user = res.locals.result;
+
+  const company = (await util.findByField({
+    field: "x-api-key",
+    value: apiKey,
+    model: "Company",
+  })) as CompanyDocument;
+
+  companyExists(company);
+  providedTokenMatchesUser(user_id, user);
+  if (fieldsToUpdate.company) {
+    companyMiddleware.companyContainsUser(
+      user_id,
+      company as NonNullable<CompanyDocument>,
+    );
+  }
+
+  res.locals.body = fieldsToUpdate;
+
+  return next();
+}
+
+function providedTokenMatchesUser(
+  user_id: string,
+  user: NonNullable<UserDocument>,
+) {
+  if (user_id !== user._id.toString()) error.ForbiddenToken();
+}
+
+function companyExists(company: CompanyDocument) {
+  if (!company) error.companyNotFound();
 }

@@ -15,12 +15,6 @@ export type Update = {
   name: string;
 };
 
-export type QueryParameters = {
-  limit?: number;
-  sort_by?: "name" | "created_at" | "last_update";
-  sort?: string;
-};
-
 export type PushUserType = Document<unknown, unknown, UserType> &
   UserType & {
     _id: Types.ObjectId;

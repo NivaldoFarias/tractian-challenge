@@ -5,6 +5,12 @@ export type CreateUser = {
   company?: string;
 };
 
+export type UpdateOne = {
+  full_name?: string;
+  username?: string;
+  company?: string;
+};
+
 export interface FindOne {
   company: string;
   apiKey: string;

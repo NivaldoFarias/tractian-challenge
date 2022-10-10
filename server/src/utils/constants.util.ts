@@ -29,7 +29,7 @@ export const time = {
 export const query: Query = {
   LIMIT: [100, 1],
   KEYS: ["limit", "sort", "sort_by"],
-  SORT: ["asc", "desc", "ascending", "descending", 1, -1],
+  SORT: ["asc", "desc", "ascending", "descending", "1", "-1"],
   USER: ["username", "created_at", "last_update"],
   COMPANY: ["name", "created_at", "last_update"],
   ASSET: ["name", "created_at", "last_update"],

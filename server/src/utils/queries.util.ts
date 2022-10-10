@@ -1,6 +1,7 @@
-import type { APIModelsKeys } from "../types/collections";
+import type { APIModelsKeys, QueryParameters } from "../types/collections";
+import type { SortOrder } from "mongoose";
 
-import * as Model from "./../mongo/models";
+import { User, Unit, Asset, Session, Company } from "./../mongo/models";
 import AppError from "../config/error";
 import AppLog from "../events/AppLog";
 
@@ -15,6 +16,11 @@ interface FindById {
   model: APIModelsKeys;
 }
 
+interface SearchAll {
+  queries: QueryParameters;
+  model: APIModelsKeys;
+}
+
 export async function findByField({ field, value, model }: FindByField) {
   const searchKey =
     field === "name" || field === "username" ? new RegExp(value, "i") : value;
@@ -22,15 +28,15 @@ export async function findByField({ field, value, model }: FindByField) {
   AppLog({ type: "Repository", text: `Search ${model} by ${field}` });
   switch (model) {
     case "User":
-      return await Model.User.findOne({ [field]: searchKey }).exec();
+      return await User.findOne({ [field]: searchKey }).exec();
     case "Unit":
-      return await Model.Unit.findOne({ [field]: searchKey }).exec();
+      return await Unit.findOne({ [field]: searchKey }).exec();
     case "Asset":
-      return await Model.Asset.findOne({ [field]: searchKey }).exec();
+      return await Asset.findOne({ [field]: searchKey }).exec();
     case "Session":
-      return await Model.Session.findOne({ [field]: searchKey }).exec();
+      return await Session.findOne({ [field]: searchKey }).exec();
     case "Company":
-      return await Model.Company.findOne({ [field]: searchKey }).exec();
+      return await Company.findOne({ [field]: searchKey }).exec();
     default:
       throw new AppError({
         statusCode: 500,
@@ -45,15 +51,60 @@ export async function findById({ id, model }: FindById) {
 
   switch (model) {
     case "User":
-      return await Model.User.findById(id).exec();
+      return await User.findById(id).exec();
     case "Unit":
-      return await Model.Unit.findById(id).exec();
+      return await Unit.findById(id).exec();
     case "Asset":
-      return await Model.Asset.findById(id).exec();
+      return await Asset.findById(id).exec();
     case "Session":
-      return await Model.Session.findById(id).exec();
+      return await Session.findById(id).exec();
     case "Company":
-      return await Model.Company.findById(id).exec();
+      return await Company.findById(id).exec();
+    default:
+      throw new AppError({
+        statusCode: 500,
+        message: "Internal Server Error",
+        detail: "An unexpected error occurred while searching for the model",
+      });
+  }
+}
+
+export async function searchAll({ queries, model }: SearchAll) {
+  const { limit, sort_by, sort } = queries;
+
+  const parsed = {
+    limit: Number(limit) || 10,
+    sort_by: sort_by ?? "created_at",
+    sort: (sort?.toString() ?? "desc") as SortOrder,
+  };
+
+  AppLog({ type: "Repository", text: `Search all ${model}` });
+  switch (model) {
+    case "User":
+      return await User.find()
+        .limit(parsed.limit)
+        .sort({ [parsed.sort_by]: parsed.sort })
+        .exec();
+    case "Unit":
+      return await Unit.find()
+        .limit(parsed.limit)
+        .sort({ [parsed.sort_by]: parsed.sort })
+        .exec();
+    case "Asset":
+      return await Asset.find()
+        .limit(parsed.limit)
+        .sort({ [parsed.sort_by]: parsed.sort })
+        .exec();
+    case "Session":
+      return await Session.find()
+        .limit(parsed.limit)
+        .sort({ [parsed.sort_by]: parsed.sort })
+        .exec();
+    case "Company":
+      return await Company.find()
+        .limit(parsed.limit)
+        .sort({ [parsed.sort_by]: parsed.sort })
+        .exec();
     default:
       throw new AppError({
         statusCode: 500,

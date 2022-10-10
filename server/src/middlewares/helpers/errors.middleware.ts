@@ -12,7 +12,7 @@ export function ForbiddenToken() {
   throw new AppError({
     statusCode: 403,
     message: "Forbidden",
-    detail: "Ensure to provide the registered API key for the user's company",
+    detail: "User does not have permission to modify this resource",
   });
 }
 
@@ -21,5 +21,14 @@ export function companyNameMismatch() {
     statusCode: 400,
     message: "Company name mismatch",
     detail: "The provided company name does not match the company",
+  });
+}
+
+export function companyNotFound() {
+  throw new AppError({
+    statusCode: 404,
+    message: "Company Not Found",
+    detail:
+      "Ensure that the provided API key corresponds to an existing company",
   });
 }

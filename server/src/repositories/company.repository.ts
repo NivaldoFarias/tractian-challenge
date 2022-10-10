@@ -1,10 +1,4 @@
-import type {
-  CreateData,
-  PushUserType,
-  QueryParameters,
-  Update,
-} from "../types/company";
-import type { SortOrder } from "mongoose";
+import type { CreateData, PushUserType, Update } from "../types/company";
 
 import { Company } from "../mongo/models";
 import AppLog from "../events/AppLog";
@@ -19,22 +13,6 @@ export async function create(data: CreateData) {
   return AppLog({ type: "Repository", text: "Company instance inserted" });
 }
 
-export async function searchAll(queries: QueryParameters) {
-  const { limit, sort_by, sort } = queries;
-
-  const parsed = {
-    limit: Number(limit) || 50,
-    sort_by: sort_by ?? "created_at",
-    sort: (sort?.toString() ?? "desc") as SortOrder,
-  };
-
-  AppLog({ type: "Repository", text: "Search all Companies" });
-  return await Company.find()
-    .limit(parsed.limit)
-    .sort({ [parsed.sort_by]: parsed.sort })
-    .exec();
-}
-
 export async function pushUser(companyName: string, user: PushUserType) {
   AppLog({ type: "Repository", text: "Push user into Company" });
 
@@ -43,11 +21,6 @@ export async function pushUser(companyName: string, user: PushUserType) {
     { $push: { users: user }, last_update: time.CURRENT_TIME },
   ).exec();
   return result;
-}
-
-export async function searchById(id: string) {
-  AppLog({ type: "Repository", text: "Search Company by ObjectId" });
-  return await Company.findById(id).exec();
 }
 
 export async function updateOne(data: Update) {
@@ -62,7 +35,6 @@ export async function updateOne(data: Update) {
 }
 
 export async function deleteOne(id: string) {
-  AppLog({ type: "Repository", text: "Delete Company by ObjectId" });
-  const result = await Company.findByIdAndDelete(id).exec();
-  return result;
+  AppLog({ type: "Repository", text: "Delete Company instance" });
+  return await Company.findByIdAndDelete(id).exec();
 }

@@ -15,8 +15,8 @@ export function parseQueries(queries: QueriesGeneric, model: APIModelsKeys) {
 
   for (const [key, value] of Object.entries(queries)) {
     const KEYS = query.KEYS as string[];
-    const invalidKey = typeof key !== "string" || !KEYS.includes(key);
-    if (invalidKey) continue;
+    const invalidKeyValues = typeof value !== "string" || !KEYS.includes(key);
+    if (invalidKeyValues) continue;
 
     __validateParameter({ key, value, model });
     output[key] = value;
@@ -41,13 +41,15 @@ function __validateParameter({ key, value, model }: ValidateParameters) {
       }
       break;
     case "sort":
-      const allowedSorts = query.SORT as (string | number)[];
+      const allowedSorts = query.SORT as string[];
 
-      if (!allowedSorts.includes(value ?? "") || value === undefined) {
+      if (!allowedSorts.includes(value ?? "")) {
         throw new AppError({
           statusCode: 400,
           message: "Invalid query parameter",
-          detail: `The parameter 'sort' must be string 'asc' or 'desc'`,
+          detail: `The parameter 'sort' must be one of: ${allowedSorts.join(
+            ", ",
+          )}`,
         });
       }
       break;
