@@ -10,11 +10,11 @@ import type {
 } from "../types/collections";
 import { regex } from "../utils/constants.util";
 
-export const usersSchema = new Schema<UserType>({
+const __userSubDoc = new Schema<UserType>({
   username: {
     type: String,
     required: true,
-    unique: true,
+    unique: false,
     match: regex.USERNAME,
   },
   full_name: { type: String, required: true, maxLength: 100 },
@@ -23,11 +23,11 @@ export const usersSchema = new Schema<UserType>({
   created_at: { type: Date, required: false, default: Date.now },
 });
 
-const __userSubDoc = new Schema<UserType>({
+export const usersSchema = new Schema<UserType>({
   username: {
     type: String,
     required: true,
-    unique: false,
+    unique: true,
     match: regex.USERNAME,
   },
   full_name: { type: String, required: true, maxLength: 100 },
@@ -65,8 +65,8 @@ export const assetsSchema = new Schema<AssetType>({
   created_at: { type: Date, required: false, default: Date.now },
 });
 
-export const unitsSchema = new Schema<UnitType>({
-  name: { type: String, required: true, unique: true, maxLength: 50 },
+const __unitSubDoc = new Schema<UnitType>({
+  name: { type: String, required: true, unique: false, maxLength: 50 },
   street: { type: String, required: false, maxLength: 100 },
   number: { type: String, required: false, maxLength: 10 },
   city: { type: String, required: true, maxLength: 50 },
@@ -79,8 +79,8 @@ export const unitsSchema = new Schema<UnitType>({
   created_at: { type: Date, required: false, default: Date.now },
 });
 
-const __unitSubDoc = new Schema<UnitType>({
-  name: { type: String, required: true, unique: false, maxLength: 50 },
+export const unitsSchema = new Schema<UnitType>({
+  name: { type: String, required: true, unique: true, maxLength: 50 },
   street: { type: String, required: false, maxLength: 100 },
   number: { type: String, required: false, maxLength: 10 },
   city: { type: String, required: true, maxLength: 50 },
