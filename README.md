@@ -204,7 +204,7 @@ In this section, you will find the example API's endpoints and their respective 
 
 ### User model _`User`_
 
-- `id`: A unique identifier for each user. `ObjectId`
+- `_id`: A unique identifier for each user. `ObjectId`
 - `full_name`: The user's full name. `String` `required` `max(100)`
 - `username`: The user's username. `String` `required` `unique` `max(25)`
 - `password`: The user's password. `String` `required` `max(50)`
@@ -213,7 +213,7 @@ In this section, you will find the example API's endpoints and their respective 
 
 ### Company model _`Company`_
 
-- `id`: A unique identifier for each company. `ObjectId`
+- `_id`: A unique identifier for each company. `ObjectId`
 - `name`: The companys's name. `String` `required` `unique` `max(100)`
 - `units`: An array containing the company's units. `Unit[]`
 - `users`: An array containing the company's users. `User[]`
@@ -223,14 +223,13 @@ In this section, you will find the example API's endpoints and their respective 
 
 ### Unit model _`Unit`_
 
-- `id`: A unique identifier for each unit. `ObjectId`
+- `_id`: A unique identifier for each unit. `ObjectId`
 - `name`: The units's name. `String` `required` `unique` `max(50)`
-- `location`: The units's location. `Object` `required`
-  - `street`: The unit's street. `String` `required` `max(100)`
-  - `number`: The unit's number. `String` `required` `max(10)`
-  - `city`: The unit's city. `String` `required` `max(50)`
-  - `state`: The unit's state. `String` `required` `max(50)`
-  - `postal_code`: The unit's postal code. `String` `required` `max(20)`
+- `street`: The unit's street. `String` `max(100)`
+- `number`: The unit's number. `String` `max(10)`
+- `city`: The unit's city. `String` `required` `max(50)`
+- `state`: The unit's state. `String` `required` `max(50)`
+- `postal_code`: The unit's postal code. `String` `max(20)`
 - `assets`: An array containing the unit's assets. `Asset[]`
 - `opens_at`: The date and time when the unit opens. `String` `required` `length(5)`
 - `closes_at`: The date and time when the unit closes. `String` `required` `length(5)`
@@ -239,14 +238,14 @@ In this section, you will find the example API's endpoints and their respective 
 
 ### Asset model _`Asset`_
 
-- `id`: A unique identifier for each asset. `ObjectId`
+- `_id`: A unique identifier for each asset. `ObjectId`
 - `name`: The assets's name. `String` `required` `max(50)`
 - `description`: The assets's description. `String`
 - `model`: The assets's model. `String` `required` `max(100)`
 - `owner`: The assets owner's user. `User` `required`
 - `image`: The assets's image URL. `String`
 - `status`: The assets's status. `String` `required` `enum('RUNNING', 'ALERTING', 'STOPPED')`
-- `healthscore`: The assets's healthscore. `Number` `required` `min(0)` `max(100)`
+- `health`: The assets's healthscore. `Number` `required` `min(0)` `max(100)`
 - `last_update`: The date and time when the asset was last updated. `Date`
 - `created_at`: The date and time when the asset was created. `Date`
 
@@ -255,39 +254,39 @@ In this section, you will find the example API's endpoints and their respective 
 ### [Authentication](#authentication) _`/auth`_
 
 - [Sign In](#---sign-in)
-- [Sign Out](#---sign-out)
+- [Sign Out](#---sign-out) `token`
 
 ### [Users](#users) _`/users`_
 
-- [Create](#---create-an-user)
-- [Search All Users](#---search-all-users)
-- [Search by Id](#---search-user-by-id)
-- [Update](#---update-an-user)
-- [Delete](#---delete-an-user)
+- [Create](#---create-an-user) `x-api-key`
+- [Search All Users](#---search-all-users) `token`
+- [Search by Id](#---search-user-by-id) `token`
+- [Update](#---update-an-user) `token` `x-api-key`
+- [Delete](#---delete-an-user) `token` `x-api-key`
 
 ### [Companies](#companies) _`/companies`_
 
-- [Create](#---create-a-company)
-- [Search All Companies](#---search-all-companies)
-- [Search by Id](#---search-companies-by-id)
-- [Update](#---update-a-company)
-- [Delete](#---delete-a-company)
+- [Create](#---create-a-company) `x-api-key`
+- [Search All Companies](#---search-all-companies) `token`
+- [Search by Id](#---search-companies-by-id) `token`
+- [Update](#---update-a-company) `token` `x-api-key`
+- [Delete](#---delete-a-company) `token` `x-api-key`
 
 ### [Units](#units) _`/units`_
 
-- [Create](#---create-an-unit)
-- [Search All Units](#---search-all-units)
-- [Search by Id](#---search-unit-by-id)
-- [Update](#---update-an-unit)
-- [Delete](#---delete-an-unit)
+- [Create](#---create-an-unit) `token` `x-api-key`
+- [Search All Units](#---search-all-units) `token`
+- [Search by Id](#---search-unit-by-id) `token`
+- [Update](#---update-an-unit) `token` `x-api-key`
+- [Delete](#---delete-an-unit) `token` `x-api-key`
 
 ### [Assets](#assets) _`/assets`_
 
-- [Create](#---create-an-asset)
-- [Search All Assets](#---search-all-assets)
-- [Search by Id](#---search-asset-by-id)
-- [Update](#---update-an-asset)
-- [Delete](#---delete-an-asset)
+- [Create](#---create-an-asset) `token` `x-api-key`
+- [Search All Assets](#---search-all-assets) `token`
+- [Search by Id](#---search-asset-by-id) `token`
+- [Update](#---update-an-asset) `token` `x-api-key`
+- [Delete](#---delete-an-asset) `token` `x-api-key`
 
 ## Authentication
 
@@ -364,7 +363,7 @@ In this section, you will find the example API's endpoints and their respective 
   "full_name": "John Doe Junior the Third",
   "username": "JohnDoe",
   "password": "123456789",
-  "company": "ACME Inc."
+  "company": "5f9f1b9f9d1b9d1b9f1b9d1b"
 }
 ```
 
@@ -459,10 +458,8 @@ In this section, you will find the example API's endpoints and their respective 
 
 ```json
 {
-  "full_name": "John Doe Junior the Third (update)",
-  "username": "JohnDoe",
-  "password": "123456789",
-  "company": "ACME Inc."
+  "full_name": "John Doe Junior the Second",
+  "username": "JohnDoe"
 }
 ```
 
@@ -471,7 +468,8 @@ In this section, you will find the example API's endpoints and their respective 
 ```json
 {
   "Content-Type": "application/json",
-  "Authorization": "Bearer <token>"
+  "Authorization": "Bearer <token>",
+  "x-api-key": "extremely-secure-hash-key"
 }
 ```
 
@@ -498,7 +496,8 @@ In this section, you will find the example API's endpoints and their respective 
 ```json
 {
   "Content-Type": "application/json",
-  "Authorization": "Bearer <token>"
+  "Authorization": "Bearer <token>".
+  "x-api-key": "extremely-secure-hash-key"
 }
 ```
 
@@ -622,7 +621,7 @@ In this section, you will find the example API's endpoints and their respective 
 
 ```json
 {
-  "name": "Acme Inc. (update)"
+  "name": "Acme Inc. 2"
 }
 ```
 
@@ -689,15 +688,12 @@ In this section, you will find the example API's endpoints and their respective 
 ```json
 {
   "name": "Acme Inc. - Unit 1",
-  "location": {
-    "address": "Main Street",
-    "number": "123",
-    "city": "New York",
-    "state": "NY",
-    "postal_code": "12345"
-  },
+  "description": "Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit.",
+  "city": "New York",
+  "state": "NY",
   "opens_at": "08:00",
-  "closes_at": "18:00"
+  "closes_at": "18:00",
+  "company": "5f9f1b9f9d1b9d1b9f1b9d1b"
 }
 ```
 
@@ -706,7 +702,8 @@ In this section, you will find the example API's endpoints and their respective 
 ```json
 {
   "Content-Type": "application/json",
-  "Authorization": "Bearer <token>"
+  "Authorization": "Bearer <token>",
+  "x-api-key": "extremely-secure-hash-key"
 }
 ```
 
@@ -793,14 +790,13 @@ In this section, you will find the example API's endpoints and their respective 
 
 ```json
 {
-  "name": "Acme Inc. - Unit 1 (update)",
-  "location": {
-    "address": "Main Street",
-    "number": "123",
-    "city": "New York",
-    "state": "NY",
-    "postal_code": "12345"
-  },
+  "name": "Acme Inc. - Unit 1",
+  "description": "Now at a new location!",
+  "address": "Main Street",
+  "number": "123",
+  "city": "New York",
+  "state": "NY",
+  "postal_code": "12345",
   "opens_at": "08:00",
   "closes_at": "18:00"
 }
@@ -811,7 +807,8 @@ In this section, you will find the example API's endpoints and their respective 
 ```json
 {
   "Content-Type": "application/json",
-  "Authorization": "Bearer <token>"
+  "Authorization": "Bearer <token>",
+  "x-api-key": "extremely-secure-hash-key"
 }
 ```
 
@@ -838,7 +835,8 @@ In this section, you will find the example API's endpoints and their respective 
 ```json
 {
   "Content-Type": "application/json",
-  "Authorization": "Bearer <token>"
+  "Authorization": "Bearer <token>",
+  "x-api-key": "extremely-secure-hash-key"
 }
 ```
 
@@ -869,7 +867,7 @@ In this section, you will find the example API's endpoints and their respective 
   "name": "Assembly Machine",
   "description": "This is a machine for assembly",
   "model": "AM-123",
-  "owner": "John Doe",
+  "owner": "7f9f1b9f9d1b9d1b9f1b9342",
   "image": "https://www.example.com/image.jpg",
   "status": "STOPPED",
   "health": 94
@@ -881,7 +879,8 @@ In this section, you will find the example API's endpoints and their respective 
 ```json
 {
   "Content-Type": "application/json",
-  "Authorization": "Bearer <token>"
+  "Authorization": "Bearer <token>",
+  "x-api-key": "extremely-secure-hash-key"
 }
 ```
 
@@ -971,13 +970,11 @@ In this section, you will find the example API's endpoints and their respective 
 
 ```json
 {
-  "name": "Assembly Machine (update)",
-  "description": "This is a machine for assembly",
+  "name": "Assembly Machine - Now with more assembly",
+  "description": "This is a machine for assembly, but now we use the Assembly programming language",
   "model": "AM-123",
-  "owner": "John Doe",
-  "image": "https://www.example.com/image.jpg",
-  "status": "STOPPED",
-  "health": 94
+  "status": "RUNNING",
+  "health": 81
 }
 ```
 
@@ -986,7 +983,8 @@ In this section, you will find the example API's endpoints and their respective 
 ```json
 {
   "Content-Type": "application/json",
-  "Authorization": "Bearer <token>"
+  "Authorization": "Bearer <token>",
+  "x-api-key": "extremely-secure-hash-key"
 }
 ```
 
@@ -1013,7 +1011,8 @@ In this section, you will find the example API's endpoints and their respective 
 ```json
 {
   "Content-Type": "application/json",
-  "Authorization": "Bearer <token>"
+  "Authorization": "Bearer <token>",
+  "x-api-key": "extremely-secure-hash-key"
 }
 ```
 
