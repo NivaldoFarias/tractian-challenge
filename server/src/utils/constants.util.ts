@@ -27,6 +27,8 @@ export const regex = {
     "i",
   ),
   IMAGE_EXTENSION: /\.(gif|jpe?g|tiff?|png|webp|bmp)$/i,
+  IMAGE_URL:
+    /((?:(https?:\/\/www)|(https?:\/\/)|(www))[-a-zA-Z\d@:%_\+.~#?&\/\/=]+)\.(jpe?g|gif|png|bmp|tiff?|tga|svg)/g,
 };
 
 export const time = {

@@ -50,7 +50,7 @@ export async function update(_req: Request, res: Response) {
 
   if (!update) errors.companyNotFoundById;
 
-  const unchangedCompany = update?.name === name;
+  const unchangedCompany = company.name === name;
 
   if (unchangedCompany) response.message = "No changes detected";
   else {

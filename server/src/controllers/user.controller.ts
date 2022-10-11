@@ -68,11 +68,7 @@ export async function updateOne(_req: Request, res: Response) {
 
   if (!update) error.userNotFound();
 
-  const unchangedUser = Object.values(
-    update as NonNullable<UserDocument>,
-  ).every((field) => {
-    return field === result[field];
-  });
+  const unchangedUser = __iterateKeyValues(body, result);
 
   if (unchangedUser) response.message = "No changes detected";
   else {
@@ -91,6 +87,15 @@ export async function updateOne(_req: Request, res: Response) {
 
   AppLog({ type: "Controller", text: "User updated" });
   return res.status(200).send(response);
+
+  function __iterateKeyValues(
+    body: UpdateOne,
+    result: NonNullable<UserDocument>,
+  ) {
+    return Object.entries(body).every(([key, value]) => {
+      return value === result[key as keyof NonNullable<UserDocument>];
+    });
+  }
 }
 
 export async function deleteOne(_req: Request, res: Response) {

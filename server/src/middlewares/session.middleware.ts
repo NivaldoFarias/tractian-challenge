@@ -1,5 +1,6 @@
-import type { UserDocument, SignInBody, SessionDocument } from "../types/user";
+import type { SessionDocument, UserDocument } from "../types/collections";
 import type { Request, Response, NextFunction } from "express";
+import type { SignInBody } from "../types/user";
 
 import * as repository from "../repositories/session.repository";
 import * as service from "../services/session.service";
@@ -47,7 +48,7 @@ export async function signOutValidations(
 }
 
 // Validations
-function validateUser(user: UserDocument | null) {
+function validateUser(user: UserDocument) {
   if (!user) {
     throw new AppError({
       statusCode: 404,
@@ -73,7 +74,7 @@ function validPassword(providedPassword: string, password = "") {
   return AppLog({ type: "Middleware", text: "Valid password" });
 }
 
-function validateSession(session: SessionDocument | null) {
+function validateSession(session: SessionDocument) {
   if (!session) {
     throw new AppError({
       statusCode: 404,

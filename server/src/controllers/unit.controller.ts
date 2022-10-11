@@ -63,11 +63,7 @@ export async function update(_req: Request, res: Response) {
 
   if (!update) error.unitNotFound();
 
-  const unchangedUnit = Object.values(
-    update as NonNullable<UnitDocument>,
-  ).every((field) => {
-    return field === result[field];
-  });
+  const unchangedUnit = __iterateKeyValues(body, result);
 
   if (unchangedUnit) response.message = "No changes detected";
   else {
@@ -86,6 +82,15 @@ export async function update(_req: Request, res: Response) {
 
   AppLog({ type: "Controller", text: "Unit updated" });
   return res.status(200).send(response);
+
+  function __iterateKeyValues(
+    body: UpdateOne,
+    result: NonNullable<UnitDocument>,
+  ) {
+    return Object.entries(body).every(([key, value]) => {
+      return value === result[key as keyof NonNullable<UnitDocument>];
+    });
+  }
 }
 
 export async function deleteOne(_req: Request, res: Response) {
