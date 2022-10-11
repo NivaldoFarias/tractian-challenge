@@ -1,11 +1,13 @@
 {
   "compilerOptions": {
     /* Basic Options */
+    "jsx": "react-jsx",
+    "target": "ES2022",
+    "module": "esnext",
     "outDir": "dist",
     "rootDir": "./src",
-    "target": "ES2022",
-    "module": "commonjs",
     "allowUmdGlobalAccess": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
 
     /* Strict Type-Checking Options */
     "strict": true,
@@ -13,20 +15,24 @@
     "noImplicitThis": true,
 
     /* Additional Checks */
+    "noEmit": true,
     "noUnusedLocals": true,
     "noImplicitReturns": true,
     "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
 
     /* Module Resolution Options */
     "esModuleInterop": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
     "moduleResolution": "node",
     "typeRoots": ["node_modules/@types", "types"],
 
     /* Advanced Options */
+    "declaration": true,
+    "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true
   },
-  "ts-node": {
-    "esm": true
-  },
+  "include": ["src"],
   "exclude": ["node_modules", "test", "types", "**/*.test.ts"]
 }
