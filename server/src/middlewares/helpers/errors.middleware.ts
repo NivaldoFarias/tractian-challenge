@@ -1,4 +1,5 @@
 import AppError from "../../config/error";
+import { APIModelsKeys } from "../../types/collections";
 
 export function Forbidden() {
   throw new AppError({
@@ -16,20 +17,19 @@ export function ForbiddenToken() {
   });
 }
 
+export function invalidIdSyntax() {
+  throw new AppError({
+    statusCode: 400,
+    message: "Invalid Syntax",
+    detail: "Ensure to provide the a valid ObjectId",
+  });
+}
+
 export function companyNameMismatch() {
   throw new AppError({
     statusCode: 400,
     message: "Company name mismatch",
     detail: "The provided company name does not match the company",
-  });
-}
-
-export function companyNotFound() {
-  throw new AppError({
-    statusCode: 404,
-    message: "Company Not Found",
-    detail:
-      "Ensure that the provided company name corresponds to an existing company",
   });
 }
 
@@ -42,27 +42,11 @@ export function companyNotFoundByApiKey() {
   });
 }
 
-export function companyNotFoundById() {
-  throw new AppError({
-    statusCode: 404,
-    message: "Company not found",
-    detail: "Ensure to provide a valid company id",
-  });
-}
-
 export function unitDoesNotBelongToCompany() {
   throw new AppError({
     statusCode: 403,
     message: "Forbidden",
     detail: "Ensure that the provided unit belongs to the company",
-  });
-}
-
-export function unitNotFound() {
-  throw new AppError({
-    statusCode: 404,
-    message: "Unit not found",
-    detail: "Ensure to provide a valid unit Id",
   });
 }
 
@@ -74,26 +58,38 @@ export function updateWithNoChanges() {
   });
 }
 
-export function userNotFound() {
-  throw new AppError({
-    statusCode: 404,
-    message: "User not found",
-    detail: "Ensure to provide a valid user Id",
-  });
-}
-
-export function assetNotFound() {
-  throw new AppError({
-    statusCode: 404,
-    message: "Asset not found",
-    detail: "Ensure to provide a valid asset Id",
-  });
-}
-
 export function assetDoesNotBelongToUnit() {
   throw new AppError({
     statusCode: 403,
     message: "Forbidden",
     detail: "Ensure that the provided asset belongs to the unit",
   });
+}
+
+export function notFound(model: APIModelsKeys) {
+  throw new AppError({
+    statusCode: 404,
+    message: `${model} Not Found`,
+    detail: `The provided ObjectId does not match any existing ${model}`,
+  });
+}
+
+export function unitNotFound() {
+  return notFound("Unit");
+}
+
+export function userNotFound() {
+  return notFound("User");
+}
+
+export function assetNotFound() {
+  return notFound("Asset");
+}
+
+export function companyNotFound() {
+  return notFound("Company");
+}
+
+export function companyNotFoundById() {
+  return notFound("Company");
 }

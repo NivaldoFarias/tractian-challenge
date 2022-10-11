@@ -11,6 +11,7 @@ export interface UseMiddleware {
   token?: boolean;
   query?: APIModelsKeys;
   param?: APIModelsKeys;
+  search?: "unit_id" | "company_id";
 }
 
 export type MiddlewareGlobals = {

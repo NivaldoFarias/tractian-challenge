@@ -13,11 +13,10 @@ export async function createOneValidations(
 ) {
   const company = res.locals.company;
   const apiKey = res.locals.header;
-  const companyName = res.locals.body?.company;
+  const company_id = res.locals.body?.company;
 
-  const validCompany = (await util.findByField({
-    field: "name",
-    value: companyName,
+  const validCompany = (await util.findById({
+    id: company_id,
     model: "Company",
   })) as CompanyDocument;
 

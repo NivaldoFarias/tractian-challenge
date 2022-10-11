@@ -14,7 +14,7 @@ export type AssetType = {
   name: string;
   description: string;
   model: string;
-  owner: UserType;
+  owner: NonNullUserDocument;
   image: string;
   status: "RUNNING" | "ALERTING" | "STOPPED";
   health: number;
@@ -30,7 +30,7 @@ export type UnitType = {
   city: string;
   state: string;
   postal_code: string;
-  assets: AssetType[];
+  assets: NonNullAssetDocument[];
   opens_at: string;
   closes_at: string;
   last_update: Date;
@@ -40,8 +40,8 @@ export type UnitType = {
 export type CompanyType = {
   _id?: Types.ObjectId;
   name: string;
-  units: UnitType[];
-  users: UserType[];
+  units: NonNullUnitDocument[];
+  users: NonNullUserDocument[];
   "x-api-key": string;
   last_update: Date;
   created_at: Date;
@@ -54,13 +54,7 @@ export type SessionType = {
   active: boolean;
 };
 
-export type CompanyFields =
-  | "name"
-  | "units"
-  | "users"
-  | "x-api-key"
-  | "last_update"
-  | "created_at";
+export type CompanyFields = keyof CompanyType;
 
 export type APIModelsKeys = "User" | "Asset" | "Unit" | "Company" | "Session";
 
@@ -77,11 +71,19 @@ export type AssetDocument = MongoDocument<AssetType>;
 export type CompanyDocument = MongoDocument<CompanyType>;
 export type SessionDocument = MongoDocument<SessionType>;
 
+export type AnyDocument =
+  | UserDocument
+  | UnitDocument
+  | AssetDocument
+  | CompanyDocument
+  | SessionDocument;
+
 export type NonNullUserDocument = NonNullable<UserDocument>;
 export type NonNullUnitDocument = NonNullable<UnitDocument>;
 export type NonNullAssetDocument = NonNullable<AssetDocument>;
 export type NonNullCompanyDocument = NonNullable<CompanyDocument>;
 export type NonNullSessionDocument = NonNullable<SessionDocument>;
+
 export interface QueriesGeneric {
   [key: string]: unknown;
 }
@@ -108,4 +110,20 @@ export type MongoDocument<T> =
 export interface UpdateResponse {
   message: string;
   detail?: Partial<UpdateWriteOpResult>;
+}
+
+interface FindByField {
+  field: string;
+  value: string;
+  model: APIModelsKeys;
+}
+
+interface FindById {
+  id: string;
+  model: APIModelsKeys;
+}
+
+interface SearchAll {
+  queries: QueryParameters;
+  model: APIModelsKeys;
 }

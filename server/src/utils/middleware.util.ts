@@ -73,46 +73,62 @@ export default function useMiddleware({
       res.locals.query = parsedQueries;
     }
 
-    if (middlewares?.param) {
-      globals.id = req.params.id;
-      res.locals.param = globals.id;
+    if (middlewares?.param || middlewares?.search) {
+      globals.id = middlewares?.search
+        ? req.body[middlewares.search]
+        : req.params.id;
+
+      if (middlewares?.param && !middlewares?.search) {
+        res.locals.param = globals.id;
+      }
     }
 
-    const tokenIsRequired = middlewares?.token && globals.token;
-    const parameterIsRequired =
-      middlewares?.param && globals.id && globals.param;
-    const mustValidateModel =
-      middlewares?.model && globals.body && globals.model;
-    const searchCompanyByApiKey = middlewares?.header && globals.header;
-
     const [user_id, result, company] = (await Promise.all([
-      tokenIsRequired ? requireToken(globals.token as string) : __resolve(),
-      parameterIsRequired
+      __tokenIsRequired(),
+      __parameterIsRequired(),
+      __searchCompanyByApiKey(),
+      __validateModel(),
+    ])) as MiddlewarePromises;
+
+    res.locals.user_id = user_id;
+    res.locals.result = result;
+    res.locals.company = company;
+
+    return next();
+
+    function __parameterIsRequired() {
+      return (middlewares?.param || middlewares?.search) && globals.id
         ? validateParameters(
             globals.id as string,
-            globals.param as APIModelsKeys,
+            (globals.param as APIModelsKeys) ?? "Unit",
           )
-        : __resolve(),
-      searchCompanyByApiKey
+        : __resolve();
+    }
+
+    function __tokenIsRequired() {
+      return middlewares?.token && globals.token
+        ? requireToken(globals.token as string)
+        : __resolve();
+    }
+
+    function __searchCompanyByApiKey() {
+      return middlewares?.header && globals.header
         ? repository.findByField({
             model: "Company",
             field: "x-api-key",
             value: globals.header as string,
           })
-        : __resolve(),
-      mustValidateModel
+        : __resolve();
+    }
+
+    function __validateModel() {
+      return middlewares?.model && globals.body && globals.model
         ? validateModel(
             globals.model as APIModelsKeys,
             globals.body as Record<string, unknown>,
           )
-        : __resolve(),
-    ])) as MiddlewarePromises;
-
-    res.locals.user_id = user_id;
-    res.locals.company = company;
-    res.locals.result = result;
-
-    return next();
+        : __resolve();
+    }
   };
 }
 

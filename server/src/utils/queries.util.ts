@@ -1,25 +1,9 @@
-import type { APIModelsKeys, QueryParameters } from "../types/collections";
+import type { FindByField, FindById, SearchAll } from "../types/collections";
 import type { SortOrder } from "mongoose";
 
 import { User, Unit, Asset, Session, Company } from "./../mongo/models";
 import AppError from "../config/error";
 import AppLog from "../events/AppLog";
-
-interface FindByField {
-  field: string;
-  value: string;
-  model: APIModelsKeys;
-}
-
-interface FindById {
-  id: string;
-  model: APIModelsKeys;
-}
-
-interface SearchAll {
-  queries: QueryParameters;
-  model: APIModelsKeys;
-}
 
 export async function findByField({ field, value, model }: FindByField) {
   const searchKey =

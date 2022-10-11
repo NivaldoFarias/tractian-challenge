@@ -12,7 +12,12 @@ const createEndpoint = "/create";
 assetsRouter.post(
   createEndpoint,
   useMiddleware({
-    middlewares: { token: true, model: "Asset", header: "x-api-key" },
+    middlewares: {
+      token: true,
+      model: "Asset",
+      header: "x-api-key",
+      search: "unit_id",
+    },
     endpoint: endpoint + createEndpoint,
   }),
   middleware.createOneValidations,

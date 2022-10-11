@@ -1,5 +1,5 @@
 import type { Document, Types } from "mongoose";
-import type { AssetType } from "./collections";
+import type { AssetType, CompanyDocument } from "./collections";
 
 export type CreateRequestBody = {
   name: string;
@@ -22,7 +22,10 @@ export type CreateData = {
 export type Update = {
   id: string;
   body: UpdateOne;
+  company: NonNullable<CompanyDocument>;
 };
+
+export type DeleteOne = { id: string; company: NonNullable<CompanyDocument> };
 
 export type UpdateOne = Partial<CreateRequestBody>;
 
@@ -31,4 +34,10 @@ export type PushAssetType = Document<unknown, unknown, AssetType> &
     _id: Types.ObjectId;
   };
 
-export type FieldsToUpdate = Record<string, string | AssetType[]>;
+export type FieldsToUpdate = Record<string, string | AssetType[] | Date>;
+
+export type PushAsset = {
+  id: string;
+  asset: PushAssetType;
+  company: NonNullable<CompanyDocument>;
+};

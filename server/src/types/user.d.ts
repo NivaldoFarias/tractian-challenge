@@ -1,3 +1,5 @@
+import type { CompanyDocument, NonNullCompanyDocument } from "./collections";
+
 export type CreateUser = {
   full_name: string;
   username: string;
@@ -24,6 +26,9 @@ export type SignInBody = {
 interface UpdateOneData {
   id: string;
   body: Omit<UpdateOne, "company">;
+  company: NonNullCompanyDocument;
 }
+
+export type DeleteOne = { id: string; company: NonNullable<CompanyDocument> };
 
 export type FieldsToUpdate = Record<string, string>;

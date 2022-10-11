@@ -14,6 +14,7 @@ import * as service from "../services/user.service";
 import * as util from "./../utils/queries.util";
 
 import AppLog from "../events/AppLog";
+import { NonNullUserDocument } from "../types/collections";
 
 export async function create(_req: Request, res: Response) {
   const { _id }: NonNullable<CompanyDocument> = res.locals.company;
@@ -45,14 +46,14 @@ export async function searchAll(_req: Request, res: Response) {
 }
 
 export async function searchById(_req: Request, res: Response) {
-  const id = res.locals.param;
-  const user = await util.findById({ id, model: "User" });
+  const user: NonNullUserDocument = res.locals.result;
 
   AppLog({ type: "Controller", text: "Sent User" });
   return res.status(200).send(user);
 }
 
 export async function updateOne(_req: Request, res: Response) {
+  const company: NonNullable<CompanyDocument> = res.locals.company;
   const id = res.locals.param;
   const result = res.locals.result;
   const body: UpdateOne = res.locals.body;
@@ -64,6 +65,7 @@ export async function updateOne(_req: Request, res: Response) {
   const update = await repository.updateOne({
     id,
     body,
+    company,
   });
 
   if (!update) error.userNotFound();
@@ -100,8 +102,9 @@ export async function updateOne(_req: Request, res: Response) {
 
 export async function deleteOne(_req: Request, res: Response) {
   const id = res.locals.param;
+  const company = res.locals.company;
 
-  await util.deleteOne({ id, model: "User" });
+  await repository.deleteOne({ id, company });
 
   AppLog({ type: "Controller", text: "User deleted" });
   return res.sendStatus(200);

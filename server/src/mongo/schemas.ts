@@ -23,11 +23,24 @@ export const usersSchema = new Schema<UserType>({
   created_at: { type: Date, required: false, default: Date.now },
 });
 
+const __userSubDoc = new Schema<UserType>({
+  username: {
+    type: String,
+    required: true,
+    unique: false,
+    match: regex.USERNAME,
+  },
+  full_name: { type: String, required: true, maxLength: 100 },
+  password: { type: String, required: true },
+  last_update: { type: Date, required: false, default: Date.now },
+  created_at: { type: Date, required: false, default: Date.now },
+});
+
 export const assetsSchema = new Schema<AssetType>({
   name: { type: String, required: true, maxLength: 50 },
   description: { type: String, required: false },
   model: { type: String, required: true, maxLength: 100 },
-  owner: { type: usersSchema, required: false },
+  owner: { type: __userSubDoc, required: false, unique: false },
   image: {
     type: String,
     required: false,
@@ -66,6 +79,20 @@ export const unitsSchema = new Schema<UnitType>({
   created_at: { type: Date, required: false, default: Date.now },
 });
 
+const __unitSubDoc = new Schema<UnitType>({
+  name: { type: String, required: true, unique: false, maxLength: 50 },
+  street: { type: String, required: false, maxLength: 100 },
+  number: { type: String, required: false, maxLength: 10 },
+  city: { type: String, required: true, maxLength: 50 },
+  state: { type: String, required: true, maxLength: 50 },
+  postal_code: { type: String, required: false, maxLength: 20 },
+  assets: { type: [assetsSchema], required: false },
+  opens_at: { type: String, required: true, match: regex.TIME },
+  closes_at: { type: String, required: true, match: regex.TIME },
+  last_update: { type: Date, required: false, default: Date.now },
+  created_at: { type: Date, required: false, default: Date.now },
+});
+
 export const sessionsSchema = new Schema<SessionType>({
   username: { type: String, required: true, index: true, unique: true },
   token: { type: String, required: false, unique: true, default: null },
@@ -80,8 +107,8 @@ export const companiesSchema = new Schema<CompanyType>({
     minLength: 3,
     maxLength: 100,
   },
-  units: { type: [unitsSchema], required: false, default: [] },
-  users: { type: [usersSchema], required: false, default: [] },
+  units: { type: [__unitSubDoc], required: false, default: [] },
+  users: { type: [__userSubDoc], required: false, default: [] },
   "x-api-key": {
     type: String,
     required: false,

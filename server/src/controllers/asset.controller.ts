@@ -1,8 +1,10 @@
 import type {
-  CompanyDocument,
   QueryParameters,
   AssetDocument,
   UpdateResponse,
+  UnitDocument,
+  UserDocument,
+  CompanyDocument,
 } from "../types/collections";
 import type { CreateRequestBody, UpdateOne } from "../types/asset";
 import type { Request, Response } from "express";
@@ -13,13 +15,25 @@ import * as repository from "./../repositories/asset.repository";
 import * as util from "./../utils/queries.util";
 
 import AppLog from "../events/AppLog";
+import { NonNullAssetDocument } from "../types/collections";
 
 export async function create(_req: Request, res: Response) {
-  const { _id }: NonNullable<CompanyDocument> = res.locals.company;
+  const { _id: unit_id }: NonNullable<UnitDocument> = res.locals.result;
+  const company: NonNullable<CompanyDocument> = res.locals.company;
   const body: CreateRequestBody = res.locals.body;
+  const user_id = res.locals.user_id;
 
+  const user = await util.findById({ id: user_id, model: "User" });
+
+  if (!user) error.notFound("User");
+
+  body.owner = user as NonNullable<UserDocument>;
   const pushAssetData = await repository.create(body);
-  await unitRepository.pushAsset(_id.toString(), pushAssetData);
+  await unitRepository.pushAsset({
+    id: unit_id.toString(),
+    asset: pushAssetData,
+    company,
+  });
 
   AppLog({ type: "Controller", text: "Asset created" });
   return res.sendStatus(201);
@@ -34,25 +48,28 @@ export async function searchAll(_req: Request, res: Response) {
 }
 
 export async function searchById(_req: Request, res: Response) {
-  const id = res.locals.param;
-  const asset = await util.findById({ id, model: "Asset" });
+  const asset: NonNullAssetDocument = res.locals.result;
 
   AppLog({ type: "Controller", text: "Sent Asset" });
   return res.status(200).send(asset);
 }
 
 export async function update(_req: Request, res: Response) {
-  const id = res.locals.param;
-  const result = res.locals.result;
+  const company: NonNullable<CompanyDocument> = res.locals.company;
   const body: UpdateOne = res.locals.body;
+  const asset_id = res.locals.param;
+  const result = res.locals.result;
+  const unit = res.locals.unit;
 
   const response: UpdateResponse = {
     message: "Asset updated",
   };
 
   const update = await repository.updateOne({
-    id,
+    asset_id,
+    company,
     body,
+    unit,
   });
 
   if (!update) error.assetNotFound();
@@ -88,9 +105,11 @@ export async function update(_req: Request, res: Response) {
 }
 
 export async function deleteOne(_req: Request, res: Response) {
+  const company = res.locals.company;
   const id = res.locals.param;
+  const unit = res.locals.unit;
 
-  await util.deleteOne({ id, model: "Asset" });
+  await repository.deleteOne({ id, company, unit });
 
   AppLog({ type: "Controller", text: "Asset deleted" });
   return res.sendStatus(200);
