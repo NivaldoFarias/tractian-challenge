@@ -3,28 +3,28 @@ import type {
   PushAssetType,
   FieldsToUpdate,
   Update,
-} from "../types/unit";
+} from "../types/asset";
 
 import { time } from "../utils/constants.util";
-import { Unit } from "../mongo/models";
+import { Asset } from "../mongo/models";
 import AppLog from "../events/AppLog";
 
 export async function create(data: CreateRequestBody) {
-  const result = await new Unit(data).save({
+  const result = await new Asset(data).save({
     validateBeforeSave: false,
   });
 
-  AppLog({ type: "Repository", text: "Unit instance inserted" });
+  AppLog({ type: "Repository", text: "Asset instance inserted" });
   return result;
 }
 
-export async function pushAsset(id: string, asset: PushAssetType) {
-  AppLog({ type: "Repository", text: "Push asset into Unit" });
+export async function pushAsset(assetName: string, asset: PushAssetType) {
+  AppLog({ type: "Repository", text: "Push asset into Asset" });
 
-  return await Unit.findByIdAndUpdate(id, {
-    $push: { assets: asset },
-    last_update: time.CURRENT_TIME,
-  }).exec();
+  return await Asset.updateOne(
+    { name: assetName },
+    { $push: { assets: asset }, last_update: time.CURRENT_TIME },
+  ).exec();
 }
 
 export async function updateOne(data: Update) {
@@ -34,8 +34,8 @@ export async function updateOne(data: Update) {
 
   __sanitizeObject();
 
-  AppLog({ type: "Repository", text: "Update Unit" });
-  return await Unit.findByIdAndUpdate(id, {
+  AppLog({ type: "Repository", text: "Update Asset" });
+  return await Asset.findByIdAndUpdate(id, {
     ...fieldsToUpdate,
     last_update: time.CURRENT_TIME,
   }).exec();
@@ -49,6 +49,6 @@ export async function updateOne(data: Update) {
 }
 
 export async function deleteOne(id: string) {
-  AppLog({ type: "Repository", text: "Delete Unit instance" });
-  return await Unit.findByIdAndDelete(id).exec();
+  AppLog({ type: "Repository", text: "Delete Asset instance" });
+  return await Asset.findByIdAndDelete(id).exec();
 }

@@ -27,7 +27,7 @@ export const assetsSchema = new Schema<AssetType>({
   name: { type: String, required: true, maxLength: 50 },
   description: { type: String, required: false },
   model: { type: String, required: true, maxLength: 100 },
-  owner: { type: String, required: true, maxLength: 50 },
+  owner: { type: usersSchema, required: false },
   image: {
     type: String,
     required: false,

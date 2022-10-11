@@ -81,3 +81,19 @@ export function userNotFound() {
     detail: "Ensure to provide a valid user Id",
   });
 }
+
+export function assetNotFound() {
+  throw new AppError({
+    statusCode: 404,
+    message: "Asset not found",
+    detail: "Ensure to provide a valid asset Id",
+  });
+}
+
+export function assetDoesNotBelongToUnit() {
+  throw new AppError({
+    statusCode: 403,
+    message: "Forbidden",
+    detail: "Ensure that the provided asset belongs to the unit",
+  });
+}

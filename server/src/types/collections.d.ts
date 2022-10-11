@@ -14,7 +14,7 @@ export type AssetType = {
   name: string;
   description: string;
   model: string;
-  owner: string;
+  owner: UserType;
   image: string;
   status: "RUNNING" | "ALERTING" | "STOPPED";
   health: number;
