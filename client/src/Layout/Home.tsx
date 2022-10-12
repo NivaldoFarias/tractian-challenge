@@ -8,7 +8,7 @@ export const Layout = styled(AntLayout as any)`
   left: 0;
   right: 0;
 
-  margin: 20px auto 0;
+  margin: 15px auto 0;
   height: 100%;
   width: calc(100% - 80px);
 
