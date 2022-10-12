@@ -40,6 +40,7 @@
 
 # Table of Contents
 
+- [Deployed Instances](#deployed-instances)
 - [Installation and Usage](#installation-and-usage)
 - [Error Handling and Logging](#error-handling-and-logging)
   - [AppError](#--apperror)
@@ -53,6 +54,13 @@
   - [Companies](#companies)
   - [Units](#units)
   - [Assets](#assets)
+
+<!-- Deployed Instances -->
+
+## Deployed Instances
+
+- [Server](https://tractian-poc.herokuapp.com/) `https://tractian-poc.herokuapp.com/`
+- [Client](https://tractian-poc.vercel.app/) `https://tractian-poc.vercel.app/`
 
 <!-- Installation and Usage -->
 
