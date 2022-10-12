@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { sidenav } from "../utils/home.util";
 import * as styled from "../Layout/Home";
+import Authentication from "../components/Authentication";
 
 export default function Home() {
-  const [openKeys, setOpenKeys] = useState<string[]>([]);
+  const [content, setContent] = useState<string | JSX.Element>("To Be Implemented");
   const [current, setCurrent] = useState([]);
   const layout = buildLayout();
 
@@ -17,8 +18,6 @@ export default function Home() {
   );
 
   function buildLayout() {
-    console.log(openKeys);
-
     return (
       <>
         <styled.Content className="mode-default">
@@ -28,14 +27,13 @@ export default function Home() {
                 mode="inline"
                 multiple={true}
                 items={sidenav}
-                defaultOpenKeys={["sidenav1", "sidenav2", "sidenav3", "sidenav4", "sidenav5"]}
+                defaultOpenKeys={["authentication", "users", "assets", "units", "companies"]}
                 onClick={handleClick}
                 onSelect={handleSelect}
                 selectedKeys={[current]}
-                onOpenChange={handleOpenChange}
               />
             </styled.Sider>
-            <styled.Content className="mode-display">To Be Implemented</styled.Content>
+            <styled.Content className="mode-forms">{content}</styled.Content>
           </styled.Layout>
           <styled.Content></styled.Content>
         </styled.Content>
@@ -46,12 +44,17 @@ export default function Home() {
       setCurrent(e.key);
     }
 
-    function handleOpenChange(openKeys: any) {
-      setOpenKeys(openKeys);
-    }
-
     function handleSelect(info: any) {
-      console.log(info);
+      console.log("select", info);
+
+      switch (info.key) {
+        case "sign-in":
+          return setContent(<Authentication />);
+        case "sign-out":
+          return setContent("To Be Implemented");
+        default:
+          return setContent("To Be Implemented");
+      }
     }
   }
 }
