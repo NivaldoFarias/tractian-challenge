@@ -6,6 +6,7 @@ import { VscSymbolVariable } from "react-icons/vsc";
 import { RiShieldUserFill } from "react-icons/ri";
 import { BsBuilding } from "react-icons/bs";
 import { FaUsers } from "react-icons/fa";
+import MenuItem from "antd/lib/menu/MenuItem";
 
 const subNavKeys = ["Authentication", "Users", "Assets", "Units", "Companies"];
 
@@ -21,7 +22,7 @@ export const sidenav: MenuProps["items"] = [
   TbBuildingWarehouse,
   BsBuilding,
 ].map((icon, index) => {
-  const key = `sub${String(index + 1)}`;
+  const key = `sidenav${String(index + 1)}`;
   const label = subNavKeys[index];
   const reactIcon = React.createElement(icon);
 
@@ -30,12 +31,35 @@ export const sidenav: MenuProps["items"] = [
     label,
     icon: reactIcon,
 
-    children: new Array(4).fill(null).map((_, j) => {
-      const subKey = index * 4 + j + 1;
-      return {
-        key: subKey,
-        label: `option${subKey}`,
-      };
-    }),
+    children:
+      label === "Authentication"
+        ? ["Sign In", "Sign Out"].map((label, j) => {
+            const subKey = index * 2 + j + 1;
+            return {
+              key: subKey,
+              label,
+            };
+          })
+        : ["Create", "Search All", "Search by Id", "Update", "Delete"].map((label, j) => {
+            const subKey = index * 5 + j + 1;
+            return {
+              key: subKey,
+              label,
+            };
+          }),
   };
 });
+
+export function getItem(
+  label: React.ReactNode,
+  key?: React.Key | null,
+  icon?: React.ReactNode,
+  children?: MenuItem[],
+): MenuItem {
+  return {
+    key,
+    icon,
+    children,
+    label,
+  } as unknown as MenuItem;
+}
