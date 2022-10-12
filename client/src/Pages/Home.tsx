@@ -54,11 +54,17 @@ export default function Home() {
           return setContent(<CreateUser />);
         default:
           let [key, subkey] = info.key.split("-");
-          subkey = subkey !== "create" && !info.key.includes("all") ? subkey + "/:id" : subkey;
+          subkey =
+            subkey !== "create" && !info.key.includes("all") && !info.key.includes("out")
+              ? subkey + "/:id"
+              : subkey;
 
           return setContent(
             <>
-              To be Implemented <p id="route">{`Route .../${key + "/" + subkey}`}</p>
+              To be Implemented{" "}
+              <p id="route">{`Route .../${
+                key + "/" + subkey + `${info.key.includes("auth") ? "-out" : ""}`
+              }`}</p>
             </>,
           );
       }
