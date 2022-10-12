@@ -2,6 +2,7 @@ import { useState } from "react";
 import { sidenav } from "../utils/home.util";
 import * as styled from "../Layout/Home";
 import Authentication from "../components/Authentication";
+import CreateUser from "../components/CreateUser";
 
 export default function Home() {
   const [content, setContent] = useState<string | JSX.Element>("To Be Implemented");
@@ -45,15 +46,27 @@ export default function Home() {
     }
 
     function handleSelect(info: any) {
-      console.log("select", info);
-
+      console.log("selected ", info.key);
       switch (info.key) {
         case "sign-in":
           return setContent(<Authentication />);
-        case "sign-out":
-          return setContent("To Be Implemented");
+        case "users-create":
+          return setContent(<CreateUser />);
         default:
-          return setContent("To Be Implemented");
+          let [key, subkey] = info.key.split("-");
+          subkey =
+            subkey !== "create" && !info.key.includes("all") && !info.key.includes("out")
+              ? subkey + "/:id"
+              : subkey;
+
+          return setContent(
+            <>
+              To be Implemented{" "}
+              <p id="route">{`Route .../${
+                key + "/" + subkey + `${info.key.includes("auth") ? "-out" : ""}`
+              }`}</p>
+            </>,
+          );
       }
     }
   }

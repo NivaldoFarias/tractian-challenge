@@ -1,10 +1,12 @@
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { BsPersonBadge } from "react-icons/bs";
 import { Button, Form, Input } from "antd";
+import { BsBuilding, BsKey } from "react-icons/bs";
 import { useEffect, useState } from "react";
 
-import { Axios } from "./../hooks/axios";
+import { Axios, routes } from "../hooks/axios";
 
-export default function Authentication() {
+export default function CreateUser() {
   const [form] = Form.useForm();
   const [, forceUpdate] = useState({});
 
@@ -14,8 +16,15 @@ export default function Authentication() {
   }, []);
 
   const onFinish = async (values: any) => {
+    const apiKey = values["x-api-key"];
+    delete values["x-api-key"];
+
     try {
-      await Axios.post("/auth/sign-in", values);
+      await Axios.post(routes("users").create(), values, {
+        headers: {
+          "x-api-key": apiKey,
+        },
+      });
     } catch (error: any) {
       console.log(error);
       alert(
@@ -29,6 +38,15 @@ export default function Authentication() {
   return (
     <>
       <Form form={form} name="vertical-forms" layout="vertical" onFinish={onFinish}>
+        <Form.Item
+          name="full_name"
+          rules={[{ required: true, message: "Please input your full name!" }]}
+        >
+          <Input
+            prefix={<BsPersonBadge className="site-form-item-icon" />}
+            placeholder="Full Name"
+          />
+        </Form.Item>
         <Form.Item
           name="username"
           rules={[{ required: true, message: "Please input your username!" }]}
@@ -45,6 +63,18 @@ export default function Authentication() {
             placeholder="Password"
           />
         </Form.Item>
+        <Form.Item
+          name="company"
+          rules={[{ required: true, message: "Please input your Company's Id!" }]}
+        >
+          <Input prefix={<BsBuilding className="site-form-item-icon" />} placeholder="Company Id" />
+        </Form.Item>
+        <Form.Item
+          name="x-api-key"
+          rules={[{ required: true, message: "Please input your Company's x-api-key!" }]}
+        >
+          <Input prefix={<BsKey className="site-form-item-icon" />} placeholder="x-api-key" />
+        </Form.Item>
         <Form.Item shouldUpdate>
           {() => (
             <Button
@@ -55,7 +85,7 @@ export default function Authentication() {
                 !!form.getFieldsError().filter(({ errors }) => errors.length).length
               }
             >
-              Sign In
+              Create User
             </Button>
           )}
         </Form.Item>

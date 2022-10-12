@@ -33,7 +33,7 @@ export const sidenav: MenuProps["items"] = [
     children:
       label === "Authentication"
         ? ["Sign In", "Sign Out"].map((label, j) => {
-            const subKey = j === 0 ? "sign-in" : "sign-out";
+            const subKey = j === 0 ? "sign-in" : "auth-sign-out";
             return {
               key: subKey,
               label,

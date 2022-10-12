@@ -42,15 +42,14 @@ export const StyledResets = createGlobalStyle`
     position: relative;
     overflow: hidden;
 
-    padding: 20px 0;
     height: 100vh;
     width: 100vw;
 
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
     gap: 20px;
+    padding-bottom: 20px;
   }
   @media (prefers-color-scheme: dark) {
     html {

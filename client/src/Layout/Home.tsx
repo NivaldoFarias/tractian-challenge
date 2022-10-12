@@ -8,7 +8,7 @@ export const Layout = styled(AntLayout as any)`
   left: 0;
   right: 0;
 
-  margin: 20px auto 0;
+  margin: 15px auto 0;
   height: 100%;
   width: calc(100% - 80px);
 
@@ -40,7 +40,7 @@ export const Content = styled(AntContent as any)`
     justify-content: center;
     align-items: center;
 
-    font-size: 3rem;
+    font-size: 6rem;
 
     padding: 0 12px;
     min-height: 820px;
@@ -53,6 +53,7 @@ export const Content = styled(AntContent as any)`
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
+    gap: 30px;
 
     min-height: 300px;
     height: 100%;
@@ -228,6 +229,11 @@ export const Content = styled(AntContent as any)`
         background-color: ${({ theme }) => theme.colors.altSecondary};
       }
     }
+  }
+  #route {
+    margin-top: 30px;
+    font-size: 3rem;
+    color: ${({ theme }) => theme.colors.lowContrastSecondary};
   }
 `;
 
