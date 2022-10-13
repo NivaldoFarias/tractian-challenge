@@ -1,13 +1,13 @@
 {
   "_type": "export",
   "__export_format": 4,
-  "__export_date": "2022-10-12T15:57:02.456Z",
+  "__export_date": "2022-10-13T12:43:32.974Z",
   "__export_source": "insomnia.desktop.app:v2022.3.0",
   "resources": [
     {
       "_id": "req_20a39c62ce1d4fd7ae4413834d284006",
       "parentId": "fld_d68b6af19e7f42659043518820834448",
-      "modified": 1665589771434,
+      "modified": 1665664897538,
       "created": 1665509730968,
       "url": "{{ _.url }}/users/delete/{{ _.user_id }}",
       "name": "User",
@@ -71,7 +71,7 @@
     {
       "_id": "req_c8f2070433604e11869c73259d527765",
       "parentId": "fld_efd22d6611874199afdcd69131a10310",
-      "modified": 1665589782787,
+      "modified": 1665664899151,
       "created": 1665509368384,
       "url": "{{ _.url }}/users/create",
       "name": "User",
@@ -91,7 +91,7 @@
         {
           "id": "pair_bdadf4af552e46e5819bd10c0b4e0328",
           "name": "x-api-key",
-          "value": "{{ _.api_key }}",
+          "value": "{{ _['x-api-key'] }}",
           "description": ""
         }
       ],
@@ -121,7 +121,7 @@
     {
       "_id": "req_69c03610215642b3a5dfaca78678aa9a",
       "parentId": "fld_efd22d6611874199afdcd69131a10310",
-      "modified": 1665510550738,
+      "modified": 1665664899608,
       "created": 1665510085869,
       "url": "{{ _.url }}/units/create",
       "name": "Units",
@@ -141,7 +141,7 @@
         {
           "id": "pair_bdadf4af552e46e5819bd10c0b4e0328",
           "name": "x-api-key",
-          "value": "{{ _.api_key }}",
+          "value": "{{ _['x-api-key'] }}",
           "description": ""
         }
       ],
@@ -163,7 +163,7 @@
     {
       "_id": "req_caae6ec133954455ab281e8b99c09c22",
       "parentId": "fld_efd22d6611874199afdcd69131a10310",
-      "modified": 1665510591866,
+      "modified": 1665664899927,
       "created": 1665510170275,
       "url": "{{ _.url }}/assets/create",
       "name": "Assets",
@@ -183,7 +183,7 @@
         {
           "id": "pair_bdadf4af552e46e5819bd10c0b4e0328",
           "name": "x-api-key",
-          "value": "{{ _.api_key }}",
+          "value": "{{ _['x-api-key'] }}",
           "description": ""
         }
       ],
@@ -205,7 +205,7 @@
     {
       "_id": "req_5bac66d7eae64f81a1951b386f0d186c",
       "parentId": "fld_efd22d6611874199afdcd69131a10310",
-      "modified": 1665510470889,
+      "modified": 1665664863453,
       "created": 1665509481471,
       "url": "{{ _.url }}/companies/create",
       "name": "Company",
@@ -225,7 +225,7 @@
         {
           "id": "pair_bdadf4af552e46e5819bd10c0b4e0328",
           "name": "x-api-key",
-          "value": "{{ _.api_key }}",
+          "value": "{{ _['x-api-key'] }}",
           "description": ""
         }
       ],
@@ -243,7 +243,7 @@
     {
       "_id": "req_b57cebe20f884bb088385d5c29013726",
       "parentId": "fld_cfe5aa04b3284fe798022ec871cbbfe3",
-      "modified": 1665589834213,
+      "modified": 1665664844801,
       "created": 1665088787248,
       "url": "{{ _.url }}/",
       "name": "Server up?",
@@ -253,7 +253,7 @@
       "parameters": [],
       "headers": [],
       "authentication": {},
-      "metaSortKey": -1665509368434,
+      "metaSortKey": -1665509487107,
       "isPrivate": false,
       "settingStoreCookies": true,
       "settingSendCookies": true,
@@ -266,7 +266,7 @@
     {
       "_id": "req_f4597b2e7bfd464a81f6abb6f2c556fc",
       "parentId": "fld_0c624707c2cf4902a8f8d358c247b9e4",
-      "modified": 1665589887343,
+      "modified": 1665664902748,
       "created": 1665087955526,
       "url": "{{ _.url }}{{ _.endpoint }}/delete/?",
       "name": "Delete",
@@ -312,7 +312,7 @@
     {
       "_id": "req_144984b8c5a948a4912ba26d5ff56612",
       "parentId": "fld_0c624707c2cf4902a8f8d358c247b9e4",
-      "modified": 1665589875888,
+      "modified": 1665664903482,
       "created": 1665185869700,
       "url": "{{ _.url }}{{ _.endpoint }}/update/{{ _.company_id }}",
       "name": "Update",
@@ -354,7 +354,7 @@
     {
       "_id": "req_315406c90ab14089b71f850938424117",
       "parentId": "fld_0c624707c2cf4902a8f8d358c247b9e4",
-      "modified": 1665589891738,
+      "modified": 1665664903674,
       "created": 1665087955523,
       "url": "{{ _.url }}{{ _.endpoint }}/search/{{ _.company_id }}",
       "name": "Search by Id",
@@ -381,7 +381,7 @@
     {
       "_id": "req_aad651f7234b456f8fae7cd97c289462",
       "parentId": "fld_0c624707c2cf4902a8f8d358c247b9e4",
-      "modified": 1665590148023,
+      "modified": 1665664904084,
       "created": 1665087955520,
       "url": "{{ _.url }}{{ _.endpoint }}/search",
       "name": "Search All",
@@ -427,7 +427,7 @@
     {
       "_id": "req_885be9f57748421d90ebb92bab1c65ab",
       "parentId": "fld_0c624707c2cf4902a8f8d358c247b9e4",
-      "modified": 1665589898841,
+      "modified": 1665664904526,
       "created": 1665087955518,
       "url": "{{ _.url }}{{ _.endpoint }}/create",
       "name": "Create",
@@ -471,9 +471,9 @@
     {
       "_id": "req_b70ab01b00384676a7a9b23751c20461",
       "parentId": "fld_2e6a571b173942f3b596e6b03d76990e",
-      "modified": 1665588111413,
+      "modified": 1665664911620,
       "created": 1665245817152,
-      "url": "{{ _.url }}{{ _.endpoint }}/delete/?",
+      "url": "{{ _.url }}{{ _.endpoint }}/delete/",
       "name": "Delete",
       "description": "",
       "method": "DELETE",
@@ -483,7 +483,7 @@
         {
           "id": "pair_0f7625f988f34ec49e1d66ee6ba9b0ab",
           "name": "x-api-key",
-          "value": "?",
+          "value": "{{ _['x-api-key'] }}",
           "description": ""
         }
       ],
@@ -517,7 +517,7 @@
     {
       "_id": "req_68dd922d3d8e4968b685415f5ad4b5ed",
       "parentId": "fld_2e6a571b173942f3b596e6b03d76990e",
-      "modified": 1665510748910,
+      "modified": 1665664906528,
       "created": 1665245817155,
       "url": "{{ _.url }}{{ _.endpoint }}/update/{{ _.user_id }}",
       "name": "Update",
@@ -537,7 +537,7 @@
         {
           "id": "pair_d565f9a561194b948d2d6d7e816fde40",
           "name": "x-api-key",
-          "value": "{{ _.api_key }}",
+          "value": "{{ _['x-api-key'] }}",
           "description": ""
         }
       ],
@@ -559,7 +559,7 @@
     {
       "_id": "req_5da6b08adff04dc5af7da710a61dbe6f",
       "parentId": "fld_2e6a571b173942f3b596e6b03d76990e",
-      "modified": 1665510751934,
+      "modified": 1665664697496,
       "created": 1665245817148,
       "url": "{{ _.url }}{{ _.endpoint }}/search/{{ _.user_id }}",
       "name": "Search by Id",
@@ -594,7 +594,7 @@
     {
       "_id": "req_32ff03b6c52e439cba885103b03ce472",
       "parentId": "fld_2e6a571b173942f3b596e6b03d76990e",
-      "modified": 1665590091355,
+      "modified": 1665664698764,
       "created": 1665245817144,
       "url": "{{ _.url }}{{ _.endpoint }}/search?limit=2&sort_by=username&sort=-1",
       "name": "Search All",
@@ -640,7 +640,7 @@
     {
       "_id": "req_f8fd4d418a834dce98093cdd3e3cdfe7",
       "parentId": "fld_2e6a571b173942f3b596e6b03d76990e",
-      "modified": 1665589915837,
+      "modified": 1665664698010,
       "created": 1665245817141,
       "url": "{{ _.url }}{{ _.endpoint }}/create",
       "name": "Create",
@@ -684,7 +684,7 @@
     {
       "_id": "req_eb5bffaeed9e42aeac2ef20424bbd0c3",
       "parentId": "fld_153ca02ce3314537910e48e0cf6f1cfc",
-      "modified": 1665589934962,
+      "modified": 1665664695832,
       "created": 1665433620383,
       "url": "{{ _.url }}{{ _.endpoint }}/delete/?",
       "name": "Delete",
@@ -696,7 +696,7 @@
         {
           "id": "pair_0f7625f988f34ec49e1d66ee6ba9b0ab",
           "name": "x-api-key",
-          "value": "?",
+          "value": "{{ _['x-api-key'] }}",
           "description": ""
         },
         {
@@ -736,7 +736,7 @@
     {
       "_id": "req_93e16e7d3a46425d9393b10dc38ec38f",
       "parentId": "fld_153ca02ce3314537910e48e0cf6f1cfc",
-      "modified": 1665589929852,
+      "modified": 1665664694767,
       "created": 1665433620384,
       "url": "{{ _.url }}{{ _.endpoint }}/update/{{ _.unit_id }}",
       "name": "Update",
@@ -778,7 +778,7 @@
     {
       "_id": "req_3cbf80a98e1b42a499e65428b69de4f7",
       "parentId": "fld_153ca02ce3314537910e48e0cf6f1cfc",
-      "modified": 1665590002725,
+      "modified": 1665664693670,
       "created": 1665433620381,
       "url": "{{ _.url }}{{ _.endpoint }}/search/{{ _.unit_id }}",
       "name": "Search by Id",
@@ -813,7 +813,7 @@
     {
       "_id": "req_de6978175e98409ab96fb80782f110a3",
       "parentId": "fld_153ca02ce3314537910e48e0cf6f1cfc",
-      "modified": 1665590125532,
+      "modified": 1665664694210,
       "created": 1665433620379,
       "url": "{{ _.url }}{{ _.endpoint }}/search",
       "name": "Search All",
@@ -859,7 +859,7 @@
     {
       "_id": "req_4c1905f8fe6c4c32a6351b07506b224a",
       "parentId": "fld_153ca02ce3314537910e48e0cf6f1cfc",
-      "modified": 1665590120924,
+      "modified": 1665664695165,
       "created": 1665433620370,
       "url": "{{ _.url }}{{ _.endpoint }}/create",
       "name": "Create",
@@ -903,7 +903,7 @@
     {
       "_id": "req_464a6640465949a78fff88fbfc0ae9c3",
       "parentId": "fld_7e0a62d8c70b46dc97b5643e211be9b4",
-      "modified": 1665510271669,
+      "modified": 1665664682322,
       "created": 1665455129043,
       "url": "{{ _.url }}{{ _.endpoint }}/delete/{{ _.asset_id }}",
       "name": "Delete",
@@ -915,7 +915,7 @@
         {
           "id": "pair_0f7625f988f34ec49e1d66ee6ba9b0ab",
           "name": "x-api-key",
-          "value": "{{ _.api_key }}",
+          "value": "{{ _['x-api-key'] }}",
           "description": ""
         }
       ],
@@ -949,7 +949,7 @@
     {
       "_id": "req_b9257d8ca1ec43289c57f9c8f3d852b4",
       "parentId": "fld_7e0a62d8c70b46dc97b5643e211be9b4",
-      "modified": 1665589961101,
+      "modified": 1665664687469,
       "created": 1665455129044,
       "url": "{{ _.url }}{{ _.endpoint }}/update/{{ _.asset_id }}",
       "name": "Update",
@@ -991,7 +991,7 @@
     {
       "_id": "req_9957412d0a5f415e86b35e8787ccac42",
       "parentId": "fld_7e0a62d8c70b46dc97b5643e211be9b4",
-      "modified": 1665589999530,
+      "modified": 1665664689911,
       "created": 1665455129041,
       "url": "{{ _.url }}{{ _.endpoint }}/search/{{ _.asset_id }}",
       "name": "Search by Id",
@@ -1045,7 +1045,7 @@
     {
       "_id": "req_901186c11f044e4c95f2f4110bb4cd01",
       "parentId": "fld_7e0a62d8c70b46dc97b5643e211be9b4",
-      "modified": 1665590145447,
+      "modified": 1665664690234,
       "created": 1665455129038,
       "url": "{{ _.url }}{{ _.endpoint }}/search?limit=1&sort_by=name&sort=-1",
       "name": "Search All",
@@ -1091,7 +1091,7 @@
     {
       "_id": "req_45b7e3ff42ff4d89a8d7b1c36d88dcbd",
       "parentId": "fld_7e0a62d8c70b46dc97b5643e211be9b4",
-      "modified": 1665589953561,
+      "modified": 1665664692087,
       "created": 1665455129033,
       "url": "{{ _.url }}{{ _.endpoint }}/create",
       "name": "Create",
@@ -1122,7 +1122,7 @@
         "prefix": "Bearer",
         "disabled": false
       },
-      "metaSortKey": -1657749474553,
+      "metaSortKey": -1657783009357.375,
       "isPrivate": false,
       "settingStoreCookies": true,
       "settingSendCookies": true,
@@ -1135,7 +1135,7 @@
     {
       "_id": "req_daa2705d25d54425a37ba9e5758cfb7a",
       "parentId": "fld_087943b27348455cb02486ad2d9aacba",
-      "modified": 1665590152861,
+      "modified": 1665664684432,
       "created": 1665087955500,
       "url": "{{ _.url }}{{ _.endpoint }}/sign-in",
       "name": "Sign In",
@@ -1179,7 +1179,7 @@
     {
       "_id": "req_5d165580f58c42faaceb751a79ceb3ae",
       "parentId": "fld_087943b27348455cb02486ad2d9aacba",
-      "modified": 1665590155826,
+      "modified": 1665664685406,
       "created": 1665325470424,
       "url": "{{ _.url }}{{ _.endpoint }}/sign-out",
       "name": "Sign Out",
@@ -1218,10 +1218,10 @@
     {
       "_id": "env_53f6a842cf0042348773fd7fb2f1af89",
       "parentId": "wrk_fcd312d34f024ceb87f835d74964ea6d",
-      "modified": 1665589709225,
+      "modified": 1665664822027,
       "created": 1665087955488,
       "name": "Base Environment",
-      "data": { "url": "http://localhost:5000" },
+      "data": { "url": "https://tractian-poc.herokuapp.com" },
       "dataPropertyOrder": { "&": ["url"] },
       "color": null,
       "isPrivate": false,
@@ -1250,10 +1250,11 @@
     {
       "_id": "env_20c9fa59190247dca898ebb6ede9ec5e",
       "parentId": "env_53f6a842cf0042348773fd7fb2f1af89",
-      "modified": 1665589725292,
+      "modified": 1665664832890,
       "created": 1665509953803,
       "name": "Test",
       "data": {
+        "localhost": "http://localhost:5000",
         "company_id": "6345a8ae203dd3ae6fa52760",
         "user_id": "6345a92b33afb3225976957e",
         "unit_id": "6345ac7f1dfa904fca6416bd",
@@ -1266,6 +1267,7 @@
       },
       "dataPropertyOrder": {
         "&": [
+          "localhost",
           "company_id",
           "user_id",
           "unit_id",
