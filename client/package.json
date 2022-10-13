@@ -1,6 +1,7 @@
 {
-  "name": "client",
-  "version": "0.1.0",
+  "name": "tractian-poc-serve",
+  "version": "1.0.0",
+  "description": "Tractian POC - Client Side",
   "private": true,
   "dependencies": {
     "antd": "^4.23.5",

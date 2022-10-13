@@ -1,0 +1,26 @@
+{
+  "name": "tractian-poc",
+  "version": "1.0.0",
+  "description": "Full Stack Application POC for Tractian",
+  "main": "package.json",
+  "scripts": {
+    "start": "concurrently \"cd server && npm start\" \"cd client && npm start\"",
+    "build": "concurrently \"cd server && npm run build\" \"cd client && npm run build\"",
+    "dev": "concurrently \"cd server && npm run dev\" \"cd client && npm start\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NivaldoFarias/tractian-challenge.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NivaldoFarias/tractian-challenge/issues"
+  },
+  "homepage": "https://github.com/NivaldoFarias/tractian-challenge#readme",
+  "dependencies": {
+    "concurrently": "^7.4.0"
+  }
+}
