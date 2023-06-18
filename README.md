@@ -38,13 +38,13 @@
 
 <!-- Table of Contents -->
 
-# Table of Contents
+## Table of Contents
 
 - [Deployed Instances](#deployed-instances)
 - [Installation and Usage](#installation-and-usage)
 - [Error Handling and Logging](#error-handling-and-logging)
-  - [AppError](#--apperror)
-  - [AppLog](#--applog)
+  - [AppError](#apperror)
+  - [AppLog](#applog)
 - [Middlewares](#middlewares)
 - [API Reference](#api-reference)
   - [Models](#models)
@@ -92,7 +92,7 @@ npm run dev
 
 While dealing with errors in a _Layered Structure_ Project enviroment, you may notice that the project's debugging complexity scales beyond common `console.log()` usage. The `AppLog` Object and `AppError` Object structures were set to counter that exact issue, by trying to keep the Development process as clean and concise as possible. Both are frequently referenced in the code, but do have a specific usage.
 
-#### ▸ &nbsp; AppError
+### AppError
 
 An `AppError` Object is used to handle errors in the application. It that takes four parameters:
 
@@ -101,7 +101,7 @@ An `AppError` Object is used to handle errors in the application. It that takes 
 - `message`: A string containing a simplified error message, for _Client side_ use. **This is the message that will be displayed to the user.**
 - `details`: A string containing a detailed error message, for _Client side_ use. Can be used to provide more information about the error, such as the stack trace, or suggestions on how to counter the error.
 
-##### Example Usage
+#### Example Usage
 
 ```typescript
   // ..../middlewares/auth.middleware.ts
@@ -129,14 +129,14 @@ An `AppError` Object is used to handle errors in the application. It that takes 
   }
 ```
 
-#### ▸ &nbsp; AppLog
+### AppLog
 
 An `AppLog` Object is used to handle logs in the application. It takes two parameters:
 
 - `type`: A string containing the main _Layer Structure_ that contains the log. There are seven allowed values: `Error`, `Server`, `Controller`, `Middleware`, `Repository`, `Service`, and `Util`.
 - `text`: A descriptive string containing the log message. Generally, a short message that describes the output event of the function that generated the log.
 
-##### Example Usage
+#### Example Usage
 
 ```typescript
   // ..../middlewares/auth.middleware.ts
@@ -164,7 +164,7 @@ An `AppLog` Object is used to handle logs in the application. It takes two param
 
 While aiming to provide a reusable, modular and extensible architecture, the middlewares are generally the first structures to be refactored into self-contained modules. The `validateSchema()`, `processHeader()` and `requireToken()` middlewares were set in order to achieve that goal. The following section describes **`useMiddleware()`**, which incorporates the forementioned functions as _key–value_ pairs in an Object, along with their structure and usage.
 
-### ‣ &nbsp;UseMiddleware
+### UseMiddleware
 
 The `useMiddleware()` function takes two parameters:
 
@@ -176,7 +176,7 @@ The `useMiddleware()` function takes two parameters:
 
 ###### Reference: [useMiddleware function declaration](https://github.com/NivaldoFarias/typescript-project-template/blob/main/src/utils/middleware.util.ts)
 
-##### Example Usage
+#### Example Usage
 
 ```typescript
 // ..../routes/admin.route.ts
@@ -202,15 +202,15 @@ adminRouter.post(endpoint,
 ...
 ```
 
-# API Reference
+## API Reference
 
 In this section, you will find the example API's endpoints and their respective descriptions, along with the request and response examples, as well as the [MongoDB](https://www.mongodb.com/) **_BSON_** types for each entity, that can be used as guide for data formatting. All data is sent and received as **_JSON_**.
 
 <!-- Models -->
 
-## Models
+### Models
 
-### User model _`User`_
+#### User model _`User`_
 
 - `_id`: A unique identifier for each user. `ObjectId`
 - `full_name`: The user's full name. `String` `required` `max(100)`
@@ -219,7 +219,7 @@ In this section, you will find the example API's endpoints and their respective 
 - `last_update`: The date and time when the user was last updated. `Date`
 - `created_at`: The date and time when the user was created. `Date`
 
-### Company model _`Company`_
+#### Company model _`Company`_
 
 - `_id`: A unique identifier for each company. `ObjectId`
 - `name`: The companys's name. `String` `required` `unique` `max(100)`
@@ -229,7 +229,7 @@ In this section, you will find the example API's endpoints and their respective 
 - `last_update`: The date and time when the company was last updated. `Date`
 - `created_at`: The date and time when the company was created. `Date`
 
-### Unit model _`Unit`_
+#### Unit model _`Unit`_
 
 - `_id`: A unique identifier for each unit. `ObjectId`
 - `name`: The units's name. `String` `required` `unique` `max(50)`
@@ -244,7 +244,7 @@ In this section, you will find the example API's endpoints and their respective 
 - `last_update`: The date and time when the unit was last updated. `Date`
 - `created_at`: The date and time when the unit was created. `Date`
 
-### Asset model _`Asset`_
+#### Asset model _`Asset`_
 
 - `_id`: A unique identifier for each asset. `ObjectId`
 - `name`: The assets's name. `String` `required` `max(50)`
@@ -257,14 +257,14 @@ In this section, you will find the example API's endpoints and their respective 
 - `last_update`: The date and time when the asset was last updated. `Date`
 - `created_at`: The date and time when the asset was created. `Date`
 
-## Routes
+### Routes
 
-### [Authentication](#authentication) _`/auth`_
+#### [Authentication](#authentication) _`/auth`_
 
 - [Sign In](#---sign-in)
 - [Sign Out](#---sign-out) `token`
 
-### [Users](#users) _`/users`_
+#### [Users](#users) _`/users`_
 
 - [Create](#---create-an-user) `x-api-key`
 - [Search All Users](#---search-all-users) `token`
@@ -272,7 +272,7 @@ In this section, you will find the example API's endpoints and their respective 
 - [Update](#---update-an-user) `token` `x-api-key`
 - [Delete](#---delete-an-user) `token` `x-api-key`
 
-### [Companies](#companies) _`/companies`_
+#### [Companies](#companies) _`/companies`_
 
 - [Create](#---create-a-company) `x-api-key`
 - [Search All Companies](#---search-all-companies) `token`
@@ -280,7 +280,7 @@ In this section, you will find the example API's endpoints and their respective 
 - [Update](#---update-a-company) `token` `x-api-key`
 - [Delete](#---delete-a-company) `token` `x-api-key`
 
-### [Units](#units) _`/units`_
+#### [Units](#units) _`/units`_
 
 - [Create](#---create-an-unit) `token` `x-api-key`
 - [Search All Units](#---search-all-units) `token`
@@ -288,7 +288,7 @@ In this section, you will find the example API's endpoints and their respective 
 - [Update](#---update-an-unit) `token` `x-api-key`
 - [Delete](#---delete-an-unit) `token` `x-api-key`
 
-### [Assets](#assets) _`/assets`_
+#### [Assets](#assets) _`/assets`_
 
 - [Create](#---create-an-asset) `token` `x-api-key`
 - [Search All Assets](#---search-all-assets) `token`
@@ -296,13 +296,13 @@ In this section, you will find the example API's endpoints and their respective 
 - [Update](#---update-an-asset) `token` `x-api-key`
 - [Delete](#---delete-an-asset) `token` `x-api-key`
 
-## Authentication
+### Authentication
 
-### &nbsp; ‣ &nbsp; Sign in
+#### Sign in
 
-###### &nbsp; &nbsp; POST _`/auth/sign-in`_
+###### POST _`/auth/sign-in`_
 
-#### &nbsp; ☰ &nbsp; Request
+##### Request
 
 ##### Body
 
@@ -321,7 +321,7 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-#### &nbsp; ☰ &nbsp; Responses
+##### Responses
 
 | Status Code |       Description       |          Properties          |
 | :---------: | :---------------------: | :--------------------------: |
@@ -332,13 +332,13 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   |  Invalid Request Input  | `error: { message, detail }` |
 |   **500**   |  Internal Server Error  | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Sign out
+#### &nbsp; ‣ &nbsp; Sign out
 
-###### &nbsp; &nbsp; POST _`/auth/sign-out`_
+###### POST _`/auth/sign-out`_
 
-#### &nbsp; ☰ &nbsp; Request
+##### Request
 
-##### Headers
+###### Headers
 
 ```json
 {
@@ -347,7 +347,7 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-#### &nbsp; ☰ &nbsp; Responses
+##### Responses
 
 | Status Code |      Description      |          Properties          |
 | :---------: | :-------------------: | :--------------------------: |
@@ -356,15 +356,15 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-## Users
+### Users
 
-### &nbsp; ‣ &nbsp; Create an User
+#### Create an User
 
-###### &nbsp; &nbsp; POST _`/users/create`_
+######POST _`/users/create`_
 
-#### &nbsp; ☰ &nbsp; Request
+##### Request
 
-##### Body
+###### Body
 
 ```json
 {
@@ -375,7 +375,7 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-##### Headers
+###### Headers
 
 ```json
 {
@@ -384,7 +384,7 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-#### &nbsp; ☰ &nbsp; Responses
+##### Responses
 
 | Status Code |         Description         |          Properties          |
 | :---------: | :-------------------------: | :--------------------------: |
@@ -395,13 +395,13 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   |    Invalid Request Input    | `error: { message, detail }` |
 |   **500**   |    Internal Server Error    | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Search all Users
+#### Search all Users
 
-###### &nbsp; &nbsp; GET _`/users/all`_
+###### GET _`/users/all`_
 
-#### &nbsp; ☰ &nbsp; Request
+##### Request
 
-##### Headers
+###### Headers
 
 ```json
 {
@@ -410,14 +410,14 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-##### Query Parameters
+###### Query Parameters
 
 |   Name   |   Type   |               Description                | `Default` |
 | :------: | :------: | :--------------------------------------: | :-------: |
 | per_page | `Number` | The number of results per page (max 100) |    10     |
 |   page   | `Number` |   Page number of the results to fetch    |     1     |
 
-#### &nbsp; ☰ &nbsp; Responses
+##### Responses
 
 | Status Code |      Description      |          Properties          |
 | :---------: | :-------------------: | :--------------------------: |
@@ -429,13 +429,13 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Search User by id
+#### Search User by id
 
-###### &nbsp; &nbsp; GET _`/users/:id`_
+###### GET _`/users/:id`_
 
-#### &nbsp; ☰ &nbsp; Request
+##### Request
 
-##### Headers
+###### Headers
 
 ```json
 {
@@ -444,7 +444,7 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-#### &nbsp; ☰ &nbsp; Responses
+##### Responses
 
 | Status Code |      Description      |          Properties          |
 | :---------: | :-------------------: | :--------------------------: |
@@ -456,13 +456,13 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Update an User
+#### Update an User
 
-###### &nbsp; &nbsp; PUT _`/users/:id/update`_
+###### PUT _`/users/:id/update`_
 
-#### &nbsp; ☰ &nbsp; Request
+##### Request
 
-##### Body
+###### Body
 
 ```json
 {
@@ -471,7 +471,7 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-##### Headers
+###### Headers
 
 ```json
 {
@@ -481,7 +481,7 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-#### &nbsp; ☰ &nbsp; Responses
+##### Responses
 
 | Status Code |      Description      |          Properties          |
 | :---------: | :-------------------: | :--------------------------: |
@@ -493,13 +493,13 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Delete an User
+#### Delete an User
 
-###### &nbsp; &nbsp; DELETE _`/users/:id/delete`_
+###### DELETE _`/users/:id/delete`_
 
-#### &nbsp; ☰ &nbsp; Request
+##### Request
 
-##### Headers
+###### Headers
 
 ```json
 {
@@ -509,7 +509,7 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-#### &nbsp; ☰ &nbsp; Responses
+##### Responses
 
 | Status Code |      Description      |          Properties          |
 | :---------: | :-------------------: | :--------------------------: |
@@ -521,15 +521,15 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-## Companies
+### Companies
 
-### &nbsp; ‣ &nbsp; Create a Company
+#### Create a Company
 
-###### &nbsp; &nbsp; POST _`/companies/create`_
+###### POST _`/companies/create`_
 
-#### &nbsp; ☰ &nbsp; Request
+##### Request
 
-##### Body
+###### Body
 
 ```json
 {
@@ -537,7 +537,7 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-##### Headers
+###### Headers
 
 ```json
 {
@@ -546,7 +546,7 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-#### &nbsp; ☰ &nbsp; Responses
+##### Responses
 
 | Status Code |        Description         |          Properties          |
 | :---------: | :------------------------: | :--------------------------: |
@@ -558,13 +558,13 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   |   Invalid Request Input    | `error: { message, detail }` |
 |   **500**   |   Internal Server Error    | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Search all Companies
+#### Search all Companies
 
-###### &nbsp; &nbsp; GET _`/companies/all`_
+###### GET _`/companies/all`_
 
-#### &nbsp; ☰ &nbsp; Request
+##### Request
 
-##### Headers
+###### Headers
 
 ```json
 {
@@ -573,14 +573,14 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-##### Query Parameters
+###### Query Parameters
 
 |   Name   |   Type   |               Description                | `Default` |
 | :------: | :------: | :--------------------------------------: | :-------: |
 | per_page | `Number` | The number of results per page (max 100) |     5     |
 |   page   | `Number` |   Page number of the results to fetch    |     1     |
 
-#### &nbsp; ☰ &nbsp; Responses
+##### Responses
 
 | Status Code |      Description      |          Properties          |
 | :---------: | :-------------------: | :--------------------------: |
@@ -592,13 +592,13 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Search Company by id
+#### Search Company by id
 
-###### &nbsp; &nbsp; GET _`/companies/:id`_
+###### GET _`/companies/:id`_
 
-#### &nbsp; ☰ &nbsp; Request
+##### Request
 
-##### Headers
+###### Headers
 
 ```json
 {
@@ -607,7 +607,7 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-#### &nbsp; ☰ &nbsp; Responses
+##### Responses
 
 | Status Code |      Description      |          Properties          |
 | :---------: | :-------------------: | :--------------------------: |
@@ -619,13 +619,13 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Update a Company
+#### Update a Company
 
-###### &nbsp; &nbsp; PUT _`/companies/:id/update`_
+###### PUT _`/companies/:id/update`_
 
-#### &nbsp; ☰ &nbsp; Request
+##### Request
 
-##### Body
+###### Body
 
 ```json
 {
@@ -633,7 +633,7 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-##### Headers
+###### Headers
 
 ```json
 {
@@ -643,7 +643,7 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-#### &nbsp; ☰ &nbsp; Responses
+##### Responses
 
 | Status Code |      Description      |          Properties          |
 | :---------: | :-------------------: | :--------------------------: |
@@ -655,13 +655,13 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Delete a Company
+#### Delete a Company
 
-###### &nbsp; &nbsp; DELETE _`/companies/:id/delete`_
+###### DELETE _`/companies/:id/delete`_
 
-#### &nbsp; ☰ &nbsp; Request
+##### Request
 
-##### Headers
+###### Headers
 
 ```json
 {
@@ -671,7 +671,7 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-#### &nbsp; ☰ &nbsp; Responses
+##### Responses
 
 | Status Code |      Description      |          Properties          |
 | :---------: | :-------------------: | :--------------------------: |
@@ -683,15 +683,15 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-## Units
+### Units
 
-### &nbsp; ‣ &nbsp; Create an Unit
+#### Create an Unit
 
-###### &nbsp; &nbsp; POST _`/units/create`_
+###### POST _`/units/create`_
 
-#### &nbsp; ☰ &nbsp; Request
+##### Request
 
-##### Body
+###### Body
 
 ```json
 {
@@ -705,7 +705,7 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-##### Headers
+###### Headers
 
 ```json
 {
@@ -715,7 +715,7 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-#### &nbsp; ☰ &nbsp; Responses
+##### Responses
 
 | Status Code |       Description       |          Properties          |
 | :---------: | :---------------------: | :--------------------------: |
@@ -727,13 +727,13 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   |  Invalid Request Input  | `error: { message, detail }` |
 |   **500**   |  Internal Server Error  | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Search all Units
+#### Search all Units
 
-###### &nbsp; &nbsp; GET _`/units/all`_
+###### GET _`/units/all`_
 
-#### &nbsp; ☰ &nbsp; Request
+##### Request
 
-##### Headers
+###### Headers
 
 ```json
 {
@@ -742,14 +742,14 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-##### Query Parameters
+###### Query Parameters
 
 |   Name   |   Type   |               Description                | `Default` |
 | :------: | :------: | :--------------------------------------: | :-------: |
 | per_page | `Number` | The number of results per page (max 100) |     5     |
 |   page   | `Number` |   Page number of the results to fetch    |     1     |
 
-#### &nbsp; ☰ &nbsp; Responses
+##### Responses
 
 | Status Code |      Description      |          Properties          |
 | :---------: | :-------------------: | :--------------------------: |
@@ -761,13 +761,13 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Search Unit by id
+#### Search Unit by id
 
-###### &nbsp; &nbsp; GET _`/units/:id`_
+###### GET _`/units/:id`_
 
-#### &nbsp; ☰ &nbsp; Request
+##### Request
 
-##### Headers
+###### Headers
 
 ```json
 {
@@ -776,7 +776,7 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-#### &nbsp; ☰ &nbsp; Responses
+##### Responses
 
 | Status Code |      Description      |          Properties          |
 | :---------: | :-------------------: | :--------------------------: |
@@ -788,13 +788,13 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Update an Unit
+#### Update an Unit
 
-###### &nbsp; &nbsp; PUT _`/units/:id/update`_
+###### PUT _`/units/:id/update`_
 
-#### &nbsp; ☰ &nbsp; Request
+##### Request
 
-##### Body
+###### Body
 
 ```json
 {
@@ -810,7 +810,7 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-##### Headers
+###### Headers
 
 ```json
 {
@@ -820,7 +820,7 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-#### &nbsp; ☰ &nbsp; Responses
+##### Responses
 
 | Status Code |      Description      |          Properties          |
 | :---------: | :-------------------: | :--------------------------: |
@@ -832,13 +832,13 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Delete an Unit
+#### Delete an Unit
 
-###### &nbsp; &nbsp; DELETE _`/units/:id/delete`_
+###### DELETE _`/units/:id/delete`_
 
-#### &nbsp; ☰ &nbsp; Request
+##### Request
 
-##### Headers
+###### Headers
 
 ```json
 {
@@ -848,7 +848,7 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-#### &nbsp; ☰ &nbsp; Responses
+##### Responses
 
 | Status Code |      Description      |          Properties          |
 | :---------: | :-------------------: | :--------------------------: |
@@ -860,15 +860,15 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-## Assets
+### Assets
 
-### &nbsp; ‣ &nbsp; Create an Asset
+#### Create an Asset
 
-###### &nbsp; &nbsp; POST _`/assets/create`_
+###### POST _`/assets/create`_
 
-#### &nbsp; ☰ &nbsp; Request
+##### Request
 
-##### Body
+###### Body
 
 ```json
 {
@@ -882,7 +882,7 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-##### Headers
+###### Headers
 
 ```json
 {
@@ -892,7 +892,7 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-#### &nbsp; ☰ &nbsp; Responses
+##### Responses
 
 | Status Code |       Description        |          Properties          |
 | :---------: | :----------------------: | :--------------------------: |
@@ -904,13 +904,13 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   |  Invalid Request Input   | `error: { message, detail }` |
 |   **500**   |  Internal Server Error   | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Search all Assets
+#### Search all Assets
 
-###### &nbsp; &nbsp; GET _`/assets/all`_
+###### GET _`/assets/all`_
 
-#### &nbsp; ☰ &nbsp; Request
+##### Request
 
-##### Headers
+###### Headers
 
 ```json
 {
@@ -919,7 +919,7 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-##### Query Parameters
+###### Query Parameters
 
 |   Name   |   Type   |               Description                | `Default` |
 | :------: | :------: | :--------------------------------------: | :-------: |
@@ -929,7 +929,7 @@ In this section, you will find the example API's endpoints and their respective 
 |  status  | `String` |           Status of the asset            |     -     |
 |  model   | `String` |            Model of the asset            |     -     |
 
-#### &nbsp; ☰ &nbsp; Responses
+##### Responses
 
 | Status Code |      Description      |          Properties          |
 | :---------: | :-------------------: | :--------------------------: |
@@ -941,13 +941,13 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Search Asset by id
+#### Search Asset by id
 
-###### &nbsp; &nbsp; GET _`/assets/:id`_
+###### GET _`/assets/:id`_
 
-#### &nbsp; ☰ &nbsp; Request
+##### Request
 
-##### Headers
+###### Headers
 
 ```json
 {
@@ -956,7 +956,7 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-#### &nbsp; ☰ &nbsp; Responses
+##### Responses
 
 | Status Code |      Description      |          Properties          |
 | :---------: | :-------------------: | :--------------------------: |
@@ -968,13 +968,13 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Update an Asset
+#### Update an Asset
 
-###### &nbsp; &nbsp; PUT _`/assets/:id/update`_
+###### PUT _`/assets/:id/update`_
 
-#### &nbsp; ☰ &nbsp; Request
+##### Request
 
-##### Body
+###### Body
 
 ```json
 {
@@ -986,7 +986,7 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-##### Headers
+###### Headers
 
 ```json
 {
@@ -996,7 +996,7 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-#### &nbsp; ☰ &nbsp; Responses
+##### Responses
 
 | Status Code |      Description      |          Properties          |
 | :---------: | :-------------------: | :--------------------------: |
@@ -1008,13 +1008,13 @@ In this section, you will find the example API's endpoints and their respective 
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
 
-### &nbsp; ‣ &nbsp; Delete an Asset
+#### Delete an Asset
 
-###### &nbsp; &nbsp; DELETE _`/assets/:id/delete`_
+###### DELETE _`/assets/:id/delete`_
 
-#### &nbsp; ☰ &nbsp; Request
+##### Request
 
-##### Headers
+###### Headers
 
 ```json
 {
@@ -1024,7 +1024,7 @@ In this section, you will find the example API's endpoints and their respective 
 }
 ```
 
-#### &nbsp; ☰ &nbsp; Responses
+##### Responses
 
 | Status Code |      Description      |          Properties          |
 | :---------: | :-------------------: | :--------------------------: |
@@ -1035,5 +1035,3 @@ In this section, you will find the example API's endpoints and their respective 
 |   **404**   |    Asset not Found    | `error: { message, detail }` |
 |   **422**   | Invalid Request Input | `error: { message, detail }` |
 |   **500**   | Internal Server Error | `error: { message, detail }` |
-
-#
